@@ -10,7 +10,6 @@
 //
 // ============================================================================
 
-rootProject.name = 'gradle-plugins'
+rootProject.name = 'bintray'
 
-include 'bintray'
-include 'gnumake'
+include 'gradle-plugin'
