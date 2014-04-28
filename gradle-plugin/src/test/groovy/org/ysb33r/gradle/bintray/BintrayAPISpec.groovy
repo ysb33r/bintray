@@ -21,6 +21,13 @@ class BintrayAPISpec extends Specification {
 
     def ClientDriverRule bintrayMock = new ClientDriverRule(port.toInteger() )
 
+//    def "TEST"() {
+//        when:
+//        api.uploadContent(new File('build.gradle'))
+//        then:
+//        true
+//    }
+
     @Ignore
     def "Check if version exists" () {
         given:

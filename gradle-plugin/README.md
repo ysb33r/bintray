@@ -14,8 +14,9 @@ task is also available for purely creating package metadata on Bintray.
 Previous versions of this document
 ----------------------------------
 
-This is version 1.0 of the document.
+This is version 1.1 of the document.
 
++ 1.0 - https://github.com/ysb33r/Gradle/blob/RELEASE_1_0/bintray/README.md
 + 0.0.9 - https://github.com/ysb33r/Gradle/blob/RELEASE_0_0_9/bintray/README.md
 + 0.0.7 - https://github.com/ysb33r/Gradle/blob/RELEASE_0_0_7/bintray/README.md
 + 0.0.6 - https://github.com/ysb33r/Gradle/blob/RELEASE_0_0_6/bintray/README.md
@@ -45,24 +46,6 @@ buildscript {
       }
 }
 ```
-
-Adding Bintray repositories
----------------------------
-```groovy
-
-apply plugin: 'bintray'
-
-repositories {
-
-	// Adding JCenter
-	jCenter()
-	
-	// Adding arbitrary Bintray Ivy-style repository
-	ivyBintray( 'repoOwner', 'repoName' )
-	ivyBintray ('ysb33r','grysb33r')
-}
-```
-
 Publishing to Bintray
 ---------------------
 

@@ -12,17 +12,16 @@
 
 apply plugin: 'groovy'
 apply plugin: 'bintray-publish'
+apply plugin: 'maven'
 
-// Major part of version now track Bintray API version
-version = '1.0'
 group = 'org.ysb33r.gradle'
+archivesBaseName = 'bintray'
 
 ext {
     moduleName = 'bintray-gradle-plugin'
 }
 
 repositories {
-    //mavenRepo(url: 'http://repository.codehaus.org')
     jcenter()
     mavenCentral()
 }
@@ -30,8 +29,12 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.5.2'
-
+    compile ('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1') {
+        exclude group: 'org.apache.httpcomponents', module:'httpclient'
+        exclude group: 'org.apache.httpcomponents', module: 'httpcore'
+    }
+    compile 'org.apache.httpcomponents:httpcore:4.3'
+    compile 'org.apache.httpcomponents:httpclient:4.3'
     testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
     testCompile 'com.github.rest-driver:rest-client-driver:1.1.37'
 }
@@ -48,23 +51,44 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
+   task javadocJar(type: Jar) {
+        description "An archive of the JavaDocs for Maven Central"
+        classifier "javadoc"
+        from javadoc
+    }
+
 artifacts {
     archives sourcesJar
-    //TODO: archives javadocJar
+    archives javadocJar
 }
 
-uploadArchives  {
-    repositories {
-        mavenLocal()
-        bintrayMavenDeployer {
-            username    project.properties.bintrayUserName
-            apiKey      project.properties.bintrayApiKey
-            repoOwner   bintrayOwner
-            repoName    bintrayRepo
-            packageName moduleName
-            description 'This is a bintray publish plugin for Gradle'
-            tags        'gradle','bintray'
+if(version.endsWith("SNAPSHOT")) {
+    apply plugin: 'artifactory'
+    artifactory {
+        publish {
+            contextUrl = 'http://oss.jfrog.org'
+            repository {
+                repoKey = 'oss-snapshot-local'
+                username = project.properties.bintrayUserName
+                password = project.properties.bintrayApiKey
+            }
+        }
+    }
+} else {
+    uploadArchives  {
+        repositories {
+            mavenLocal()
+            bintrayMavenDeployer {
+                username    project.properties.bintrayUserName
+                apiKey      project.properties.bintrayApiKey
+                repoOwner   bintrayOwner
+                repoName    bintrayRepo
+                packageName moduleName
+                description 'This is a bintray publish plugin for Gradle'
+                tags        'gradle','bintray'
+            }
         }
     }
 }
 
+apply from : '../gradle/publish.gradle'

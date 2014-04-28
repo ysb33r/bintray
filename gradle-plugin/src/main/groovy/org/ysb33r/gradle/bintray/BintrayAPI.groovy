@@ -1,5 +1,5 @@
 // ============================================================================
-// (C) Copyright Schalk W. Cronje 2013
+// (C) Copyright Schalk W. Cronje 2013-2014
 //
 // This software is licensed under the Apache License 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for license details
@@ -13,9 +13,12 @@
 package org.ysb33r.gradle.bintray
 
 import groovy.transform.*
+import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.RESTClient
 import groovyx.net.http.HttpResponseException
+
 import static groovyx.net.http.ContentType.JSON
+import static groovyx.net.http.ContentType.BINARY
 
 
 // This code is WIP - I am planning to extend access
@@ -23,7 +26,7 @@ import static groovyx.net.http.ContentType.JSON
 //@TupleConstructor
 class BintrayAPI {
 
-    final String API_BASE_URL = 'https://api.bintray.com'
+    static final String API_BASE_URL = 'https://api.bintray.com'
 
     String baseUrl = API_BASE_URL
     String repoOwner
@@ -42,10 +45,10 @@ class BintrayAPI {
 
     boolean hasVersion() {
         assertVersionAttributes()
-        def rest = client("packages/${repoOwner}/${repoName}/${packageName}")
+        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
 
         try {
-            def response = rest.get( path : "versions/${version}"  )
+            def response = client().get( path : "${rest}/versions/${version}"  )
             debugmsg "Response code is ${response.status}. Assuming ${version} exists"
             return response.isSuccess()
         } catch (HttpResponseException e) {
@@ -61,13 +64,12 @@ class BintrayAPI {
 
     def createVersion ( String description ) {
         assertVersionAttributes()
-
-        def rest = client("packages/${repoOwner}/${repoName}/${packageName}")
+        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
 
         debugmsg "About to create ${repoOwner}/${repoName}/${packageName}/${version}"
-        def response = rest.post(
+        def response = client().post(
                 contentType : JSON,
-                path : "versions",
+                path : "${rest}/versions",
                 body : [ name : version, desc : description ]
         )
         debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: ${response.status}"
@@ -76,10 +78,10 @@ class BintrayAPI {
 
     boolean deleteVersion() {
         assertVersionAttributes()
-        def rest = client("packages/${repoOwner}/${repoName}/${packageName}")
+        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
 
         try {
-            def response = rest.delete( path : "versions/${version}"  )
+            def response = client().delete( path : "${rest}/versions/${version}"  )
             return response.isSuccess()
         } catch (HttpResponseException e) {
 
@@ -91,32 +93,50 @@ class BintrayAPI {
         }
     }
 
-//    Can only be supported once HTTPBuilder supports PATCH (0.8.0)
     def updateVersion () {
-        return true
-//        assertVersionAttributes()
-//        def rest = client("packages/${repoOwner}/${repoName}/${packageName}")
-//        try {
-//            def response = rest.patch(
-//                    contentType : JSON,
-//                    path : "versions/${packageVersion}",
-//                    body : [ name : packageVersion, desc : description ]
-//            )
-//            return response.isSuccess()
-//        } catch (HttpResponseException e) {
-//
-//            if(e.response.status != 404) {
-//                throw e
-//            }
-//
-//            return false
-//        }
+        assertVersionAttributes()
+        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        try {
+            def response = rest.patch(
+                    contentType : JSON,
+                    path : "${rest}/versions/${packageVersion}",
+                    body : [ name : packageVersion, desc : description ]
+            )
+            return response.isSuccess()
+        } catch (HttpResponseException e) {
+
+            if(e.response.status != 404) {
+                throw e
+            }
+
+            return false
+        }
     }
 
-    private RESTClient client(String path) {
-        RESTClient rest = new RESTClient("${baseUrl}/${path}/")
-        rest.auth.basic userName,apiKey
-        return rest
+    def uploadContent(final File content) {
+        assertVersionAttributes()
+        assert content.exists()
+
+        try {
+
+            def response = client().put(
+                    requestContentType : BINARY,
+                    path : "content/${repoOwner}/${repoName}/${packageName}/${version}/${content.name}",
+                    body : content.bytes
+            )
+            return response.isSuccess()
+        } catch (HttpResponseException e) {
+            debugmsg "${repoOwner}/${repoName}/${packageName}/${version}/${content.name}: ${response.status}"
+            throw e
+        }
+    }
+
+    private RESTClient client() {
+        if(apiClient == null) {
+            apiClient = new RESTClient("${baseUrl}/")
+            apiClient.auth.basic userName, apiKey
+        }
+        return apiClient
     }
 
     private def assertVersionAttributes() {
@@ -132,6 +152,8 @@ class BintrayAPI {
     private void debugmsg( String msg ) {
         logger?.debug msg
     }
+
+    private RESTClient apiClient
 }
 
 
