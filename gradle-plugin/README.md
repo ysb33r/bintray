@@ -38,11 +38,10 @@ Adding the plugin
 buildscript {
     repositories {
         jcenter()
-	mavenRepo(url: 'http://repository.codehaus.org')
-        mavenRepo(url: 'http://dl.bintray.com/ysb33r/grysb33r')
+    	mavenRepo(url: 'http://repository.codehaus.org')
       }
       dependencies {
-        classpath 'org.ysb33r.gradle:bintray:1.0'
+        classpath 'org.ysb33r.gradle:bintray:1.1'
       }
 }
 ```
@@ -106,6 +105,27 @@ task uploadArchives (type:BintrayGenericUpload ) {
     packageName 'someNewPackageToBePublished'
     // 'sources' can be called more than once
     sources "${buildDir}/distributions/${applicationName}-${version}.tar"
+}
+```
+
+It is a great combination with the ```application``` plugin
+
+```groovy
+apply plugin : 'bintray-publish'
+apply plugin : 'application'
+
+import org.ysb33r.gradle.bintray.BintrayGenericUpload
+
+task uploadArchives (type:BintrayGenericUpload ) {
+    username    'someBintrayUser'
+    apiKey      'SomeBintrayUsersApiKey'
+    repoOwner   'ysb33r'
+    repoName    'nanook'
+    packageName 'someNewPackageToBePublished'
+    sources distZip.outputs.files
+    sources distTar.outputs.files
+    dependsOn distZip, distTar
+    onlyIf { !version.endsWith("SNAPSHOT") }
 }
 ```
 
