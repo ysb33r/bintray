@@ -59,6 +59,7 @@ class BintrayGenericUpload extends DefaultTask {
         )
 
         artifacts.each {
+            logger.info "Uploading ${it}"
             api.uploadContent(it)
         }
     }

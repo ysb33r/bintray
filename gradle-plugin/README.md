@@ -46,8 +46,8 @@ buildscript {
       }
 }
 ```
-Publishing to Bintray
----------------------
+Publishing to Bintray Maven Repository
+--------------------------------------
 
 The plugin hooks in the Upload task type. In the below example we
 configure the uploadArchives task which is created through the java 
@@ -75,7 +75,7 @@ uploadArchives  {
 		// Publishing as maven
 		bintrayMavenDeployer {
 			username    'someBintrayUser'
-            apiKey      'SomeBinTrayUsersApiKey'
+            apiKey      'SomeBintrayUsersApiKey'
          	repoOwner   'ysb33r'
          	repoName    'grysb33r'
          	packageName 'someNewPackageToBePublished'
@@ -88,11 +88,32 @@ uploadArchives  {
 
 ```
 
-Publishing using new Gradle Plublishing mechanism
+Publishing to Bintray Generic Repository
+----------------------------------------
+
+Version 1.1 adds the ```BintrayGenericUpload``` task type, allowing upload of any file to a generic Bintray repository.
+
+```groovy
+apply plugin : 'bintray-publish'
+
+import org.ysb33r.gradle.bintray.BintrayGenericUpload
+
+task uploadArchives (type:BintrayGenericUpload ) {
+    username    'someBintrayUser'
+    apiKey      'SomeBintrayUsersApiKey'
+    repoOwner   'ysb33r'
+    repoName    'nanook'
+    packageName 'someNewPackageToBePublished'
+    // 'sources' can be called more than once
+    sources "${buildDir}/distributions/${applicationName}-${version}.tar"
+}
+```
+
+Publishing using new Gradle Publishing mechanism
 =================================================
 
-This is not yet supported, but will be in a future version. Currently the publication feature is still in incubation in 1.6 and a number of changes
-are expected, so I am holding off for the moment.
+This is not yet supported, but will be in a future version. Currently the publication feature is still in incubation in
+1.x and a number of changes are expected, so I am holding off for the moment, but will try to be ready for Gradle 2.x.
 
 
 Acknowledgements
