@@ -20,7 +20,7 @@ Version 1.1 (Don't use this version)
 Version 1.0
 -----------
 * Now supports Bintray V1 API.
-* Dropped ```JCenter()``` from the codebase as Geadle now nat8vely supports ```jcenter()```.
+* Dropped ```JCenter()``` from the codebase as Gradle now natively supports ```jcenter()```.
 * Dropped ```Bintray``` class as it's only function was to shorted the typing of Bintray repositories.
 
 Version 0.0.9 and earlier
