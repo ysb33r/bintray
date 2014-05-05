@@ -116,9 +116,8 @@ class BintrayAPI {
     def uploadContent(final File content) {
         assertVersionAttributes()
         assert content.exists()
-
         try {
-
+            hasVersion()
             def response = client().put(
                     requestContentType : BINARY,
                     path : "content/${repoOwner}/${repoName}/${packageName}/${version}/${content.name}",

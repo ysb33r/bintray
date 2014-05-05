@@ -31,7 +31,7 @@ subprojects {
     sourceCompatibility = 1.6
 
     // Major part of version track Bintray API version
-    version = '1.2-SNAPSHOT'
+    version = '1.2'
 
     ext {
         bintrayOwner = 'ysb33r'
@@ -45,4 +45,6 @@ subprojects {
 
 }
 
-
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
