@@ -1,7 +1,7 @@
 Unofficial Bintray Support
 ==========================
 
-This is my collection of unofficial Bintray support. Curretnly only a Gradle plugin is provided,
+This is my collection of unofficial Bintray support. Currently only a Gradle plugin is provided,
 but the plan is to refactor the API into separate JARs that can be consumed by other projects.
 
 Previous versions of this document

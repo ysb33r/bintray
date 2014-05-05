@@ -20,7 +20,7 @@ Version 1.0
 -----------
 * Now supports Bintray V1 API.
 * Dropped ```JCenter()``` from the codebase as Geadle now nat8vely supports ```jcenter()```.
-* Drooped ```Bintray``` class as it's only function was to shorted the typing of Bintray repositories.
+* Dropped ```Bintray``` class as it's only function was to shorted the typing of Bintray repositories.
 
 Version 0.0.9 and earlier
 -------------------------
