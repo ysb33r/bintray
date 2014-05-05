@@ -46,6 +46,18 @@ class BintrayGenericUpload extends DefaultTask {
     @Input
     String apiKey
 
+    @Input
+    @Optional
+    boolean md5 = true
+
+    @Input
+    @Optional
+    boolean sha1 = false
+
+    @Input
+    @Optional
+    boolean sha256 = false
+
     @TaskAction
     void exec() {
         BintrayAPI api=new BintrayAPI(
@@ -59,8 +71,23 @@ class BintrayGenericUpload extends DefaultTask {
         )
 
         artifacts.each {
-            logger.info "Uploading ${it}"
-            api.uploadContent(it)
+            def uploadList = [it]
+            if(md5) {
+                project.ant.checksum file: it, algorithm: 'MD5'
+                uploadList.add "${it.absolutePath}.MD5"
+            }
+            if(sha1) {
+                project.ant.checksum file: it, algorithm: 'SHA-1', fileext: '.SHA1'
+                uploadList.add "${it.absolutePath}.SHA1"
+            }
+            if(sha256) {
+                project.ant.checksum file: it, algorithm: 'SHA-256', fileext: '.SHA256'
+                uploadList.add "${it.absolutePath}.SHA256"
+            }
+            uploadList.each { f ->
+                logger.info "Uploading ${f}"
+                api.uploadContent(f)
+            }
         }
     }
 
@@ -87,4 +114,5 @@ class BintrayGenericUpload extends DefaultTask {
         }
         artifacts.add(input)
     }
+
 }

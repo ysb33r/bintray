@@ -105,8 +105,14 @@ task uploadArchives (type:BintrayGenericUpload ) {
     repoOwner   'ysb33r'
     repoName    'nanook'
     packageName 'someNewPackageToBePublished'
+
     // 'sources' can be called more than once
     sources "${buildDir}/distributions/${applicationName}-${version}.tar"
+
+    // Add any of these two have the checksums published along with the artefacts
+    md5 true
+    sha1 false
+    sha256 false
 }
 ```
 
