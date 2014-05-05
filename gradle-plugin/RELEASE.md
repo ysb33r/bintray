@@ -24,6 +24,6 @@ Version 1.0
 
 Version 0.0.9 and earlier
 -------------------------
-* Moved Bintray code to it's own repository. Earlier code lived [here]().
+* Moved Bintray code to it's own repository. Earlier code lived [here](https://github.com/ysb33r/Gradle/tree/RELEASE_0_0_9/bintray).
 * Support uploading to Bintray.
 * Support for Maven and Ivy style as part of the uploadArchives.
