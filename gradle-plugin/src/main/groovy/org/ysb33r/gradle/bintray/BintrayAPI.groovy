@@ -179,6 +179,24 @@ class BintrayAPI {
         }
     }
 
+    def signVersion( String passphrase = null ) {
+        hasVersion()
+        String rest = "gpg/${repoOwner}/${repoName}/${packageName}/versions/${version}"
+        assertVersionAttributes()
+        debugmsg "About to sign ${repoOwner}/${repoName}/${packageName}/${version}"
+        def payload = [:]
+        if(passphrase?.size()) {
+            payload['passphrase'] = passphrase
+        }
+        def response = client().post(
+                contentType : JSON,
+                path : "${rest}",
+                body : payload
+        )
+        debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: ${response.status}"
+        return response.isSuccess()
+    }
+
     def uploadContent(final File content) {
         assertVersionAttributes()
         assert content.exists()

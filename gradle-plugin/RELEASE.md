@@ -10,7 +10,9 @@ Added ```vcsUrl```, ```licenses```, ```autoCreatePackage``` and ```updatePackage
 and ```BintrayGenericUpload```
 * [ISSUE #4](https://github.com/ysb33r/bintray/issues/4) - Ability to auto-publish (via a configurable option).
 * [ISSUE #5](https://github.com/ysb33r/bintray/issues/5) - Add generation of MD5s when uploading to Generic Bintray repository
-* [ISSUE #6](https://github.com/ysb33r/bintray/issues/6) - Ability to auto-sign packages upon upload
+* [ISSUE #6](https://github.com/ysb33r/bintray/issues/6) - Ability to auto-sign packages upon upload.
+Added ```gpgSign```, ```gpgPassphrase``` keywords to ```bintrayMavenDeployer```, ```bintrayIvyDeployer```and ```BintrayGenericUpload```
+* Added ```BintraySignVersion``` task for people who would like to separate the uploading and signing part.
 
 Version 1.2
 -----------

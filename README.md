@@ -46,7 +46,7 @@ buildscript {
     	mavenRepo(url: 'http://repository.codehaus.org')
       }
       dependencies {
-        classpath 'org.ysb33r.gradle:bintray:1.1'
+        classpath 'org.ysb33r.gradle:bintray:1.2'
       }
 }
 ```
@@ -59,11 +59,14 @@ plugin to use Bintray.
 
 Version 1.3 adds the following keywords to ```bintrayIvyDeployer``` and ```bintrayMavenDeployer``` :
 
-* ```autoCreatePackage``` - Create the package metadata on Bontray if it does not exist. Previously this has been a
+* ```autoCreatePackage``` - Create the package metadata on Bintray if it does not exist. Previously this has been a
 manual task.  Default is false.
 * ```updatePackage``` - Update package metadata on Bintray. Default is false
 * ```vcsUrl``` - The Source Control URL. Optional.
 * ```licenses``` - One of more licenses. Values must be as per Bintray standard list. Optional.
+* ```gpgSign``` - Set to ```true``` if signing is required
+* ```gpgPassphrase``` - If the GPG key requires a passphrase, then set it here. Recommendation is to read this from
+```grade.properties``` or to supply via ```-P```.
 
 ```groovy
 apply plugin : 'bintray-publish'
@@ -98,6 +101,8 @@ uploadArchives  {
             vcsUrl            'https://github.com/ysb33r/bintray.git'
             autoCreatePackage true
             updatePackage     true
+            gpgSign           true
+            gpgPassphrase     'SomeBintrayUserPassphrase'
        }
     }
 }
@@ -140,6 +145,12 @@ task uploadArchives (type:BintrayGenericUpload ) {
     tags              'groovy', 'gradle', 'bintray'
     vcsUrl            'https://github.com/ysb33r/bintray.git'
     licenses          'Apache-2.0'
+
+    // From V1.3+ it is also possible to sign the version
+    // Set gpgSign to true to activate Bintray signing
+    // If the gpgKey of the repoOwner requires a passphase then specifiy gpgPassphrase
+    gpgSign    true
+    gpgPassphrase 'someBintrayUserPassphrase'
 }
 ```
 
@@ -169,6 +180,30 @@ task uploadArchives (type:BintrayGenericUpload ) {
 This is not yet supported, but will be in a future version. Currently the publication feature is still in incubation in
 1.x and a number of changes are expected, so I am holding off for the moment, but will try to be ready for Gradle 2.x.
 
+### Signing a version
+
+Although the uploading process allows for automatic signing, there is a separate task for those who would like to control
+the signing of an uploaded version.
+
+```groovy
+apply plugin : 'bintray-publish'
+
+import org.ysb33r.gradle.bintray.BintraySignVersion
+
+task uploadArchives (type:BintraySignVersion ) {
+    username    'someBintrayUser'
+    apiKey      'SomeBintrayUsersApiKey'
+    repoOwner   'ysb33r'
+    repoName    'nanook'
+    packageName 'someNewPackageToBePublished'
+
+    // This is optional, if not supplied, the current project.version will be used
+    version      project.version
+
+    // Necessary when GPG key requires a passphrase
+    gpgPassphrase 'SomePassphrase'
+}
+```
 
 Acknowledgements
 ----------------

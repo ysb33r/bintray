@@ -112,6 +112,19 @@ class BintrayPackage extends DefaultTask {
     @Optional
     boolean updatePackage = false
 
+    /** Set this uploaded packages require signing by Bintray
+     *
+     */
+    @Input
+    @Optional
+    boolean gpgSign = false
+
+    /** Set this if the signing key requires a passphrase
+     *
+     */
+    @Input
+    @Optional
+    String gpgPassphrase
 
     def setTags (Object... t) {
         tags = t as List    
@@ -167,11 +180,18 @@ class BintrayPackage extends DefaultTask {
             }
         }
 
+        boolean updateResult
         if(!bintray.hasVersion()) {
-            return bintray.createVersion()
+            updateResult = bintray.createVersion()
         } else {
-            return bintray.updateVersion();
+            updateResult = bintray.updateVersion();
         }
+
+        if(updateResult && gpgSign) {
+            updateResult = bintray.signVersion(gpgPassphrase)
+        }
+
+        return updateResult
    }
 
 }
