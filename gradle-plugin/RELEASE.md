@@ -1,15 +1,22 @@
 BINTRAY GRADLE PLUGIN RELEASE NOTES
 ===================================
 
-Version 1.3 - Roadmap
+Version 1.4 - Roadmap
 ---------------------
 * [ISSUE #2](https://github.com/ysb33r/bintray/issues/2) - Support for uploading snapshots to oss.jfrog.
 * [ISSUE #1](https://github.com/ysb33r/bintray/issues/1) - Transparent integration in repositories so that snapshots and production are automatically switched between oss.jfrog and Bintray.
+* [ISSUE #7](https://github.com/ysb33r/bintray/issues/7) - Support for ```maven-publish``` plugin
+* [ISSUE #8](https://github.com/ysb33r/bintray/issues/8) - Support for ```ivy-publish``` plugin
+
+
+Version 1.3 - Roadmap
+---------------------
 * [ISSUE #3](https://github.com/ysb33r/bintray/issues/3) - Ability to create packages if they don't exist on Bintray. (via a configurable option).
-Added ```vcsUrl```, ```licenses```, ```autoCreatePackage``` and ```updatePackage``` keywords to ```bintrayMavenDeployer```, ```bintrayIvyDeployer```
-and ```BintrayGenericUpload```
+Added ```vcsUrl```, and ```licenses``` keywords to ```bintrayMavenDeployer```, ```bintrayIvyDeployer```and ```BintrayGenericUpload```
 * [ISSUE #4](https://github.com/ysb33r/bintray/issues/4) - Ability to auto-publish (via a configurable option).
+Added ```autoCreatePackage``` and ```updatePackage``` keywords to ```bintrayMavenDeployer```, ```bintrayIvyDeployer```and ```BintrayGenericUpload```
 * [ISSUE #5](https://github.com/ysb33r/bintray/issues/5) - Add generation of MD5s when uploading to Generic Bintray repository
+Added ```md5```, ```sha1``` and ```sha256``` keywords to ```BintrayGenericUpload```.
 * [ISSUE #6](https://github.com/ysb33r/bintray/issues/6) - Ability to auto-sign packages upon upload.
 Added ```gpgSign```, ```gpgPassphrase``` keywords to ```bintrayMavenDeployer```, ```bintrayIvyDeployer```and ```BintrayGenericUpload```
 * Added ```BintraySignVersion``` task for people who would like to separate the uploading and signing part.
