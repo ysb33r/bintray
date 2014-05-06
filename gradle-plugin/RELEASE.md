@@ -6,6 +6,8 @@ Version 1.3 - Roadmap
 * [ISSUE #2](https://github.com/ysb33r/bintray/issues/2) - Support for uploading snapshots to oss.jfrog.
 * [ISSUE #1](https://github.com/ysb33r/bintray/issues/1) - Transparent integration in repositories so that snapshots and production are automatically switched between oss.jfrog and Bintray.
 * [ISSUE #3](https://github.com/ysb33r/bintray/issues/3) - Ability to create packages if they don't exist on Bintray. (via a configurable option).
+Added ```vcsUrl```, ```licenses```, ```autoCreatePackage``` and ```updatePackage``` keywords to ```bintrayMavenDeployer```, ```bintrayIvyDeployer```
+and ```BintrayGenericUpload```
 * [ISSUE #4](https://github.com/ysb33r/bintray/issues/4) - Ability to auto-publish (via a configurable option).
 * [ISSUE #5](https://github.com/ysb33r/bintray/issues/5) - Add generation of MD5s when uploading to Generic Bintray repository
 * [ISSUE #6](https://github.com/ysb33r/bintray/issues/6) - Ability to auto-sign packages upon upload

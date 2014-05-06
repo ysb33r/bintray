@@ -26,8 +26,11 @@ class BintrayPackageSpec extends Specification {
             bintrayPkg.packageName == null
             bintrayPkg.description == ''
             bintrayPkg.descUrl == ''
-            bintrayPkg.tags == []
-        
+            bintrayPkg.tags == null
+            bintrayPkg.licenses == null
+            bintrayPkg.vcsUrl == null
+            bintrayPkg.autoCreatePackage == false
+            bintrayPkg.updatePackage == false
     }
     
     def "Configuring the BintrayPackage task, should set all of the appropriate fields"() {
@@ -39,7 +42,9 @@ class BintrayPackageSpec extends Specification {
                 repoOwner   'MeMeMe'
                 packageName 'foo'
                 description 'some description'
-                descUrl     'http://foo'
+                vcsUrl     'http://foo'
+                autoCreatePackage true
+                updatePackage true
              }    
             
         expect:
@@ -54,8 +59,11 @@ class BintrayPackageSpec extends Specification {
             bintrayPkg.repoOwner   == 'MeMeMe'
             bintrayPkg.packageName == 'foo'
             bintrayPkg.description == 'some description'
-            bintrayPkg.descUrl     == 'http://foo'
+            bintrayPkg.vcsUrl     == 'http://foo'
             bintrayPkg.source      == 'MeMeMe'
+            bintrayPkg.autoCreatePackage == true
+            bintrayPkg.updatePackage == true
+
     }
     
     def "When repoOwner not supplied, default to username"() {
@@ -104,5 +112,24 @@ class BintrayPackageSpec extends Specification {
         expect:
             bintrayPkg.tags == ['bintray','gradle']
     }
-    
+
+    def "A license can be a single string"() {
+        given:
+            bintrayPkg.with {
+                licenses 'LGPL'
+            }
+
+        expect:
+            bintrayPkg.licenses == ['LGPL']
+    }
+
+    def "Licenses can be a list of parameters"() {
+        given:
+            bintrayPkg.with {
+                licenses 'LGPL','Apache-2.0'
+            }
+
+        expect:
+            bintrayPkg.licenses == ['LGPL','Apache-2.0']
+    }
 }

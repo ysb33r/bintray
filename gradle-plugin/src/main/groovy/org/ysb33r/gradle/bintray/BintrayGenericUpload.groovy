@@ -58,17 +58,85 @@ class BintrayGenericUpload extends DefaultTask {
     @Optional
     boolean sha256 = false
 
+    /** Package textual description
+     *
+     */
+    @Input
+    @Optional
+    String description = ''
+
+    /** Tags to apply to package
+     *
+     */
+    @Input
+    @Optional
+    def tags = null
+
+    /** Licenses to apply to package
+     *
+     */
+    @Input
+    @Optional
+    def licenses = null
+
+    /** Source Control URL
+     *
+     */
+    @Input
+    @Optional
+    String vcsUrl = null
+
+
+    /** If set, a non-existing package will be created prior to creating the version
+     *
+     */
+    @Input
+    @Optional
+    boolean autoCreatePackage = false
+
+    /** If set, a existing package will be updated prior to creating/updating the version
+     *
+     */
+    @Input
+    @Optional
+    boolean updatePackage = false
+
+    def setTags (Object... t) {
+        tags = t as List
+    }
+
+    def setLicenses (Object... t) {
+        licenses = t as List
+    }
+
+
     @TaskAction
     void exec() {
         BintrayAPI api=new BintrayAPI(
-            'baseUrl' : baseUrl,
-            'repoOwner' : repoOwner,
-            'repoName' : repoName,
+            'baseUrl'     : baseUrl,
+            'repoOwner'   : repoOwner,
+            'repoName'    : repoName,
             'packageName' : packageName,
-            'version' : version,
-            'userName' : userName,
-            'apiKey' : apiKey
+            'version'     : version,
+            'userName'    : userName,
+            'apiKey'      : apiKey
         )
+
+        boolean updated=false
+        if(autoCreatePackage && !bintray.hasPackage()) {
+            if(!bintray.createPackage(description,tags,licenses,vcsUrl)) {
+                project.logger.info("Could not create package metadata on Bintray. Nothing will be uploaded.")
+                return
+            }
+            updated=true
+        }
+
+        if(updatePackage && !updated) {
+            if(!bintray.updatePackage(description,tags,licenses,vcsUrl)) {
+                project.logger.info("Could not update package metadata on Bintray. Nothing will be uploaded.")
+                return
+            }
+        }
 
         artifacts.each {
             def uploadList = [it]

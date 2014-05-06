@@ -37,15 +37,81 @@ class BintrayAPI {
     String apiKey
     def logger
 
-    def createPackage () {
-       // POST /packages/:subject/:repo
-       // { name: '', desc: '', labels : [] }
-       // 201 
+    def hasPackage() {
+        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        assertVersionAttributes()
+        try {
+            def response = client().get( path : "${rest}"  )
+            debugmsg "Response code is ${response.status}. Assuming ${packageName} exists"
+            return response.isSuccess()
+
+        } catch(final HttpResponseException e)    {
+            debugmsg e.message
+            if(e.response.status != 404) {
+                throw e
+            }
+
+            debugmsg "Response code is ${e.response.status}. Assuming ${packageName} does not exist"
+            return false
+        }
+    }
+
+    /** Attempts to create a package
+     *
+     * @param description
+     * @param labels
+     * @param licenses
+     * @param vcsUrl
+     * @return
+     */
+    def createPackage( final String description, final def labels = [], final def licenses = [], final String vcsUrl = null  ) {
+        assertVersionAttributes()
+        final String rest = "packages/${repoOwner}/${repoName}"
+
+        def payload = createPackagePayload(description,labels,licenses,vcsUrl)
+        payload['name']= packageName
+        debugmsg "About to create package '${repoOwner}/${repoName}/${packageName}'"
+        def response = client().post(
+                contentType : JSON,
+                path : "${rest}",
+                body : payload
+        )
+        debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: ${response.status}"
+        return response.isSuccess()
+    }
+
+    def updatePackage( final String description, final def labels = [], final def licenses = [], final String vcsUrl = null  ) {
+        assertVersionAttributes()
+        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        def payload = createPackagePayload(description,labels,licenses,vcsUrl)
+        debugmsg "About to update package '${repoOwner}/${repoName}/${packageName}'"
+
+        try {
+
+            def response = client().patch(
+                    contentType : JSON,
+                    path : "${rest}",
+                    body : payload
+            )
+            debugmsg "${repoOwner}/${repoName}/${packageName}: ${response.status}"
+            return response.isSuccess()
+        } catch (HttpResponseException e) {
+
+            debugmsg "${repoOwner}/${repoName}/${packageName}: ${e.response.status}"
+
+            if(e.response.status != 404) {
+                throw e
+            }
+
+            return false
+        }
+
+        return response.isSuccess()
     }
 
     boolean hasVersion() {
         assertVersionAttributes()
-        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
 
         try {
             def response = client().get( path : "${rest}/versions/${version}"  )
@@ -64,7 +130,7 @@ class BintrayAPI {
 
     def createVersion ( String description ) {
         assertVersionAttributes()
-        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
 
         debugmsg "About to create ${repoOwner}/${repoName}/${packageName}/${version}"
         def response = client().post(
@@ -146,6 +212,31 @@ class BintrayAPI {
         assert version?.size()
         assert userName?.size()
         assert apiKey?.size()
+    }
+
+    /** Internal function to build the payload required by creationPackage() and updatePackage()
+     *
+     * @param description
+     * @param labels
+     * @param licenses
+     * @param vcsUrl
+     * @return A map containing the appropriate items (could be empty)
+     */
+    private def createPackagePayload( final String description, final def labels = [], final def licenses = [], final String vcsUrl = null  ) {
+        def payload = []
+        if(description?.size()) {
+            payload['desc'] = description
+        }
+        if(labels?.size()) {
+            payload['labels'] = labels
+        }
+        if(licenses?.size()) {
+            payload['licenses'] = licenses
+        }
+        if(vsUrl?.size()) {
+            payload['vcs_url'] = vcsUrl
+        }
+        return payload
     }
 
     private void debugmsg( String msg ) {

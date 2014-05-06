@@ -56,7 +56,7 @@ class BintrayPackage extends DefaultTask {
     @Optional
     String repoOwner
     
-    /** Package name where artefacts will be published to.
+    /** Package name where artifacts will be published to.
      * 
      */
     @Input
@@ -81,12 +81,46 @@ class BintrayPackage extends DefaultTask {
      */
     @Input
     @Optional
-    def tags = []
-    
+    def tags = null
+
+    /** Licenses to apply to package
+     *
+     */
+    @Input
+    @Optional
+    def licenses = null
+
+    /** Source Control URL
+     *
+     */
+    @Input
+    @Optional
+    String vcsUrl = null
+
+
+    /** If set, a non-existing package will be created prior to creating the version
+     *
+     */
+    @Input
+    @Optional
+    boolean autoCreatePackage = false
+
+    /** If set, a existing package will be updated prior to creating/updating the version
+     *
+     */
+    @Input
+    @Optional
+    boolean updatePackage = false
+
+
     def setTags (Object... t) {
         tags = t as List    
     }
-    
+
+    def setLicenses (Object... t) {
+        licenses = t as List
+    }
+
     def getSource() {
         repoOwner ?: username
     }
@@ -118,6 +152,20 @@ class BintrayPackage extends DefaultTask {
             'apiKey'      : apiKey,
             'logger'      : project.logger
         )
+
+        boolean updated=false
+        if(autoCreatePackage && !bintray.hasPackage()) {
+            if(!bintray.createPackage(description,tags,licenses,vcsUrl)) {
+                return false
+            }
+            updated=true
+        }
+
+        if(updatePackage && !updated) {
+            if(!bintray.updatePackage(description,tags,licenses,vcsUrl)) {
+                return false
+            }
+        }
 
         if(!bintray.hasVersion()) {
             return bintray.createVersion()
