@@ -7,9 +7,10 @@ but the plan is to refactor the API into separate JARs that can be consumed by o
 Previous versions of this document
 ----------------------------------
 
-This is version 1.3 version of the document.
+This is version 1.4-SNAPSHOT version of the document.
 
-+ 1.2   - https://github.com/ysb33r/bintray/blob/RELEASE_1_2/README.md (Current stable)
++ 1.3   - https://github.com/ysb33r/bintray/blob/RELEASE_1_3/README.md (Current stable)
++ 1.2   - https://github.com/ysb33r/bintray/blob/RELEASE_1_2/README.md 
 + 1.1   - https://github.com/ysb33r/bintray/blob/RELEASE_1_1/gradle-plugin/README.md
 + 0.0.9 - https://github.com/ysb33r/Gradle/blob/RELEASE_0_0_9/bintray/README.md
 + 0.0.7 - https://github.com/ysb33r/Gradle/blob/RELEASE_0_0_7/bintray/README.md
@@ -44,10 +45,9 @@ Please see [RELEASE.md](https://github.com/ysb33r/bintray/blob/master/gradle-plu
 buildscript {
     repositories {
         jcenter()
-    	mavenRepo(url: 'http://repository.codehaus.org')
       }
       dependencies {
-        classpath 'org.ysb33r.gradle:bintray:1.2'
+        classpath 'org.ysb33r.gradle:bintray:1.3'
       }
 }
 ```
