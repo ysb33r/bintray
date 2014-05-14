@@ -9,8 +9,8 @@ Version 1.4 - Roadmap
 * [ISSUE #8](https://github.com/ysb33r/bintray/issues/8) - Support for ```ivy-publish``` plugin
 
 
-Version 1.3 - Roadmap
----------------------
+Version 1.3
+-----------
 * [ISSUE #3](https://github.com/ysb33r/bintray/issues/3) - Ability to create packages if they don't exist on Bintray. (via a configurable option).
 Added ```vcsUrl```, and ```licenses``` keywords to ```bintrayMavenDeployer```, ```bintrayIvyDeployer```and ```BintrayGenericUpload```
 * [ISSUE #4](https://github.com/ysb33r/bintray/issues/4) - Ability to auto-publish (via a configurable option).

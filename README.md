@@ -7,7 +7,7 @@ but the plan is to refactor the API into separate JARs that can be consumed by o
 Previous versions of this document
 ----------------------------------
 
-This is version 1.3-SNAPSHOT version of the document.
+This is version 1.3 version of the document.
 
 + 1.2   - https://github.com/ysb33r/bintray/blob/RELEASE_1_2/README.md (Current stable)
 + 1.1   - https://github.com/ysb33r/bintray/blob/RELEASE_1_1/gradle-plugin/README.md
@@ -32,6 +32,7 @@ Please see [RELEASE.md](https://github.com/ysb33r/bintray/blob/master/gradle-plu
 
 ### Known compatibility
 
++ 1.3 - Gradle 1.12, V1 Bintray API
 + 1.2 - Gradle 1.12, V1 Bintray API
 + 1.1 - Gradle 1.11, V1 Bintray API
 + 1.0 - Gradle 1.11, V1 Bintray API
