@@ -152,6 +152,12 @@ class BintrayGenericUpload extends DefaultTask {
             }
         }
 
+        if(!bintray.hasVersion()) {
+            bintray.createVersion(description)
+        } else {
+            bintray.updateVersion(description)
+        }
+
         artifacts.each {
             def uploadList = [it]
             if(md5) {
