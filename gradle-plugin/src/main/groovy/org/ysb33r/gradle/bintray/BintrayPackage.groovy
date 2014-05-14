@@ -182,9 +182,9 @@ class BintrayPackage extends DefaultTask {
 
         boolean updateResult
         if(!bintray.hasVersion()) {
-            updateResult = bintray.createVersion()
+            updateResult = bintray.createVersion(description)
         } else {
-            updateResult = bintray.updateVersion();
+            updateResult = bintray.updateVersion(description)
         }
 
         if(updateResult && gpgSign) {

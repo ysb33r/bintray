@@ -159,14 +159,14 @@ class BintrayAPI {
         }
     }
 
-    def updateVersion () {
+    def updateVersion ( String description ) {
         assertVersionAttributes()
         String rest = "packages/${repoOwner}/${repoName}/${packageName}"
         try {
-            def response = rest.patch(
+            def response = client().patch(
                     contentType : JSON,
-                    path : "${rest}/versions/${packageVersion}",
-                    body : [ name : packageVersion, desc : description ]
+                    path : "${rest}/versions/${version}",
+                    body : [ name : version, desc : description ]
             )
             return response.isSuccess()
         } catch (HttpResponseException e) {
