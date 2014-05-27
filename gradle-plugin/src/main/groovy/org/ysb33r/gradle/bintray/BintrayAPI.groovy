@@ -232,7 +232,7 @@ class BintrayAPI {
         assert apiKey?.size()
     }
 
-    /** Internal function to build the payload required by creationPackage() and updatePackage()
+    /** Internal function to build the payload required by createPackage() and updatePackage()
      *
      * @param description
      * @param labels
@@ -241,7 +241,7 @@ class BintrayAPI {
      * @return A map containing the appropriate items (could be empty)
      */
     private def createPackagePayload( final String description, final def labels = [], final def licenses = [], final String vcsUrl = null  ) {
-        def payload = []
+        def payload = [:]
         if(description?.size()) {
             payload['desc'] = description
         }
@@ -251,7 +251,7 @@ class BintrayAPI {
         if(licenses?.size()) {
             payload['licenses'] = licenses
         }
-        if(vsUrl?.size()) {
+        if(vcsUrl?.size()) {
             payload['vcs_url'] = vcsUrl
         }
         return payload
