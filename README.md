@@ -7,9 +7,9 @@ but the plan is to refactor the API into separate JARs that can be consumed by o
 Previous versions of this document
 ----------------------------------
 
-This is version 1.4-SNAPSHOT version of the document.
 
-+ 1.3   - https://github.com/ysb33r/bintray/blob/RELEASE_1_3/README.md (Current stable)
++ 1.3.1 - https://github.com/ysb33r/bintray/blob/RELEASE_1_3_1/README.md (Current stable)
++ 1.3   - https://github.com/ysb33r/bintray/blob/RELEASE_1_3/README.md 
 + 1.2   - https://github.com/ysb33r/bintray/blob/RELEASE_1_2/README.md 
 + 1.1   - https://github.com/ysb33r/bintray/blob/RELEASE_1_1/gradle-plugin/README.md
 + 0.0.9 - https://github.com/ysb33r/Gradle/blob/RELEASE_0_0_9/bintray/README.md
@@ -33,7 +33,7 @@ Please see [RELEASE.md](https://github.com/ysb33r/bintray/blob/master/gradle-plu
 
 ### Known compatibility
 
-+ 1.3 - Gradle 1.12, V1 Bintray API
++ 1.3.x - Gradle 1.12, V1 Bintray API
 + 1.2 - Gradle 1.12, V1 Bintray API
 + 1.1 - Gradle 1.11, V1 Bintray API
 + 1.0 - Gradle 1.11, V1 Bintray API
@@ -102,8 +102,6 @@ uploadArchives  {
             vcsUrl            'https://github.com/ysb33r/bintray.git'
             autoCreatePackage true
             updatePackage     true
-            gpgSign           true
-            gpgPassphrase     'SomeBintrayUserPassphrase'
        }
     }
 }
@@ -183,7 +181,8 @@ This is not yet supported, but will be in a future version. Currently the public
 
 ### Signing a version
 
-Although the uploading process allows for automatic signing, there is a separate task for those who would like to control
+Although the uploading process allows for automatic signing of packages in generic repositories, this s not possible for
+at the moment for Maven repositories. There is a separate task for those who would like to control
 the signing of an uploaded version.
 
 ```groovy
@@ -191,7 +190,7 @@ apply plugin : 'bintray-publish'
 
 import org.ysb33r.gradle.bintray.BintraySignVersion
 
-task uploadArchives (type:BintraySignVersion ) {
+task signArchives (type:BintraySignVersion ) {
     username    'someBintrayUser'
     apiKey      'SomeBintrayUsersApiKey'
     repoOwner   'ysb33r'
@@ -204,6 +203,7 @@ task uploadArchives (type:BintraySignVersion ) {
     // Necessary when GPG key requires a passphrase
     gpgPassphrase 'SomePassphrase'
 }
+
 ```
 
 Acknowledgements

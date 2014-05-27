@@ -66,7 +66,7 @@ class BintrayPublishPlugin implements Plugin<Project> {
             }
         }         
     }
-   
+
     static void addMavenDeployer(Project project ) {
         if (!project.repositories.metaClass.respondsTo(project.repositories, 'bintrayMavenDeployer',Closure)) {
            
