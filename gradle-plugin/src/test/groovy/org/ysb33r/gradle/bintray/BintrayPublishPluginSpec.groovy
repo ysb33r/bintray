@@ -12,7 +12,7 @@ class BintrayPublishPluginSpec extends Specification {
     def "Upload Task must support 'bintrayMavenDeployer' under repositories"() {
         given:
             def Project project = ProjectBuilder.builder().build()
-            project.apply plugin : 'bintray-publish'
+            project.apply plugin : 'org.ysb33r.bintray'
             project.apply plugin : 'java'
             
             project.uploadArchives {
@@ -40,7 +40,7 @@ class BintrayPublishPluginSpec extends Specification {
     def "Upload Task must support 'bintrayIvyDeployer' under repositories"() {
         given:
             def Project project = ProjectBuilder.builder().build()
-            project.apply plugin : 'bintray-publish'
+            project.apply plugin : 'org.ysb33r.bintray'
             project.apply plugin : 'java'
             
             project.uploadArchives {
@@ -68,7 +68,7 @@ class BintrayPublishPluginSpec extends Specification {
     def "Upload task must handle more than one repository"() {
         given:
             def Project project = ProjectBuilder.builder().build()
-            project.apply plugin : 'bintray-publish'
+            project.apply plugin : 'org.ysb33r.bintray'
             project.apply plugin : 'java'
             
             project.uploadArchives {
@@ -105,7 +105,7 @@ class BintrayPublishPluginSpec extends Specification {
 //        given:
 //            def Project project = ProjectBuilder.builder().build()
 //            project.apply plugin : 'ivy-publish'
-//            project.apply plugin : 'bintray-publish'
+//            project.apply plugin : 'org.ysb33r.bintray'
 //
 //            project.publishing {
 //                repositories {
