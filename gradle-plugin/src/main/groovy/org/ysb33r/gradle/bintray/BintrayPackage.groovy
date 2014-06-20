@@ -112,6 +112,11 @@ class BintrayPackage extends DefaultTask {
     @Optional
     boolean updatePackage = false
 
+    /** Attributes that can be set on a version */
+    @Input
+    @Optional
+    Map versionAttributes = [:]
+
     def setTags (Object... t) {
         tags = t as List    
     }
@@ -171,6 +176,10 @@ class BintrayPackage extends DefaultTask {
             updateResult = bintray.createVersion(description)
         } else {
             updateResult = bintray.updateVersion(description)
+        }
+
+        if(updateResult && versionAttributes?.size()) {
+            updateResult = bintray.setVersionAttributes(versionAttributes)
         }
 
         return updateResult

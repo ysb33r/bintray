@@ -31,6 +31,7 @@ class BintrayPackageSpec extends Specification {
             bintrayPkg.vcsUrl == null
             bintrayPkg.autoCreatePackage == false
             bintrayPkg.updatePackage == false
+            bintrayPkg.versionAttributes == [:]
     }
     
     def "Configuring the BintrayPackage task, should set all of the appropriate fields"() {
@@ -131,5 +132,16 @@ class BintrayPackageSpec extends Specification {
 
         expect:
             bintrayPkg.licenses == ['LGPL','Apache-2.0']
+    }
+
+    def "versionAttributes is a map"() {
+        given:
+            bintrayPkg.with {
+                versionAttributes 'name1' : ['v11','v12'], 'name2' : 'v3'
+            }
+
+        expect:
+            bintrayPkg.versionAttributes == ['name1' : ['v11','v12'], 'name2' : 'v3']
+
     }
 }

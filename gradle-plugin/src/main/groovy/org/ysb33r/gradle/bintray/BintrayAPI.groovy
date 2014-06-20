@@ -179,6 +179,26 @@ class BintrayAPI {
         }
     }
 
+    def setVersionAttributes( attrs = [:] ) {
+        assertVersionAttributes()
+
+        if(!attrs.size()) {
+            return true
+        }
+
+        String rest = "packages/${repoOwner}/${repoName}/${packageName}/versions/${version}"
+        debugmsg "About to set attributes for ${repoOwner}/${repoName}/${packageName}/${version}"
+
+        def response = client().post(
+                contentType : JSON,
+                path : "${rest}/attributes",
+                body : convertAttributes(attrs)
+        )
+        debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: ${response.status}"
+        return response.isSuccess()
+
+    }
+
     def signVersion( String passphrase = null ) {
         hasVersion()
         String rest = "gpg/${repoOwner}/${repoName}/${packageName}/versions/${version}"
@@ -255,6 +275,23 @@ class BintrayAPI {
             payload['vcs_url'] = vcsUrl
         }
         return payload
+    }
+
+    /** There seems to be an issue converting to JSON when items are of type GStringImpl.
+     *
+     * @param attrValues
+     */
+    private def convertAttributes( Map attrs ) {
+        attrs.collect { k,v ->
+
+            def converted
+            if(v instanceof Collection || v.class.isArray()) {
+                converted = v.collect { a -> (a instanceof GString) ? a.toString() : a }
+            } else {
+                converted = [ (v instanceof GString) ? v.toString() : v ]
+            }
+            [ name : "${k}", values : converted ]
+        }
     }
 
     private void debugmsg( String msg ) {
