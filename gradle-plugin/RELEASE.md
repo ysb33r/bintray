@@ -8,11 +8,12 @@ Version 1.5 - Roadmap
 * [ISSUE #7](https://github.com/ysb33r/bintray/issues/7) - Support for ```maven-publish``` plugin
 * [ISSUE #8](https://github.com/ysb33r/bintray/issues/8) - Support for ```ivy-publish``` plugin
 * [ISSUE #10](https://github.com/ysb33r/bintray/issues/10) - Correcting the signing of Maven packages and updated documentation.
+* [ISSUE #13](https://github.com/ysb33r/bintray/issues/11) - Support for Bintray version attributes for Generic Repositories
 
 Version 1.4
 -----------
-* [ISSUE #10](https://github.com/ysb33r/bintray/issues/10) - Correcting the signing of Maven packages and updated documentation.
-
+* [ISSUE #11](https://github.com/ysb33r/bintray/issues/11) - Changed the plugin id to ```org.ysb33r.bintray```.
+* [ISSUE #12](https://github.com/ysb33r/bintray/issues/11) - Added support for Bintray version attributes for Maven Repositories
 
 Version 1.3.1
 -------------
