@@ -69,8 +69,10 @@ manual task.  Default is false.
 * ```gpgPassphrase``` - If the GPG key requires a passphrase, then set it here. Recommendation is to read this from
 ```grade.properties``` or to supply via ```-P```.
 
+Version 1.4 adds the ```versionAttributes``` keyword. This allows for arbitrary attributes to be added to a package version
+
 ```groovy
-apply plugin : 'bintray-publish'
+apply plugin : 'org.ysb33r.bintray'
 apply plugin : 'java'
 
 uploadArchives  {
@@ -86,6 +88,7 @@ uploadArchives  {
             description 'This is an example to simplifying bintray publishing'
             descUrl     'https://github.com/ysb33r/Gradle/blob/master/bintray/README.md'
             tags        'gradle','bintray'
+            versionAttributes 'name1' : ['value1','value2'], 'name2' : ['value3','value4']
         }
        
 		// Publishing as maven
@@ -102,6 +105,7 @@ uploadArchives  {
             vcsUrl            'https://github.com/ysb33r/bintray.git'
             autoCreatePackage true
             updatePackage     true
+            versionAttributes 'name1' : ['value1','value2'], 'name2' : ['value3','value4']
        }
     }
 }
@@ -115,7 +119,7 @@ Version 1.3 extended it with the following keywords ```md5```, ```sha1```, ```sh
 ```updatePackage```, ```vcsUrl```, ```tags```, ```description``` and ```licenses```.
 
 ```groovy
-apply plugin : 'bintray-publish'
+apply plugin : 'org.ysb33r.bintray'
 
 import org.ysb33r.gradle.bintray.BintrayGenericUpload
 
@@ -156,7 +160,7 @@ task uploadArchives (type:BintrayGenericUpload ) {
 It is a great combination with the ```application``` plugin
 
 ```groovy
-apply plugin : 'bintray-publish'
+apply plugin : 'org.ysb33r.bintray'
 apply plugin : 'application'
 
 import org.ysb33r.gradle.bintray.BintrayGenericUpload
@@ -186,7 +190,7 @@ at the moment for Maven repositories. There is a separate task for those who wou
 the signing of an uploaded version.
 
 ```groovy
-apply plugin : 'bintray-publish'
+apply plugin : 'org.ysb33r.bintray'
 
 import org.ysb33r.gradle.bintray.BintraySignVersion
 
