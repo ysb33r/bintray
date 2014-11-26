@@ -1,7 +1,7 @@
 BINTRAY GRADLE PLUGIN RELEASE NOTES
 ===================================
 
-Version 1.5 - Roadmap
+Version 1.6 - Roadmap
 ---------------------
 * [ISSUE #2](https://github.com/ysb33r/bintray/issues/2) - Support for uploading snapshots to oss.jfrog.
 * [ISSUE #1](https://github.com/ysb33r/bintray/issues/1) - Transparent integration in repositories so that snapshots and production are automatically switched between oss.jfrog and Bintray.
@@ -10,10 +10,13 @@ Version 1.5 - Roadmap
 * [ISSUE #10](https://github.com/ysb33r/bintray/issues/10) - Correcting the signing of Maven packages and updated documentation.
 * [ISSUE #13](https://github.com/ysb33r/bintray/issues/11) - Support for Bintray version attributes for Generic Repositories
 
-Version 1.4
+Version 1.5
 -----------
 * [ISSUE #11](https://github.com/ysb33r/bintray/issues/11) - Changed the plugin id to ```org.ysb33r.bintray```.
 * [ISSUE #12](https://github.com/ysb33r/bintray/issues/11) - Added support for Bintray version attributes for Maven Repositories
+
+## Version 1.4
+* Never released
 
 Version 1.3.1
 -------------
