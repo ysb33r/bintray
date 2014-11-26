@@ -85,6 +85,12 @@ if(version.endsWith("SNAPSHOT")) {
                 packageName moduleName
                 description 'This is a bintray publish plugin for Gradle'
                 tags        'gradle','bintray'
+                licenses          'Apache-2.0'
+                vcsUrl            'https://github.com/ysb33r/bintray.git'
+                autoCreatePackage true
+                updatePackage     true
+                versionAttributes 'gradle-plugin' : "org.ysb33r.bintray:${group}:${archivesBaseName}"
+
             }
         }
     }
