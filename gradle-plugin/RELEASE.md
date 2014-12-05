@@ -7,13 +7,14 @@ BINTRAY GRADLE PLUGIN RELEASE NOTES
 * [ISSUE #7](https://github.com/ysb33r/bintray/issues/7) - Support for ```maven-publish``` plugin
 * [ISSUE #8](https://github.com/ysb33r/bintray/issues/8) - Support for ```ivy-publish``` plugin
 * [ISSUE #10](https://github.com/ysb33r/bintray/issues/10) - Correcting the signing of Maven packages and updated documentation.
-* [ISSUE #13](https://github.com/ysb33r/bintray/issues/11) - Support for Bintray version attributes for Generic Repositories
+* [ISSUE #13](https://github.com/ysb33r/bintray/issues/13) - Support for Bintray version attributes for Generic Repositories.
 
 ## Version 1.6
+* [ISSUE #15](https://github.com/ysb33r/bintray/issues/15) - Fixed `MissingPropertyException` in BintrayGenericUpload.
 
 ## Version 1.5
 * [ISSUE #11](https://github.com/ysb33r/bintray/issues/11) - Changed the plugin id to ```org.ysb33r.bintray```.
-* [ISSUE #12](https://github.com/ysb33r/bintray/issues/11) - Added support for Bintray version attributes for Maven Repositories
+* [ISSUE #12](https://github.com/ysb33r/bintray/issues/12) - Added support for Bintray version attributes for Maven Repositories
 
 ## Version 1.4
 * Never released
