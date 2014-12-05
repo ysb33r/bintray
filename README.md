@@ -4,10 +4,9 @@ Bintray Support
 This is my collection of Bintray support libraries and plugins. Currently only a Gradle plugin is provided,
 but the plan is to refactor the API into separate JARs that can be consumed by other projects.
 
-Previous versions of this document
-----------------------------------
-
-+ 1.4   - https://github.com/ysb33r/bintray/blob/RELEASE_1_4/README.md (Current stable)
+## Previous versions of this document
++ 1.5   - https://github.com/ysb33r/bintray/blob/RELEASE_1_5/README.md (Current stable)
++ 1.4   - https://github.com/ysb33r/bintray/blob/RELEASE_1_4/README.md 
 + 1.3.1 - https://github.com/ysb33r/bintray/blob/RELEASE_1_3_1/README.md
 + 1.3   - https://github.com/ysb33r/bintray/blob/RELEASE_1_3/README.md 
 + 1.2   - https://github.com/ysb33r/bintray/blob/RELEASE_1_2/README.md 
@@ -48,7 +47,7 @@ buildscript {
         jcenter()
       }
       dependencies {
-        classpath 'org.ysb33r.gradle:bintray:1.3'
+        classpath 'org.ysb33r.gradle:bintray:1.5'
       }
 }
 ```
