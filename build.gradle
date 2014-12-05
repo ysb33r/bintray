@@ -16,7 +16,6 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        //classpath 'org.ysb33r.gradle:bintray:1.4'
         classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
         classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:2.2.3'
     }
@@ -38,7 +37,7 @@ subprojects {
     sourceCompatibility = 1.6
 
     // Major part of version track Bintray API version
-    version = '1.5'
+    version = '1.6'
 
     ext {
         bintrayOwner = 'ysb33r'

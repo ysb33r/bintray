@@ -137,8 +137,8 @@ class BintrayGenericUpload extends DefaultTask {
         )
 
         boolean updated=false
-        if(autoCreatePackage && !bintray.hasPackage()) {
-            if(!bintray.createPackage(description,tags,licenses,vcsUrl)) {
+        if(autoCreatePackage && !api.hasPackage()) {
+            if(!api.createPackage(description,tags,licenses,vcsUrl)) {
                 project.logger.info("Could not create package metadata on Bintray. Nothing will be uploaded.")
                 return
             }
@@ -146,16 +146,16 @@ class BintrayGenericUpload extends DefaultTask {
         }
 
         if(updatePackage && !updated) {
-            if(!bintray.updatePackage(description,tags,licenses,vcsUrl)) {
+            if(!api.updatePackage(description,tags,licenses,vcsUrl)) {
                 project.logger.info("Could not update package metadata on Bintray. Nothing will be uploaded.")
                 return
             }
         }
 
-        if(!bintray.hasVersion()) {
-            bintray.createVersion(description)
+        if(!api.hasVersion()) {
+            api.createVersion(description)
         } else {
-            bintray.updateVersion(description)
+            api.updateVersion(description)
         }
 
         artifacts.each {
