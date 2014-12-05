@@ -172,9 +172,10 @@ class BintrayGenericUpload extends DefaultTask {
                 project.ant.checksum file: it, algorithm: 'SHA-256', fileext: '.SHA256'
                 uploadList.add "${it.absolutePath}.SHA256"
             }
+
             uploadList.each { f ->
                 logger.info "Uploading ${f}"
-                api.uploadContent(f)
+                api.uploadContent(project.file(f))
             }
         }
 
