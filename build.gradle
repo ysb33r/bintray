@@ -35,9 +35,10 @@ subprojects {
     apply plugin : 'groovy'
 
     sourceCompatibility = 1.6
+    targetCompatibility = 1.6
 
     // Major part of version track Bintray API version
-    version = '1.6'
+    version = '1.6-SNAPSHOT'
 
     ext {
         bintrayOwner = 'ysb33r'
@@ -52,5 +53,5 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.0'
 }

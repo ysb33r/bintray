@@ -238,6 +238,7 @@ class BintrayAPI {
         if(apiClient == null) {
             apiClient = new RESTClient("${baseUrl}/")
             apiClient.auth.basic userName, apiKey
+            apiClient.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
         }
         return apiClient
     }

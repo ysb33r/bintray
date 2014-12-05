@@ -12,6 +12,7 @@ BINTRAY GRADLE PLUGIN RELEASE NOTES
 
 ## Version 1.6
 * [ISSUE #15](https://github.com/ysb33r/bintray/issues/15) - Fixed `MissingPropertyException` in BintrayGenericUpload.
+* Upgraded to Gradle 2.0
 
 ## Version 1.5
 * [ISSUE #11](https://github.com/ysb33r/bintray/issues/11) - Changed the plugin id to ```org.ysb33r.bintray```.

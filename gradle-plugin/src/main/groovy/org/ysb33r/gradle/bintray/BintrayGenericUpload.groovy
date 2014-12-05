@@ -123,7 +123,6 @@ class BintrayGenericUpload extends DefaultTask {
         licenses = t as List
     }
 
-
     @TaskAction
     void exec() {
         BintrayAPI api=new BintrayAPI(
