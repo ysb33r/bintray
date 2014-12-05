@@ -282,7 +282,8 @@ class BintrayAPI {
      *
      * @param attrValues
      */
-    private def convertAttributes( Map attrs ) {
+    @PackageScope
+    def convertAttributes( Map attrs ) {
         attrs.collect { k,v ->
 
             def converted

@@ -1,5 +1,6 @@
 package org.ysb33r.gradle.bintray
 
+import groovy.json.JsonBuilder
 import spock.lang.*
 import com.github.restdriver.clientdriver.*
 import static com.github.restdriver.clientdriver.ClientDriverRequest.Method.*
@@ -58,6 +59,19 @@ class BintrayAPISpec extends Specification {
 
     }
 
+    def "Convert Attributes"() {
+        given:
+            def attrs = api.convertAttributes  'gradle-plugin' : "org.ysb33r.bintray:${'bintray'}:${'1.0.0'}"
+            def builder = new JsonBuilder()
+            builder attrs
+
+        expect:
+            attrs.size() == 1
+            attrs instanceof List
+            attrs[0] == [ name:'gradle-plugin', values:['org.ysb33r.bintray:bintray:1.0.0'] ]
+            builder.toString() == '[{"name":"gradle-plugin","values":["org.ysb33r.bintray:bintray:1.0.0"]}]'
+
+    }
     void get(
             String path,
             String request,
