@@ -26,6 +26,8 @@ buildscript {
 
 
 subprojects {
+    // Major part of version track Bintray API version
+    version = '1.6-SNAPSHOT'
 
     apply plugin: new GroovyScriptEngine(
             [file('src/main/groovy').absolutePath, file('src/main/resources').absolutePath].toArray(new String[2]),
@@ -36,9 +38,6 @@ subprojects {
 
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
-
-    // Major part of version track Bintray API version
-    version = '1.6-SNAPSHOT'
 
     ext {
         bintrayOwner = 'ysb33r'

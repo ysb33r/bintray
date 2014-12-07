@@ -221,7 +221,7 @@ class BintrayAPI {
         assertVersionAttributes()
         assert content.exists()
         try {
-            hasVersion()
+            client().headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
             def response = client().put(
                     requestContentType : BINARY,
                     path : "content/${repoOwner}/${repoName}/${packageName}/${version}/${content.name}",
