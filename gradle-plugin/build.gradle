@@ -12,6 +12,7 @@
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin : 'com.gradle.plugin-publish'
 
 group = 'org.ysb33r.gradle'
 archivesBaseName = 'bintray'
@@ -97,6 +98,31 @@ if(version.endsWith("SNAPSHOT")) {
 
             }
         }
+    }
+
+    pluginBundle {
+        description = 'This is a bintray publish plugin for Gradle'
+        website     = 'https://github.com/ysb33r/bintray'
+        vcsUrl      = 'https://github.com/ysb33r/bintray.git'
+
+        tags = ['gradle','bintray']
+
+        plugins {
+            vfsPlugin {
+                id = 'org.ysb33r.bintray'
+                displayName = 'Unofficial Gradle Bintray plugin'
+            }
+        }
+
+        mavenCoordinates {
+            groupId = project.group
+            artifactId = archivesBaseName
+        }
+
+    }
+
+    publishPlugins {
+        onlyIf { !version.endsWith("SNAPSHOT") }
     }
 }
 
