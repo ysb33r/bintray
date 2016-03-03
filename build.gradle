@@ -33,11 +33,6 @@ subprojects {
     // Major part of version track Bintray API version
     version = '1.6'
 
-    apply plugin: new GroovyScriptEngine(
-            [file('src/main/groovy').absolutePath, file('src/main/resources').absolutePath].toArray(new String[2]),
-            this.class.classLoader
-    ).loadScriptByName('org/ysb33r/gradle/bintray/BintrayPublishPlugin.groovy')
-
     apply plugin : 'groovy'
 
     sourceCompatibility = 1.6
