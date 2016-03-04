@@ -61,7 +61,9 @@ plugin to use Bintray.
 Version 1.3 adds the following keywords to ```bintrayIvyDeployer``` and ```bintrayMavenDeployer``` :
 
 * ```autoCreatePackage``` - Create the package metadata on Bintray if it does not exist. Previously this has been a
-manual task.  Default is false.
+manual task.  Default is false. If you the auto-create feature for an OSS project, you have to speciffy `vcsUrl` and at least 
+one license. Licenses have to be one from the predefined Bintray list, aitherise a Bad Request will be sent back by the 
+Bintray gateway and the upload will fail.
 * ```updatePackage``` - Update package metadata on Bintray. Default is false
 * ```vcsUrl``` - The Source Control URL. Optional.
 * ```licenses``` - One of more licenses. Values must be as per Bintray standard list. Optional.
