@@ -12,4 +12,10 @@ trait RequestBase {
         }
     }
 
+    JsonBuilder getBody() {
+        if (body == null){
+            body = new JsonBuilder()
+        }
+    }
+
 }

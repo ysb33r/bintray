@@ -26,7 +26,7 @@ class ContentIntegTest extends Specification {
     @Shared
     String testPathDynamic = "com/gsi/genius/gradle/azure-rest/\$latest/"
     @Shared
-    Closure makeTestContent = {
+    Closure makeTestContentObj = {
         Content content = new Content().with {
             userName = btUserName
             apiKey = btApiKey
@@ -39,7 +39,7 @@ class ContentIntegTest extends Specification {
 
     def "Download (getContent) a fully named file in a repo"() {
         //TODO, Figure out why this returns 404, URL works
-        setup: Content content = makeTestContent()
+        setup: Content content = makeTestContentObj()
         when:
         JsonBuilder result = content.with{
             repo = testRepo
@@ -53,7 +53,7 @@ class ContentIntegTest extends Specification {
     }
 
     def "Download (getContent) a dynamically named file in a repo"() {
-        setup: Content content = makeTestContent()
+        setup: Content content = makeTestContentObj()
         when:
         def result = content.with{
             repo = testRepo

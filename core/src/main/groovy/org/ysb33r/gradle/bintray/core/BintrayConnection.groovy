@@ -20,7 +20,6 @@ import groovyx.net.http.RESTClient
 import groovyx.net.http.HttpResponseException
 
 
-
 trait BintrayConnection implements ApiBase {
 
     private RESTClient apiClient
@@ -31,14 +30,23 @@ trait BintrayConnection implements ApiBase {
     def logger
 
     JsonBuilder RESTCall(
-            String method = "get", String path = "", String body = "", Map query = [:], ContentType contentType = JSON,
-            Closure onSuccess = onSuccessDefault, Closure onFailure = onFailDefault) {
+            String method = "get", String path = "", String body = "", Map query = [:], Map headers = [:],
+            ContentType contentType = JSON, Closure onSuccess = onSuccessDefault, Closure onFailure = onFailDefault) {
         Map requestArgs = [path: path]
-        if (contentType){requestArgs.contentType = contentType}
-        if (body){requestArgs.body = body}
-        if (query){requestArgs.query = query}
-        println method
-        println requestArgs
+        if (contentType) {
+            requestArgs.contentType = contentType
+        }
+        if (body) {
+            requestArgs.body = body
+        }
+        if (query) {
+            requestArgs.query = query
+        }
+        if (headers) {
+            requestArgs.headers = headers
+        }
+        debugmsg "Method is: $method"
+        debugmsg "Request Args are: $requestArgs"
         try {
             HttpResponseDecorator response = client()."$method"(requestArgs)
             debugmsg "Response code is ${response.status}."
