@@ -13,23 +13,34 @@
 package org.ysb33r.gradle.bintray.core
 
 import groovy.json.JsonBuilder
+import groovyx.net.http.ContentType
+import static groovyx.net.http.ContentType.*
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
 import groovyx.net.http.HttpResponseException
+
+
 
 trait BintrayConnection implements ApiBase {
 
     private RESTClient apiClient
     String userName
     String apiKey
-    JsonBuilder body
     Closure onSuccessDefault = { resp -> resp.data }
     Closure onFailDefault = { e -> new JsonBuilder([message: e.message, code: e.statusCode]) }
     def logger
 
-    def RESTCall(Closure onSuccess, Closure onFailure, Closure operation){
+    JsonBuilder RESTCall(
+            String method = "get", String path = "", String body = "", Map query = [:], ContentType contentType = JSON,
+            Closure onSuccess = onSuccessDefault, Closure onFailure = onFailDefault) {
+        Map requestArgs = [path: path]
+        if (contentType){requestArgs.contentType = contentType}
+        if (body){requestArgs.body = body}
+        if (query){requestArgs.query = query}
+        println method
+        println requestArgs
         try {
-            HttpResponseDecorator response = operation()
+            HttpResponseDecorator response = client()."$method"(requestArgs)
             debugmsg "Response code is ${response.status}."
             return onSuccess(response)
         } catch (HttpResponseException e) {
@@ -48,43 +59,10 @@ trait BintrayConnection implements ApiBase {
         return apiClient
     }
 
-    def assertAttributes(Object... attributes){
-        attributes.each{
-            assert it?.toString().size()
-        }
-    }
-
-//    private def assertRequiredAttributes(Object object) {
-//        assertAttributes(
-//            object.declaredFields.findAll {
-//                !it.synthetic && it.name != 'props'
-//            }
-//        )
-//    }
-//
-//    /** There seems to be an issue converting to JSON when items are of type GStringImpl.
-//     *
-//     * @param attrValues
-//     */
-//    @PackageScope
-//    def convertAttributes(Map attrs) {
-//        attrs.collect { k, v ->
-//
-//            def converted
-//            if (v instanceof Collection || v.class.isArray()) {
-//                converted = v.collect { a -> (a instanceof GString) ? a.toString() : a }
-//            } else {
-//                converted = [(v instanceof GString) ? v.toString() : v]
-//            }
-//            [name: "${k}", values: converted]
-//        }
-//    }
 
     private void debugmsg(String msg) {
         logger?.debug msg
     }
-
-
 }
 
 

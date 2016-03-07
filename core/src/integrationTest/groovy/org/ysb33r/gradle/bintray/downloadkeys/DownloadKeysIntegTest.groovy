@@ -16,30 +16,41 @@ class DownloadKeysIntegTest extends Specification {
     @Shared
     String btApiKey = System.getenv('BINTRAY_API_KEY')
     @Shared
-    Closure makeTestKey = {
-            DownloadKeys downloadKey = new DownloadKeys().with {
+    Closure makeTestKeyObj = {String testDlKey ->
+        DownloadKey downloadKey = new DownloadKey().with {
             userName = btUserName
             apiKey = btApiKey
             subjectType = orgs
             subject = testOrg
-            client()
+            id = testDlKey
             return it
         }
         return downloadKey
     }
 
+    @Shared
+    Closure makeTestKeysObj = {
+        DownloadKeys downloadKeys = new DownloadKeys().with {
+            userName = btUserName
+            apiKey = btApiKey
+            subjectType = orgs
+            subject = testOrg
+            return it
+        }
+        return downloadKeys
+    }
+
     def "List all download keys for org"() {
-        setup: DownloadKeys downloadKey = makeTestKey()
         when:
-        JsonBuilder result = downloadKey.getDownloadKeys()
+        JsonBuilder result = makeTestKeysObj().getDownloadKeys()
         then:
-        result.getContent().containsKey("download_keys")
+        result.content.containsKey("download_keys")
     }
 
     def "List all download keys for user"() {
-        setup: DownloadKeys downloadKey = makeTestKey()
+        setup: DownloadKeys downloadKeys = makeTestKeysObj()
         when:
-        JsonBuilder result = downloadKey.with{
+        JsonBuilder result = downloadKeys.with{
             subject = testUser
             subjectType = users
             return it
@@ -50,55 +61,35 @@ class DownloadKeysIntegTest extends Specification {
     }
 
     def "Create a download key for an org"() {
-        setup: DownloadKeys downloadKey = makeTestKey()
-        when:
+        setup:
         String testDlKey = "testDlKey-CreateTest"
-        JsonBuilder testBody = new DownloadKeysBody().with {
+        DownloadKey downloadKey = makeTestKeyObj(testDlKey)
+
+        when:
+        JsonBuilder testBody = new DownloadKeyBody().with {
             id = testDlKey
             return toJson()
         }
-
         and:
+
         JsonBuilder result = downloadKey.with{
             body = testBody
             return it
         }.createDownloadKey()
 
         then:
-        result.getContent().containsKey("username")
+        result.content.containsKey("username")
 
         cleanup:
-        downloadKey.deleteDownloadKey(testDlKey)
-    }
-
-    def "Create a download key for an org, alternate syntax"() {
-        //Syntax only works if api call has single parameter (id)
-        setup: DownloadKeys downloadKey = makeTestKey()
-        when:
-        String testDlKey = "testDlKey-CreateTest"
-        JsonBuilder testBody = new DownloadKeysBody().with {
-            id = testDlKey
-            return toJson()
-        }
-
-        and:
-        JsonBuilder result = downloadKey.with{
-            body = testBody
-            return it
-        }.createDownloadKey(testDlKey)
-
-        then:
-        result.getContent().containsKey("username")
-
-        cleanup:
-        downloadKey.deleteDownloadKey(testDlKey)
+        downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
+        downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
     }
 
     def "Get specific download key for an org"() {
         setup:
-        DownloadKeys downloadKey = makeTestKey()
         String testDlKey = "testDlKey-GetTest"
-        JsonBuilder testBody = new DownloadKeysBody().with {
+        DownloadKey downloadKey = makeTestKeyObj(testDlKey)
+        JsonBuilder testBody = new DownloadKeyBody().with {
             id = testDlKey
             return toJson()
         }
@@ -108,35 +99,32 @@ class DownloadKeysIntegTest extends Specification {
         }.createDownloadKey()
 
         when:
-        JsonBuilder result = downloadKey.getDownloadKey(testDlKey)
+        JsonBuilder result = downloadKey.getDownloadKey()
 
         then:
-        result.getContent().containsKey("username")
+        result.content.containsKey("username")
 
         cleanup:
-        downloadKey.deleteDownloadKey(testDlKey)
+        downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
+        downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
     }
 
     def "Update a download key for an org"() {
         setup:
-        DownloadKeys downloadKey = makeTestKey()
         String testDlKey = "testDlKey-UpdateTest"
-        JsonBuilder testBodyOld = new DownloadKeysBody().with {
+        DownloadKey downloadKey = makeTestKeyObj(testDlKey)
+        JsonBuilder testBody = new DownloadKeyBody().with {
             id = testDlKey
             return toJson()
         }
         downloadKey.with{
-            subject = testOrg
-            subjectType = orgs
-            body = testBodyOld
+            body = testBody
             return it
         }.createDownloadKey()
 
-        assert downloadKey.getDownloadKey(testDlKey).getContent().white_cidrs == []
-
+        assert downloadKey.getDownloadKey().content.white_cidrs == []
         when:
-        JsonBuilder testBodyNew = new DownloadKeysBody().with {
-            id = testDlKey
+        JsonBuilder testBodyNew = new DownloadKeyBody().with {
             white_cidrs = ["127.0.0.1/22"]
             return toJson()
         }
@@ -146,23 +134,21 @@ class DownloadKeysIntegTest extends Specification {
             subjectType = orgs
             body = testBodyNew
             return it
-        }.updateDownloadKey(testDlKey)
-
-        and:
-        JsonBuilder result = downloadKey.getDownloadKey(testDlKey)
+        }.updateDownloadKey()
 
         then:
-        result.getContent().white_cidrs == ["127.0.0.1/22"]
+        downloadKey.getDownloadKey().content.white_cidrs == ["127.0.0.1/22"]
 
         cleanup:
-        downloadKey.deleteDownloadKey(testDlKey)
+        downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
+        downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
     }
 
     def "Delete a specific download key for an org"() {
         setup:
-        DownloadKeys downloadKey = makeTestKey()
         String testDlKey = "testDlKey-DeleteTest"
-        JsonBuilder testBody = new DownloadKeysBody().with {
+        DownloadKey downloadKey = makeTestKeyObj(testDlKey)
+        JsonBuilder testBody = new DownloadKeyBody().with {
             id = testDlKey
             return toJson()
         }
@@ -172,18 +158,11 @@ class DownloadKeysIntegTest extends Specification {
             body = testBody
             return it
         }.createDownloadKey()
+        assert downloadKey.getDownloadKey().toString() == '{"black_cidrs":[],"expiry":-1,"id":"testdlkey-deletetest","username":"testdlkey-deletetest@getgsi","white_cidrs":[]}'
 
-        assert downloadKey.getDownloadKey(testDlKey).getContent()
-
-        when:
-        JsonBuilder result = downloadKey.getDownloadKey(testDlKey)
-        assert result.toString() == '{"black_cidrs":[],"expiry":-1,"id":"testdlkey-deletetest","username":"testdlkey-deletetest@getgsi","white_cidrs":[]}'
-
-        and:
-        downloadKey.deleteDownloadKey(testDlKey)
-
-        then:
-        downloadKey.getDownloadKey(testDlKey).toString() == '{"message":"Not Found","code":404}'
+        expect:
+        downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
+        downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
 
     }
 

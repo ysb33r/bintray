@@ -7,7 +7,7 @@ class DownloadKeyBodySpec extends Specification {
 
     def "Get a minimal properly formatted JSON body"(){
         when:
-        JsonBuilder dkb = new DownloadKeysBody().with{
+        JsonBuilder dkb = new DownloadKeyBody().with{
             id = "TestId"
             return toJson()
         }
@@ -18,7 +18,7 @@ class DownloadKeyBodySpec extends Specification {
 
     def "Get a complete and properly formatted JSON body"(){
         when:
-        JsonBuilder dkb = new DownloadKeysBody().with{ dkp ->
+        JsonBuilder dkb = new DownloadKeyBody().with{ dkp ->
             id = "TestId"
             white_cidrs = ["127.0.0.1/22", "193.5.0.1/92"]
             black_cidrs =  ["197.4.0.1/4", "137.0.6.1/78"]
