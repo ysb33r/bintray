@@ -1,9 +1,8 @@
 package org.ysb33r.gradle.bintray.entitlements
 
 import groovy.json.JsonBuilder
-import spock.lang.Ignore
-
 import static AccessLevel.*
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import org.ysb33r.gradle.bintray.downloadkeys.DownloadKey

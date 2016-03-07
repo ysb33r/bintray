@@ -13,32 +13,31 @@ class FilesIntegTest extends Specification {
     @Shared
     String btApiKey = System.getenv('BINTRAY_API_KEY')
     @Shared
-    String testOrg = "getgsi"
+    String testOrg = "karfunkel"
     @Shared
-    String testRepo = "genius"
+    String testRepo = "glow"
     @Shared
-    String testPkg = "genius-modules"
+    String testPkg = "glow"
     @Shared
     String testVersion = "0.1.0"
     @Shared
-    String testFileName = "azure-rest-0.1.0.jar"
+    String testFileName = "glow-0.1.0.jar"
     @Shared
-    String testFileSha1 = "01a3cb87127d3cc886d5d485f31304c2ac5239e5"
+    String testFileSha1 = "a904fade6a7751350b4639f54a562f7ab0efab38"
     @Shared
-    Closure makeTestFiles = {
+    Closure makeTestFilesObj = {
         Files files = new Files().with {
             userName = btUserName
             apiKey = btApiKey
             subjectType = orgs
             subject = testOrg
-            client()
             return it
         }
         return files
     }
 
     def "List all Files for a package"() {
-        setup: Files files = makeTestFiles()
+        setup: Files files = makeTestFilesObj()
         when:
         JsonBuilder result = files.with{
             repo = testRepo
@@ -47,11 +46,11 @@ class FilesIntegTest extends Specification {
         }.getFiles()
 
         then:
-        result.getContent()[0].containsKey("name")
+        result.getContent()
     }
 
     def "List all Files for version"() {
-        setup: Files files = makeTestFiles()
+        setup: Files files = makeTestFilesObj()
         when:
         JsonBuilder result = files.with{
             repo = testRepo
@@ -65,17 +64,26 @@ class FilesIntegTest extends Specification {
         result.getContent()[0].containsKey("name")
     }
 
-    def "Search file by name in a repo"(){
-        setup: Files files = makeTestFiles()
-
+    //Bintray states search currently not supported on private repos
+    def "Search file by name in a repo by name, package, and version"(){
+        setup: Files files = makeTestFilesObj()
         when:
         JsonBuilder result = files.searchFile(
             [name:testFileName, subject: testOrg, repo:testRepo]
         )
-
         then:
-        result.getContent().toString() == '{"access":"r","download_keys":["testdlkey-allFiletests"],"id":"testFile-CreateTest"}'
+        result.getContent()
 
     }
 
+    //Bintray states search currently not supported on private repos
+    def "Search file by name in a repo by SHA1, package, and version"(){
+        setup: Files files = makeTestFilesObj()
+        when:
+        JsonBuilder result = files.searchFile(
+                [sha1:testFileSha1, subject: testOrg, repo:testRepo]
+        )
+        then:
+        result.getContent()
+    }
 }

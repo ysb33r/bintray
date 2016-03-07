@@ -1,4 +1,4 @@
-package org.ysb33r.gradle.bintray.files
+package org.ysb33r.gradle.bintray.content
 
 import groovyx.net.http.HttpResponseException
 

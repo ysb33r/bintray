@@ -6,11 +6,11 @@ import org.ysb33r.gradle.bintray.core.HasPackage
 import org.ysb33r.gradle.bintray.core.HasRepo
 import org.ysb33r.gradle.bintray.core.HasSubject
 import org.ysb33r.gradle.bintray.core.HasVersion
+import org.ysb33r.gradle.bintray.core.RequestBase
 
-trait FilesRequest implements ApiBase, HasSubject, HasRepo, HasPackage, HasVersion {
+trait FilesRequest implements RequestBase, ApiBase, HasSubject, HasRepo, HasPackage, HasVersion {
 
-    Boolean include_unpublished
-    URIBuilder getPath(){
+    String getPath(){
         URIBuilder uri = new URIBuilder( baseUrl )
         uri.path = "/packages/${subject}/${repo}/${pkg}"
         if (version) {
@@ -18,17 +18,17 @@ trait FilesRequest implements ApiBase, HasSubject, HasRepo, HasPackage, HasVersi
         }
 
         uri.path += "/files"
-        return uri
+        return uri.toString()
     }
 
-    Map getPublishOption(){
+    Map getPublishOption(Boolean include_unpublished){
         return ["include_unpublished" : (include_unpublished ? 1 : 0)]
     }
 
-    URIBuilder getPathSearch(){
+    String getPathSearch(){
         URIBuilder uri = new URIBuilder( baseUrl )
         uri.path = "/search/file"
-        return uri
+        return uri.toString()
     }
 
 }
