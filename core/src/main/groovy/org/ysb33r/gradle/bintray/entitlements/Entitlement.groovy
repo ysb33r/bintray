@@ -10,8 +10,8 @@ class Entitlement implements BintrayConnection, EntitlementsRequest{
         if (id) {
             body.content."id" = id // Supports optional argument overriding body
         }
-        def result = RESTCall("post", getPath(), body.toString())
         assertAttributes(subject, repo, body.content."access")
+        def result = RESTCall("post", getPath(), body.toString())
         this.id = result?.content?."id" ?: this.id
         return result
     }
