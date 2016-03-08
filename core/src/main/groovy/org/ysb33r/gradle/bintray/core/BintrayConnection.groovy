@@ -18,20 +18,23 @@ import static groovyx.net.http.ContentType.*
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
 import groovyx.net.http.HttpResponseException
+import static org.ysb33r.gradle.bintray.core.BintrayEndpoint.*
 
-
-trait BintrayConnection implements ApiBase {
-
+class BintrayConnection {
     private RESTClient apiClient
+    private RESTClient dlClient
+
     String userName
     String apiKey
     Closure onSuccessDefault = { resp -> resp.data }
     Closure onFailDefault = { e -> new JsonBuilder([message: e.message, code: e.statusCode]) }
     def logger
 
-    JsonBuilder RESTCall(
+    def RESTCall(
             String method = "get", String path = "", String body = "", Map query = [:], Map headers = [:],
-            ContentType contentType = JSON, Closure onSuccess = onSuccessDefault, Closure onFailure = onFailDefault) {
+            ContentType contentType = JSON, BintrayEndpoint endpoint = API_BASE_URL,
+            Closure onSuccess = onSuccessDefault, Closure onFailure = onFailDefault) {
+
         Map requestArgs = [path: path]
         if (contentType) {
             requestArgs.contentType = contentType
@@ -45,10 +48,14 @@ trait BintrayConnection implements ApiBase {
         if (headers) {
             requestArgs.headers = headers
         }
-        debugmsg "Method is: $method"
-        debugmsg "Request Args are: $requestArgs"
+//        if (true) {
+//            apiClient().setProxy('localhost', 8888, null)
+//            apiClient().ignoreSSLIssues()
+//        }
+        println "Method is: $method"
+        println "Request Args are: $requestArgs"
         try {
-            HttpResponseDecorator response = client()."$method"(requestArgs)
+            HttpResponseDecorator response = getClient(endpoint)."$method"(requestArgs)
             debugmsg "Response code is ${response.status}."
             return onSuccess(response)
         } catch (HttpResponseException e) {
@@ -58,15 +65,23 @@ trait BintrayConnection implements ApiBase {
         }
     }
 
-    RESTClient client() {
-        if (apiClient == null) {
-            apiClient = new RESTClient("${baseUrl}/")
-            apiClient.auth.basic userName, apiKey
-            apiClient.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
+    RESTClient getClient(BintrayEndpoint endpoint) {
+        if (endpoint == API_BASE_URL){
+            if (apiClient == null) {
+                apiClient = new RESTClient("${API_BASE_URL.text}/")
+                apiClient.auth.basic userName, apiKey
+                apiClient.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
+            }
+            return apiClient
+        }else if (endpoint == API_DL_URL){
+            if (dlClient == null) {
+                dlClient = new RESTClient("${API_DL_URL.text}/")
+                dlClient.auth.basic userName, apiKey
+                dlClient.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
+            }
+            return dlClient
         }
-        return apiClient
     }
-
 
     private void debugmsg(String msg) {
         logger?.debug msg

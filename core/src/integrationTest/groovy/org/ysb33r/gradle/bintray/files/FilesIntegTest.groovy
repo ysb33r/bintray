@@ -1,6 +1,7 @@
 package org.ysb33r.gradle.bintray.files
 
 import groovy.json.JsonBuilder
+import org.ysb33r.gradle.bintray.core.BintrayConnection
 import spock.lang.Shared
 import spock.lang.Specification
 import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
@@ -9,9 +10,11 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 class FilesIntegTest extends Specification {
 
     @Shared
-    String btUserName = System.getenv('BINTRAY_USERNAME')
-    @Shared
-    String btApiKey = System.getenv('BINTRAY_API_KEY')
+    BintrayConnection btConnection = new BintrayConnection().with{
+        userName = System.getenv('BINTRAY_USERNAME')
+        apiKey = System.getenv('BINTRAY_API_KEY')
+        return it
+    }
     @Shared
     String testOrg = "karfunkel"
     @Shared
@@ -27,8 +30,7 @@ class FilesIntegTest extends Specification {
     @Shared
     Closure makeTestFilesObj = {
         Files files = new Files().with {
-            userName = btUserName
-            apiKey = btApiKey
+            btConn = btConnection
             subjectType = orgs
             subject = testOrg
             return it
@@ -46,7 +48,7 @@ class FilesIntegTest extends Specification {
         }.getFiles()
 
         then:
-        result.getContent()
+        result.content
     }
 
     def "List all Files for version"() {
@@ -60,8 +62,7 @@ class FilesIntegTest extends Specification {
         }.getFiles()
 
         then:
-        println result
-        result.getContent()[0].containsKey("name")
+        result.content[0].containsKey("name")
     }
 
     //Bintray states search currently not supported on private repos
@@ -72,7 +73,7 @@ class FilesIntegTest extends Specification {
             [name:testFileName, subject: testOrg, repo:testRepo]
         )
         then:
-        result.getContent()
+        result.content
 
     }
 
@@ -84,6 +85,6 @@ class FilesIntegTest extends Specification {
                 [sha1:testFileSha1, subject: testOrg, repo:testRepo]
         )
         then:
-        result.getContent()
+        result.content
     }
 }

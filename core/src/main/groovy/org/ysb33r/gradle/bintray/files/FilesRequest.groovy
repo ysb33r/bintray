@@ -1,17 +1,16 @@
 package org.ysb33r.gradle.bintray.files
 
 import groovyx.net.http.URIBuilder
-import org.ysb33r.gradle.bintray.core.ApiBase
 import org.ysb33r.gradle.bintray.core.HasPackage
 import org.ysb33r.gradle.bintray.core.HasRepo
 import org.ysb33r.gradle.bintray.core.HasSubject
 import org.ysb33r.gradle.bintray.core.HasVersion
 import org.ysb33r.gradle.bintray.core.RequestBase
 
-trait FilesRequest implements RequestBase, ApiBase, HasSubject, HasRepo, HasPackage, HasVersion {
+trait FilesRequest implements RequestBase, HasSubject, HasRepo, HasPackage, HasVersion {
 
     String getPath(){
-        URIBuilder uri = new URIBuilder( baseUrl )
+        URIBuilder uri = new URIBuilder( "" )
         uri.path = "/packages/${subject}/${repo}/${pkg}"
         if (version) {
             uri.path += "/versions/${version}"
@@ -26,8 +25,7 @@ trait FilesRequest implements RequestBase, ApiBase, HasSubject, HasRepo, HasPack
     }
 
     String getPathSearch(){
-        URIBuilder uri = new URIBuilder( baseUrl )
-        uri.path = "/search/file"
+        URIBuilder uri = new URIBuilder( "/search/file" )
         return uri.toString()
     }
 

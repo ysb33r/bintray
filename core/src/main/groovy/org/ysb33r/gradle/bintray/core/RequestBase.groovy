@@ -5,16 +5,11 @@ import groovy.json.JsonBuilder
 trait RequestBase {
 
     JsonBuilder body
+    BintrayConnection btConn
 
     static def assertAttributes(Object... attributes) {
         attributes.each {
             assert it?.toString().size()
-        }
-    }
-
-    JsonBuilder getBody() {
-        if (body == null){
-            body = new JsonBuilder()
         }
     }
 

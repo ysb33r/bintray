@@ -1,6 +1,7 @@
 package org.ysb33r.gradle.bintray.downloadkeys
 
 import groovy.json.JsonBuilder
+import org.ysb33r.gradle.bintray.core.BintrayConnection
 import spock.lang.Shared
 import spock.lang.Specification
 import static org.ysb33r.gradle.bintray.core.SubjectType.*
@@ -8,31 +9,32 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.*
 class DownloadKeysIntegTest extends Specification {
 
     @Shared
+    BintrayConnection btConnection = new BintrayConnection().with{
+        userName = System.getenv('BINTRAY_USERNAME')
+        apiKey = System.getenv('BINTRAY_API_KEY')
+        return it
+    }
+    @Shared
     String testOrg = "getgsi"
     @Shared
     String testUser = "jerrywiltsegsi"
     @Shared
-    String btUserName = System.getenv('BINTRAY_USERNAME')
-    @Shared
-    String btApiKey = System.getenv('BINTRAY_API_KEY')
-    @Shared
     Closure makeTestKeyObj = {String testDlKey ->
         DownloadKey downloadKey = new DownloadKey().with {
-            userName = btUserName
-            apiKey = btApiKey
+            btConn = btConnection
             subjectType = orgs
             subject = testOrg
             id = testDlKey
             return it
         }
+        println downloadKey.dump()
         return downloadKey
     }
 
     @Shared
     Closure makeTestKeysObj = {
         DownloadKeys downloadKeys = new DownloadKeys().with {
-            userName = btUserName
-            apiKey = btApiKey
+            btConn = btConnection
             subjectType = orgs
             subject = testOrg
             return it
@@ -64,14 +66,12 @@ class DownloadKeysIntegTest extends Specification {
         setup:
         String testDlKey = "testDlKey-CreateTest"
         DownloadKey downloadKey = makeTestKeyObj(testDlKey)
-
-        when:
         JsonBuilder testBody = new DownloadKeyBody().with {
             id = testDlKey
             return toJson()
         }
-        and:
 
+        when:
         JsonBuilder result = downloadKey.with{
             body = testBody
             return it

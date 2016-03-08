@@ -1,6 +1,8 @@
 package org.ysb33r.gradle.bintray.entitlements
 
 import groovy.json.JsonBuilder
+import org.ysb33r.gradle.bintray.core.BintrayConnection
+
 import static AccessLevel.*
 import spock.lang.Ignore
 import spock.lang.Shared
@@ -11,9 +13,11 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 class EntitlementsIntegTest extends Specification {
 
     @Shared
-    String btUserName = System.getenv('BINTRAY_USERNAME')
-    @Shared
-    String btApiKey = System.getenv('BINTRAY_API_KEY')
+    BintrayConnection btConnection = new BintrayConnection().with{
+        userName = System.getenv('BINTRAY_USERNAME')
+        apiKey = System.getenv('BINTRAY_API_KEY')
+        return it
+    }
     @Shared
     String testOrg = "getgsi"
     @Shared
@@ -31,10 +35,10 @@ class EntitlementsIntegTest extends Specification {
     @Shared
     DownloadKey downloadKey
     @Shared
-    Closure makeTestEntitlementObj = {
+    Closure makeTestEntitlementObj = {String entitlementId ->
         Entitlement entitlement = new Entitlement().with {
-            userName = btUserName
-            apiKey = btApiKey
+            id = entitlementId
+            btConn = btConnection
             subject = testOrg
             return it
         }
@@ -43,8 +47,7 @@ class EntitlementsIntegTest extends Specification {
     @Shared
     Closure makeTestEntitlementsObj = {
         Entitlements entitlements = new Entitlements().with {
-            userName = btUserName
-            apiKey = btApiKey
+            btConn = btConnection
             subject = testOrg
             return it
         }
@@ -63,8 +66,7 @@ class EntitlementsIntegTest extends Specification {
 
     def setupSpec(){
         downloadKey = new DownloadKey().with {
-            userName = btUserName
-            apiKey = btApiKey
+            btConn = btConnection
             subjectType = orgs
             subject = testOrg
             body = new JsonBuilder([id:testDlKey])
@@ -96,7 +98,7 @@ class EntitlementsIntegTest extends Specification {
         }.getEntitlements()
 
         then:
-        result.toString() == '{"id":"testEntitlement-ListAllEntitlementsAtRepoTest"}'
+        result.toString().contains('{"id":"testEntitlement-ListAllEntitlementsAtRepoTest"}')
 
         cleanup:
         assert entitlement.deleteEntitlement().toString() == '{"message":"success"}'
@@ -125,7 +127,8 @@ class EntitlementsIntegTest extends Specification {
         }.getEntitlements()
 
         then:
-        result.toString() == '{"id":"testEntitlement-ListAllEntitlementsAtPkgTest"}'
+//        result.toString() == '{"id":"testEntitlement-ListAllEntitlementsAtPkgTest"}'
+        result.toString().contains('{"id":"testEntitlement-ListAllEntitlementsAtPkgTest"}')
 
         cleanup:
         assert entitlement.deleteEntitlement().toString() == '{"message":"success"}'
@@ -166,8 +169,8 @@ class EntitlementsIntegTest extends Specification {
 
     def "Create an entitlement for a repo"() {
         when:
-        Entitlement entitlement = makeTestEntitlementObj()
         String testEntitlementId = "testEntitlement-CreateAtRepoTest"
+        Entitlement entitlement = makeTestEntitlementObj(testEntitlementId)
         entitlement.with{
             repo = testRepo
             subject = testOrg
@@ -179,14 +182,15 @@ class EntitlementsIntegTest extends Specification {
         entitlement.getEntitlement().toString() == '{"access":"r","download_keys":["testdlkey-allentitlementtests"],"id":"testEntitlement-CreateAtRepoTest","path":""}'
 
         cleanup:
+        println entitlement.dump()
         assert entitlement.deleteEntitlement().toString() == '{"message":"success"}'
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
 
     def "Create an entitlement for a package"() {
         when:
-        Entitlement entitlement = makeTestEntitlementObj()
         String testEntitlementId = "testEntitlement-CreateAtPkgTest"
+        Entitlement entitlement = makeTestEntitlementObj(testEntitlementId)
         entitlement.with{
             repo = testRepo
             subject = testOrg
@@ -206,8 +210,8 @@ class EntitlementsIntegTest extends Specification {
     @Ignore //entitlements currently do not work for versions of maven repos, bintray said working on it
     def "Create an entitlement for a version"() {
         when:
-        Entitlement entitlement = makeTestEntitlementObj()
         String testEntitlementId = "testEntitlement-CreateAtVersionTest"
+        Entitlement entitlement = makeTestEntitlementObj(testEntitlementId)
         entitlement.with{
             repo = testRepo
             subject = testOrg
@@ -227,8 +231,8 @@ class EntitlementsIntegTest extends Specification {
 
     def "Get a specific entitlement for a repo"() {
         setup:
-        Entitlement entitlement = makeTestEntitlementObj()
         String testEntitlementId = "testEntitlement-GetRepoTest"
+        Entitlement entitlement = makeTestEntitlementObj(testEntitlementId)
         entitlement.with{
             repo = testRepo
             subject = testOrg
@@ -246,8 +250,8 @@ class EntitlementsIntegTest extends Specification {
 
     def "Update a specific entitlement for a repo"() {
         setup:
-        Entitlement entitlement = makeTestEntitlementObj()
         String testEntitlementId = "testEntitlement-UpdateRepoTest"
+        Entitlement entitlement = makeTestEntitlementObj(testEntitlementId)
         entitlement.with{
             repo = testRepo
             subject = testOrg
@@ -270,20 +274,22 @@ class EntitlementsIntegTest extends Specification {
 
     def "Delete a specific entitlement for a repo"() {
         setup:
-        Entitlement entitlement = makeTestEntitlementObj()
         String testEntitlementId = "testEntitlement-DeleteRepoTest"
+        Entitlement entitlement = makeTestEntitlementObj(testEntitlementId)
         entitlement.with{
             repo = testRepo
             subject = testOrg
             body = makeTestBody(testEntitlementId)
             return it
         }.createEntitlement()
-        assert entitlement.getEntitlement().toString() == '{"access":"r","download_keys":["testdlkey-allentitlementtests"],"id":"testEntitlement-DeleteRepoTest","path":""}'
+        assert entitlement.getEntitlement().toString().contains('{"access":"r","download_keys":["testdlkey-allentitlementtests"],"id":"testEntitlement-DeleteRepoTest","path":""}')
 
         expect:
         entitlement.deleteEntitlement().toString() == '{"message":"success"}'
         entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
 
+        cleanup:
+        entitlement.deleteEntitlement()
     }
 
     def cleanupSpec(){
