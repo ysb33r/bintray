@@ -52,9 +52,9 @@ class BintrayConnection {
 //            apiClient().setProxy('localhost', 8888, null)
 //            apiClient().ignoreSSLIssues()
 //        }
-        println "Endpoint is: $endpoint.text"
-        println "Method is: $method"
-        println "Request Args are: $requestArgs"
+//        println "Endpoint is: $endpoint.text"
+//        println "Method is: $method"
+//        println "Request Args are: $requestArgs"
         try {
             HttpResponseDecorator response = getClient(endpoint)."$method"(requestArgs)
             debugmsg "Response code is ${response.status}."
