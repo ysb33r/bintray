@@ -1,16 +1,19 @@
 package org.ysb33r.gradle.bintray.content
 
 import groovy.json.JsonBuilder
+import org.ysb33r.gradle.bintray.core.BintrayEndpoint
 
 import static groovyx.net.http.ContentType.BINARY
+import static org.ysb33r.gradle.bintray.core.BintrayEndpoint.API_BASE_URL
 import static org.ysb33r.gradle.bintray.core.BintrayEndpoint.API_DL_URL
 
 class Content implements ContentRequest {
     String filePath
 
     def downloadContent(Boolean dynamicMode = false,  Map queryMap = [:]) {
+        BintrayEndpoint endpoint = (dynamicMode ? API_BASE_URL: API_DL_URL)
         assertAttributes(filePath, subject, repo)
-        return btConn.RESTCall("get", getPath(filePath, dynamicMode), null, queryMap, null, BINARY, API_DL_URL)
+        return btConn.RESTCall("get", getPath(filePath, dynamicMode), null, queryMap, null, BINARY, endpoint)
     }
 
     //TODO : Complete and Test
