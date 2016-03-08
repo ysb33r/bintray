@@ -94,7 +94,7 @@ class ContentIntegTest extends Specification {
 
         when:
         def result = content.with {
-            filePath = "${testPath}${testFile}"
+            filePath = "${testPathDynamic}${testFileDynamic}"
             repo = testRepo
             pkg = testPkg
             return it
