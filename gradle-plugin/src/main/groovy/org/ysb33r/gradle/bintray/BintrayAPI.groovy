@@ -26,7 +26,7 @@ import static groovyx.net.http.ContentType.BINARY
 //@TupleConstructor
 class BintrayAPI {
 
-    static final String API_BASE_URL = 'https://api.bintray.com'
+    static final String API_BASE_URL = System.getProperty('org,ysb33r.gradle.bintray.url') ?: 'https://api.bintray.com'
 
     String baseUrl = API_BASE_URL
     String repoOwner
@@ -277,7 +277,22 @@ class BintrayAPI {
         }
         return payload
     }
-
+/*
+{
+  "name": "my-package",
+  "desc": "This package...",
+  "labels": ["persistence", "database"],
+  "licenses": ["Apache-2.0", "GPL-3.0"],
+  "custom_licenses": ["my-license-1", "my-license-2"],
+  "vcs_url": "https://github.com/bintray/bintray-client-java.git",
+  "website_url": "http://jfrog.com",
+  "issue_tracker_url": "https://github.com/bintray/bintray-client-java/issues",
+  "github_repo": "bintray/bintray-client-java",
+  "github_release_notes_file": "RELEASE.txt",
+  "public_download_numbers": false,
+  "public_stats": true
+}
+ */
     /** There seems to be an issue converting to JSON when items are of type GStringImpl.
      *
      * @param attrValues

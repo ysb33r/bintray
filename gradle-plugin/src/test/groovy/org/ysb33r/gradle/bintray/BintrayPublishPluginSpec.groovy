@@ -79,6 +79,7 @@ class BintrayPublishPluginSpec extends Specification {
                         repoOwner   'someOwner1'
                         repoName    'someRepo1'
                         packageName 'somePackage1'
+                        autoCreatePackage true
                     }
                     bintrayIvyDeployer {
                         username    'someUser2'
@@ -90,14 +91,16 @@ class BintrayPublishPluginSpec extends Specification {
                 }
             }
         expect:
-            project.uploadArchives.repositories.size() == 2
-            project.tasks.bintrayMetadata_uploadArchives != null
-            project.tasks.bintrayMetadata_uploadArchives.username == 'someUser1'
-            project.tasks.bintrayMetadata_uploadArchives.apiKey == 'some_bintray_api_key_not_valid1'
+        project.uploadArchives.repositories.size() == 2
+        project.tasks.bintrayMetadata_uploadArchives != null
+        project.tasks.bintrayMetadata_uploadArchives.username == 'someUser1'
+        project.tasks.bintrayMetadata_uploadArchives.apiKey == 'some_bintray_api_key_not_valid1'
+        project.tasks.bintrayMetadata_uploadArchives.autoCreatePackage == true
 
-            project.tasks.bintrayMetadata_uploadArchives_1 != null
-            project.tasks.bintrayMetadata_uploadArchives_1.username == 'someUser2'
-            project.tasks.bintrayMetadata_uploadArchives_1.apiKey == 'some_bintray_api_key_not_valid2'
+        project.tasks.bintrayMetadata_uploadArchives_1 != null
+        project.tasks.bintrayMetadata_uploadArchives_1.username == 'someUser2'
+        project.tasks.bintrayMetadata_uploadArchives_1.apiKey == 'some_bintray_api_key_not_valid2'
+        project.tasks.bintrayMetadata_uploadArchives_1.autoCreatePackage == false
 
     }
 
