@@ -1,21 +1,13 @@
 package org.ysb33r.gradle.bintray.content
 
-import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.core.BaseIntegTest
 import org.ysb33r.gradle.bintray.files.Files
 import spock.lang.Shared
-import spock.lang.Specification
-
 import java.security.MessageDigest
 
-import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 
-class ContentIntegTest extends Specification {
-    @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
-        userName = System.getenv('BINTRAY_USERNAME')
-        apiKey = System.getenv('BINTRAY_API_KEY')
-        return it
-    }
+class ContentIntegTest extends BaseIntegTest {
+
     @Shared
     String testOrg = "getgsi"
     @Shared

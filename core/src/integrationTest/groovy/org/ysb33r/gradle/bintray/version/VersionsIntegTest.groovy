@@ -1,23 +1,16 @@
 package org.ysb33r.gradle.bintray.version
 
 import groovy.json.JsonBuilder
-import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.core.BaseIntegTest
 import org.ysb33r.gradle.bintray.versions.Version
 import org.ysb33r.gradle.bintray.versions.VersionsBody
 import org.ysb33r.gradle.bintray.versions.Versions
 import spock.lang.Shared
 import spock.lang.Ignore
-import spock.lang.Specification
 
 
-class VersionsIntegTest extends Specification {
+class VersionsIntegTest extends BaseIntegTest {
 
-    @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
-        userName = System.getenv('BINTRAY_USERNAME')
-        apiKey = System.getenv('BINTRAY_API_KEY')
-        return it
-    }
     @Shared
     String testOrg = "getgsi"
     @Shared

@@ -1,23 +1,17 @@
 package org.ysb33r.gradle.bintray.entitlements
 
 import groovy.json.JsonBuilder
+import org.ysb33r.gradle.bintray.core.BaseIntegTest
 import org.ysb33r.gradle.bintray.core.BintrayConnection
 
 import static AccessLevel.*
 import spock.lang.Ignore
 import spock.lang.Shared
-import spock.lang.Specification
 import org.ysb33r.gradle.bintray.downloadkeys.DownloadKey
 import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 
-class EntitlementsIntegTest extends Specification {
+class EntitlementsIntegTest extends BaseIntegTest {
 
-    @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
-        userName = System.getenv('BINTRAY_USERNAME')
-        apiKey = System.getenv('BINTRAY_API_KEY')
-        return it
-    }
     @Shared
     String testOrg = "getgsi"
     @Shared

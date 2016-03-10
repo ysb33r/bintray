@@ -1,19 +1,13 @@
 package org.ysb33r.gradle.bintray.downloadkeys
 
 import groovy.json.JsonBuilder
+import org.ysb33r.gradle.bintray.core.BaseIntegTest
 import org.ysb33r.gradle.bintray.core.BintrayConnection
 import spock.lang.Shared
 import spock.lang.Specification
 import static org.ysb33r.gradle.bintray.core.SubjectType.*
 
-class DownloadKeysIntegTest extends Specification {
-
-    @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
-        userName = System.getenv('BINTRAY_USERNAME')
-        apiKey = System.getenv('BINTRAY_API_KEY')
-        return it
-    }
+class DownloadKeysIntegTest extends BaseIntegTest {
     @Shared
     String testOrg = "getgsi"
     @Shared

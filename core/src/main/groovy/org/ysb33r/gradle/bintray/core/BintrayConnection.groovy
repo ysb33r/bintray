@@ -30,6 +30,11 @@ class BintrayConnection {
     Closure onFailDefault = { e -> new JsonBuilder([message: e.message, code: e.statusCode]) }
     def logger
 
+    def BintrayConnection (String userName, String apiKey){
+        this.userName = userName
+        this.apiKey = apiKey
+    }
+
     def RESTCall(
             String method = "get", String path = "", String body = "", Map query = [:], Map headers = [:],
             ContentType contentType = JSON, BintrayEndpoint endpoint = API_BASE_URL,
