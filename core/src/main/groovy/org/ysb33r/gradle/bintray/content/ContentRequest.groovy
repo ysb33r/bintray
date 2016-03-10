@@ -32,7 +32,7 @@ trait ContentRequest implements RequestBase, HasSubject, HasRepo, HasPackage, Ha
     Map getHeaders(Boolean publish, Boolean override, Boolean explode) {
         return headers = [
                 "X-Bintray-Package" : pkg,
-                "X-Bintray-Package" : version,
+                "X-Bintray-Package" : this.ver,
                 "X-Bintray-Package" : publish ? 1 : 0,
                 "X-Bintray-Override": override ? 1 : 0,
                 "X-Bintray-Explode" : explode ? 1 : 0

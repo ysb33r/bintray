@@ -8,11 +8,11 @@ class Entitlement implements EntitlementsRequest{
     String id
     JsonBuilder createEntitlement(String id = "") {
         if (id) {
-            body.content."id" = id // Supports optional argument overriding body
+            body.content.id = id // Supports optional argument overriding body
         }
         assertAttributes(subject, repo, body.content."access")
         def result = btConn.RESTCall("post", getPath(), body.toString())
-        this.id = result?.content?."id" ?: this.id
+        this.id = result?.id ?: this.id
         return result
     }
 

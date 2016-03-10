@@ -127,7 +127,6 @@ class EntitlementsIntegTest extends Specification {
         }.getEntitlements()
 
         then:
-//        result.toString() == '{"id":"testEntitlement-ListAllEntitlementsAtPkgTest"}'
         result.toString().contains('{"id":"testEntitlement-ListAllEntitlementsAtPkgTest"}')
 
         cleanup:
@@ -144,7 +143,7 @@ class EntitlementsIntegTest extends Specification {
             repo = testRepo
             subject = testOrg
             pkg = testPkg
-            version = testVersion
+            ver = testVersion
             body = makeTestBody(testEntitlementId)
             return it
         }.createEntitlement()
@@ -155,7 +154,7 @@ class EntitlementsIntegTest extends Specification {
         JsonBuilder result = entitlements.with{
             repo = testRepo
             pkg = testPkg
-            version = testVersion
+            ver = testVersion
             return it
         }.getEntitlements()
 
@@ -182,7 +181,6 @@ class EntitlementsIntegTest extends Specification {
         entitlement.getEntitlement().toString() == '{"access":"r","download_keys":["testdlkey-allentitlementtests"],"id":"testEntitlement-CreateAtRepoTest","path":""}'
 
         cleanup:
-        println entitlement.dump()
         assert entitlement.deleteEntitlement().toString() == '{"message":"success"}'
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
@@ -216,7 +214,7 @@ class EntitlementsIntegTest extends Specification {
             repo = testRepo
             subject = testOrg
             pkg = testPkg
-            version = testVersion
+            ver = testVersion
             body = makeTestBody(testEntitlementId)
             return it
         }.createEntitlement()

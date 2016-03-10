@@ -12,8 +12,8 @@ trait FilesRequest implements RequestBase, HasSubject, HasRepo, HasPackage, HasV
     String getPath(){
         URIBuilder uri = new URIBuilder( "" )
         uri.path = "/packages/${subject}/${repo}/${pkg}"
-        if (version) {
-            uri.path += "/versions/${version}"
+        if (this.ver) {
+            uri.path += "/versions/${this.ver}"
         }
 
         uri.path += "/files"

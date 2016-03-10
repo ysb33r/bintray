@@ -57,7 +57,7 @@ class FilesIntegTest extends Specification {
         JsonBuilder result = files.with{
             repo = testRepo
             pkg = testPkg
-            version = testVersion
+            ver = testVersion
             return it
         }.getFiles()
 

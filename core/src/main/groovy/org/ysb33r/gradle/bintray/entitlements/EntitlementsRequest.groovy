@@ -1,7 +1,6 @@
 package org.ysb33r.gradle.bintray.entitlements
 
 import groovyx.net.http.URIBuilder
-import org.ysb33r.gradle.bintray.core.ApiBase
 import org.ysb33r.gradle.bintray.core.RequestBase
 import org.ysb33r.gradle.bintray.core.HasPackage
 import org.ysb33r.gradle.bintray.core.HasRepo
@@ -14,8 +13,8 @@ trait EntitlementsRequest implements RequestBase, HasSubject, HasRepo, HasPackag
         URIBuilder uri = new URIBuilder( "" )
         if (pkg) {
             uri.path = "/packages/${subject}/${repo}/${pkg}"
-            if (version) {
-                uri.path += "/versions/${version}"
+            if (ver) {
+                uri.path += "/versions/${ver}"
             }
         } else {
             uri.path = "/repos/${subject}/${repo}"

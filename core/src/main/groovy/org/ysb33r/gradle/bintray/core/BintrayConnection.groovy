@@ -53,6 +53,7 @@ class BintrayConnection {
 //            apiClient().ignoreSSLIssues()
 //        }
         println "Method is: $method"
+        println "Endpoint is: $endpoint.text"
         println "Request Args are: $requestArgs"
         try {
             HttpResponseDecorator response = getClient(endpoint)."$method"(requestArgs)

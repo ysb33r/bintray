@@ -79,10 +79,11 @@ class DownloadKeysIntegTest extends Specification {
 
         then:
         result.content.containsKey("username")
+        downloadKey.getDownloadKey().toString() == '{"black_cidrs":[],"expiry":-1,"id":"testdlkey-createtest","username":"testdlkey-createtest@getgsi","white_cidrs":[]}'
 
         cleanup:
-        downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
-        downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
+        assert downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
+        assert downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
     }
 
     def "Get specific download key for an org"() {

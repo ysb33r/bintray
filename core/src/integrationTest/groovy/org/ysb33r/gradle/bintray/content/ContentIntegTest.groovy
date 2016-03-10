@@ -1,6 +1,5 @@
 package org.ysb33r.gradle.bintray.content
 
-import groovy.json.JsonBuilder
 import org.ysb33r.gradle.bintray.core.BintrayConnection
 import org.ysb33r.gradle.bintray.files.Files
 import spock.lang.Shared
@@ -61,7 +60,7 @@ class ContentIntegTest extends Specification {
             subject = testOrg
             repo = testRepo
             pkg = testPkg
-            version = testVersion
+            ver = testVersion
             return it
         }.getFiles(true).content.find{it['name']==testFile}['sha1']
 
@@ -88,7 +87,7 @@ class ContentIntegTest extends Specification {
             subject = testOrg
             repo = testRepo
             pkg = testPkg
-            version = testVersion
+            ver = testVersion
             return it
         }.getFiles().content.find{it['name']==testFile}['sha1']
 
