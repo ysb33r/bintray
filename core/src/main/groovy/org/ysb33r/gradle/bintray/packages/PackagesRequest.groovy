@@ -3,7 +3,10 @@ package org.ysb33r.gradle.bintray.packages
 import groovyx.net.http.URIBuilder
 import org.ysb33r.gradle.bintray.core.*
 
-trait PackagesRequest implements RequestBase, HasSubject, HasRepo, HasVersion {
+trait PackagesRequest implements RequestBase {
+    String subject
+    String repo
+
     String getPath(String pkg = "") {
         URIBuilder uri = new URIBuilder("")
         uri.path += "/packages/${subject}/${repo}"

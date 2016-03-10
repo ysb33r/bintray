@@ -1,19 +1,20 @@
 package org.ysb33r.gradle.bintray.files
 
 import groovyx.net.http.URIBuilder
-import org.ysb33r.gradle.bintray.core.HasPackage
-import org.ysb33r.gradle.bintray.core.HasRepo
-import org.ysb33r.gradle.bintray.core.HasSubject
-import org.ysb33r.gradle.bintray.core.HasVersion
 import org.ysb33r.gradle.bintray.core.RequestBase
 
-trait FilesRequest implements RequestBase, HasSubject, HasRepo, HasPackage, HasVersion {
+trait FilesRequest implements RequestBase {
+
+    String subject
+    String repo
+    String pkg
+    String ver
 
     String getPath(){
         URIBuilder uri = new URIBuilder( "" )
         uri.path = "/packages/${subject}/${repo}/${pkg}"
-        if (this.ver) {
-            uri.path += "/versions/${this.ver}"
+        if (ver) {
+            uri.path += "/versions/${ver}"
         }
 
         uri.path += "/files"

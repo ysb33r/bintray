@@ -34,7 +34,7 @@ class Version implements VersionRequest {
     }
 
     JsonBuilder getLatestVersion() {
-        this.name = '_latest'
+        this.name = "_latest"
         return getVersion()
     }
 }

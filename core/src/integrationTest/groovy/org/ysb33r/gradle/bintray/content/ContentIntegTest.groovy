@@ -28,10 +28,6 @@ class ContentIntegTest extends Specification {
     String testFile = "azure-rest-${testVersion}.jar"
     @Shared
     String testPath = "com/gsi/genius/gradle/azure-rest/${testVersion}/"
-    @Shared
-    String testFileDynamic = "azure-rest-\$latest.jar"
-    @Shared
-    String testPathDynamic = "com/gsi/genius/gradle/azure-rest/\$latest/"
 
     @Shared
     Closure makeTestContentObj = {
@@ -56,7 +52,6 @@ class ContentIntegTest extends Specification {
 
         def expectedHash = new Files().with {
             btConn = btConnection
-            subjectType = orgs
             subject = testOrg
             repo = testRepo
             pkg = testPkg
@@ -83,7 +78,6 @@ class ContentIntegTest extends Specification {
         Content content = makeTestContentObj()
         def expectedHash = new Files().with {
             btConn = btConnection
-            subjectType = orgs
             subject = testOrg
             repo = testRepo
             pkg = testPkg

@@ -2,12 +2,12 @@ package org.ysb33r.gradle.bintray.entitlements
 
 import groovyx.net.http.URIBuilder
 import org.ysb33r.gradle.bintray.core.RequestBase
-import org.ysb33r.gradle.bintray.core.HasPackage
-import org.ysb33r.gradle.bintray.core.HasRepo
-import org.ysb33r.gradle.bintray.core.HasSubject
-import org.ysb33r.gradle.bintray.core.HasVersion
 
-trait EntitlementsRequest implements RequestBase, HasSubject, HasRepo, HasPackage, HasVersion {
+trait EntitlementsRequest implements RequestBase {
+    String subject
+    String repo
+    String pkg
+    String ver
 
     String getPath(String id = ""){
         URIBuilder uri = new URIBuilder( "" )

@@ -1,13 +1,14 @@
 package org.ysb33r.gradle.bintray.content
 
 import groovyx.net.http.URIBuilder
-import org.ysb33r.gradle.bintray.core.HasPackage
-import org.ysb33r.gradle.bintray.core.HasRepo
-import org.ysb33r.gradle.bintray.core.HasSubject
-import org.ysb33r.gradle.bintray.core.HasVersion
 import org.ysb33r.gradle.bintray.core.RequestBase
 
-trait ContentRequest implements RequestBase, HasSubject, HasRepo, HasPackage, HasVersion {
+trait ContentRequest implements RequestBase {
+
+    String subject
+    String repo
+    String pkg
+    String ver
 
     String getPath(String filePath, Boolean dynamicMode = false) {
         URIBuilder uri
@@ -32,7 +33,7 @@ trait ContentRequest implements RequestBase, HasSubject, HasRepo, HasPackage, Ha
     Map getHeaders(Boolean publish, Boolean override, Boolean explode) {
         return headers = [
                 "X-Bintray-Package" : pkg,
-                "X-Bintray-Package" : this.ver,
+                "X-Bintray-Package" : ver,
                 "X-Bintray-Package" : publish ? 1 : 0,
                 "X-Bintray-Override": override ? 1 : 0,
                 "X-Bintray-Explode" : explode ? 1 : 0

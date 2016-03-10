@@ -31,7 +31,6 @@ class FilesIntegTest extends Specification {
     Closure makeTestFilesObj = {
         Files files = new Files().with {
             btConn = btConnection
-            subjectType = orgs
             subject = testOrg
             return it
         }
