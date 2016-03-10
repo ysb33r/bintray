@@ -1,0 +1,40 @@
+package org.ysb33r.gradle.bintray.versions
+
+import groovy.json.JsonBuilder
+
+class Version implements VersionRequest {
+    String name
+
+    JsonBuilder createVersion (String name = "", String description = "") {
+        if (name) {
+            body.content.name = name // Supports optional argument overriding body
+        }
+        if (description) {
+            body.content.description = description // Supports optional argument overriding body
+        }
+        assertAttributes(subject, repo, pkg, body.content.name, body.content.desc)
+        def result = btConn.RESTCall("post", getPath(), body.toString())
+        this.name = result?.name ?: this.name
+        return result
+    }
+
+    JsonBuilder getVersion() {
+        assertAttributes(name, subject, repo, pkg)
+        return btConn.RESTCall("get", getPath(name))
+    }
+
+    JsonBuilder deleteVersion() {
+        assertAttributes(name, subject, repo, pkg)
+        return btConn.RESTCall("delete", getPath(name))
+    }
+
+    JsonBuilder updateVersion() {
+        assertAttributes(name, subject, repo, pkg, body.content.name, body.content.desc)
+        return btConn.RESTCall("patch", getPath(name), body.toString())
+    }
+
+    JsonBuilder getLatestVersion() {
+        this.name = "_latest"
+        return getVersion()
+    }
+}

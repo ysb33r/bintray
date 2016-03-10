@@ -66,64 +66,64 @@ artifacts {
     archives javadocJar
 }
 
-if(version.endsWith("SNAPSHOT")) {
-    apply plugin: 'artifactory'
-    artifactory {
-        publish {
-            contextUrl = 'http://oss.jfrog.org'
-            repository {
-                repoKey = 'oss-snapshot-local'
-                username = project.properties.bintrayUserName
-                password = project.properties.bintrayApiKey
-            }
-        }
-    }
-} else {
-    uploadArchives  {
-        repositories {
-            mavenLocal()
-            bintrayMavenDeployer {
-                username    project.properties.bintrayUserName
-                apiKey      project.properties.bintrayApiKey
-                repoOwner   bintrayOwner
-                repoName    bintrayRepo
-                packageName moduleName
-                description 'This is a bintray publish plugin for Gradle'
-                tags        'gradle','bintray'
-                licenses          'Apache-2.0'
-                vcsUrl            'https://github.com/ysb33r/bintray.git'
-                autoCreatePackage true
-                updatePackage     true
-                versionAttributes 'gradle-plugin' : "org.ysb33r.bintray:${group}:${archivesBaseName}"
-
-            }
-        }
-    }
-
-    pluginBundle {
-        description = 'This is a bintray publish plugin for Gradle'
-        website     = 'https://github.com/ysb33r/bintray'
-        vcsUrl      = 'https://github.com/ysb33r/bintray.git'
-
-        tags = ['gradle','bintray']
-
-        plugins {
-            vfsPlugin {
-                id = 'org.ysb33r.bintray'
-                displayName = 'Unofficial Gradle Bintray plugin'
-            }
-        }
-
-        mavenCoordinates {
-            groupId = project.group
-            artifactId = archivesBaseName
-        }
-
-    }
-
-    publishPlugins {
-        onlyIf { !version.endsWith("SNAPSHOT") }
-    }
-}
+//if(version.endsWith("SNAPSHOT")) {
+//    apply plugin: 'artifactory'
+//    artifactory {
+//        publish {
+//            contextUrl = 'http://oss.jfrog.org'
+//            repository {
+//                repoKey = 'oss-snapshot-local'
+//                username = project.properties.bintrayUserName
+//                password = project.properties.bintrayApiKey
+//            }
+//        }
+//    }
+//} else {
+//    uploadArchives  {
+//        repositories {
+//            mavenLocal()
+//            bintrayMavenDeployer {
+//                username    project.properties.bintrayUserName
+//                apiKey      project.properties.bintrayApiKey
+//                repoOwner   bintrayOwner
+//                repoName    bintrayRepo
+//                packageName moduleName
+//                description 'This is a bintray publish plugin for Gradle'
+//                tags        'gradle','bintray'
+//                licenses          'Apache-2.0'
+//                vcsUrl            'https://github.com/ysb33r/bintray.git'
+//                autoCreatePackage true
+//                updatePackage     true
+//                versionAttributes 'gradle-plugin' : "org.ysb33r.bintray:${group}:${archivesBaseName}"
+//
+//            }
+//        }
+//    }
+//
+//    pluginBundle {
+//        description = 'This is a bintray publish plugin for Gradle'
+//        website     = 'https://github.com/ysb33r/bintray'
+//        vcsUrl      = 'https://github.com/ysb33r/bintray.git'
+//
+//        tags = ['gradle','bintray']
+//
+//        plugins {
+//            vfsPlugin {
+//                id = 'org.ysb33r.bintray'
+//                displayName = 'Unofficial Gradle Bintray plugin'
+//            }
+//        }
+//
+//        mavenCoordinates {
+//            groupId = project.group
+//            artifactId = archivesBaseName
+//        }
+//
+//    }
+//
+//    publishPlugins {
+//        onlyIf { !version.endsWith("SNAPSHOT") }
+//    }
+//}
 
 apply from : '../gradle/publish.gradle'

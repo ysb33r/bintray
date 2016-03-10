@@ -1,0 +1,40 @@
+version 'unspecified'
+
+apply plugin: 'groovy'
+
+repositories {
+    jcenter()
+    mavenLocal()
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7.1"
+    testCompile "org.spockframework:spock-core:$spockVersion"
+    testCompile 'com.github.rest-driver:rest-client-driver:1.1.37'
+    testRuntime 'org.slf4j:slf4j-simple:1.7.12'
+}
+
+sourceSets {
+    integrationTest {
+        groovy {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integrationTest/groovy')
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
