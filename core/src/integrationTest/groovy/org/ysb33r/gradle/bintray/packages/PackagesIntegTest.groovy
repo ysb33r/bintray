@@ -1,80 +1,97 @@
 package org.ysb33r.gradle.bintray.packages
 
 import groovy.json.JsonBuilder
+import org.ysb33r.gradle.bintray.BetamaxSpecification
 import org.ysb33r.gradle.bintray.core.BintrayConnection
 import org.ysb33r.gradle.bintray.versions.Version
+import software.betamax.TapeMode
+import software.betamax.junit.Betamax
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Ignore
 
 
-class PackagesIntegTest extends Specification {
+class PackagesIntegTest extends BetamaxSpecification {
 
-    @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
-        userName = System.getenv('BINTRAY_USERNAME')
-        apiKey = System.getenv('BINTRAY_API_KEY')
-        return it
-    }
-    @Shared
-    String testOrg = "getgsi"
-    @Shared
-    String testRepo = "genius-public"
-    @Shared
-    String testDescription = "Bintray Library Test Package Description"
+//    @Shared
+//    BintrayConnection btConnection = new BintrayConnection().with{
+//        userName = System.getenv('BINTRAY_USERNAME')
+//        apiKey = System.getenv('BINTRAY_API_KEY')
+//        return it
+//    }
+//    @Shared
+//    String testOrg = "getgsi"
+//    @Shared
+//    String testRepo = "genius-public"
+//    @Shared
+//    String testDescription = "Bintray Library Test Package Description"
+//
+//    @Shared
+//    Closure makeTestPackageObj = {testPackageName ->
+//        Package pkg = new Package().with {
+//            name = testPackageName
+//            btConn = btConnection
+//            subject = testOrg
+//            repo = testRepo
+//            return it
+//        }
+//        return pkg
+//    }
+//
+//    @Shared
+//    Closure makeTestPackagesObj = {
+//        Packages pkgs = new Packages().with {
+//            btConn = btConnection
+//            subject = testOrg
+//            repo = testRepo
+//            return it
+//        }
+//        return pkgs
+//    }
+//
+//    Closure makeTestBody = {pkgName ->
+//        JsonBuilder testBody = new PackagesBody().with {
+//            name = pkgName
+//            desc = "Bintray Library Integration Test Description"
+//            return toJson()
+//        }
+//        return testBody
+//    }
 
-    @Shared
-    Closure makeTestPackageObj = {testPackageName ->
-        Package pkg = new Package().with {
-            name = testPackageName
-            btConn = btConnection
-            subject = testOrg
-            repo = testRepo
-            return it
-        }
-        return pkg
-    }
 
-    @Shared
-    Closure makeTestPackagesObj = {
-        Packages pkgs = new Packages().with {
-            btConn = btConnection
-            subject = testOrg
-            repo = testRepo
-            return it
-        }
-        return pkgs
-    }
-
-    Closure makeTestBody = {pkgName ->
-        JsonBuilder testBody = new PackagesBody().with {
-            name = pkgName
-            desc = "Bintray Library Integration Test Description"
-            return toJson()
-        }
-        return testBody
-    }
-
-    @Ignore
+    @Betamax(tape='packages')
+//    @Betamax(tape='packages',mode=TapeMode.READ_WRITE)
     def "List all pkgs for a repo"() {
-        setup:
-        String testPkg = "testPkg-ListAllTest"
-        Package pkg = makeTestPackageObj (testPkg)
-        assert pkg.with {
-            body = makeTestBody(testPkg)
-            return it
-        }.createPackage().content.name == testPkg
-        assert pkg.getPackage().content.name ==  testPkg
+//        setup:
+//        String testPkg = "testPkg-ListAllTest"
+//        Package pkg = makeTestPackageObj (testPkg)
+//        assert pkg.with {
+//            body = makeTestBody(testPkg)
+//            return it
+//        }.createPackage().content.name == testPkg
+//        assert pkg.getPackage().content.name ==  testPkg
+//
+//        when:
+//        Packages pkgs = makeTestPackagesObj()
+//
+//        then:
+//        pkgs.getPackages().find{it.name == "testPkg-ListAllTest"}
+//
+//        cleanup:
+//        assert pkg.deletePackage().toString() == '{"message":"success"}'
+//        assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
+        given:
+        Packages pkgs = new Packages(
+            btConn : btConnection,
+            subject : BINTRAY_RO_ORG,
+            repo : BINTRAY_RO_REPO
+        )
 
         when:
-        Packages pkgs = makeTestPackagesObj()
+        def list = pkgs.packages
 
         then:
-        pkgs.getPackages().find{it.name == "testPkg-ListAllTest"}
-
-        cleanup:
-        assert pkg.deletePackage().toString() == '{"message":"success"}'
-        assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
+        list.any { it.name == 'bintray-gradle-plugin' }
     }
 
     @Ignore

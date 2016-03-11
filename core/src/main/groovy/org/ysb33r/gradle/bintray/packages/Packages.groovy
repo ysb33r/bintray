@@ -1,7 +1,9 @@
 package org.ysb33r.gradle.bintray.packages
 
 import groovy.json.JsonBuilder
+import groovy.transform.TupleConstructor
 
+@TupleConstructor
 class Packages implements PackagesRequest {
 
     List getPackages(Map queryMap = [:]) {
