@@ -83,7 +83,7 @@ class VersionsIntegTest extends BetamaxSpecification {
         list.contains('1.1')
         list.contains('0.0.5')
     }
-    
+
     @Ignore
     def "Get the latest version for a package"() {
 

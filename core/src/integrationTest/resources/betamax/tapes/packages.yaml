@@ -1,0 +1,24 @@
+!tape
+name: packages
+interactions:
+- recorded: 2016-03-11T14:49:09.207Z
+  request:
+    method: GET
+    uri: https://api.bintray.com/repos/ysb33r/grysb33r/packages
+    headers:
+      Accept: application/json, application/javascript, text/javascript
+      Authorization: Basic S0VZX1JFTU9WRUQ=
+      Connection: Keep-Alive
+      Content-Length: '0'
+      Host: api.bintray.com
+  response:
+    status: 200
+    headers:
+      Connection: keep-alive
+      Content-Type: application/json
+      Date: Fri, 11 Mar 2016 14:49:07 GMT
+      Server: nginx
+      Transfer-Encoding: chunked
+      X-RateLimit-Limit: '1440'
+      X-RateLimit-Remaining: '245'
+    body: '[{"name":"bintray-gradle-plugin","linked":false},{"name":"doxygen-gradle-plugin","linked":false},{"name":"gnumake-gradle-plugin","linked":false},{"name":"gradletest-gradle-plugin","linked":false},{"name":"groovy-vfs","linked":false},{"name":"groovy-vfs-cloud-core","linked":false},{"name":"groovy-vfs-smb-provider","linked":false},{"name":"vfs-gradle-plugin","linked":false}]'
