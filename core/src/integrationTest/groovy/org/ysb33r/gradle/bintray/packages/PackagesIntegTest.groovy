@@ -5,6 +5,7 @@ import org.ysb33r.gradle.bintray.core.BintrayConnection
 import org.ysb33r.gradle.bintray.versions.Version
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Ignore
 
 
 class PackagesIntegTest extends Specification {
@@ -54,6 +55,7 @@ class PackagesIntegTest extends Specification {
         return testBody
     }
 
+    @Ignore
     def "List all pkgs for a repo"() {
         setup:
         String testPkg = "testPkg-ListAllTest"
@@ -75,6 +77,7 @@ class PackagesIntegTest extends Specification {
         assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Create a pkg"(){
         setup:
         String testPackage = "testPackage-CreateTest"
@@ -95,6 +98,7 @@ class PackagesIntegTest extends Specification {
 
     }
 
+    @Ignore
     def "Get a pkg"(){
         setup:
         String testPackage = "testPackage-GetTest"
@@ -113,6 +117,7 @@ class PackagesIntegTest extends Specification {
         assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Update a pkg"(){
         setup:
         String testPackage = "testPackage-UpdateTest"
@@ -140,6 +145,7 @@ class PackagesIntegTest extends Specification {
         assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Delete a pkg"(){
         setup:
         String testPackage = "testPackage-DeleteTest"

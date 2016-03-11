@@ -1,7 +1,9 @@
 package org.ysb33r.gradle.bintray.versions
 
 import groovy.json.JsonBuilder
+import groovy.transform.TupleConstructor
 
+@TupleConstructor
 class Version implements VersionRequest {
     String name
 

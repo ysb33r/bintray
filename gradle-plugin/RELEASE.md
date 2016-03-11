@@ -1,7 +1,7 @@
 BINTRAY GRADLE PLUGIN RELEASE NOTES
 ===================================
 
-## Version 1.7 - Roadmap
+## Version 1.8 - Roadmap
 * [ISSUE #2](https://github.com/ysb33r/bintray/issues/2) - Support for uploading snapshots to oss.jfrog.
 * [ISSUE #1](https://github.com/ysb33r/bintray/issues/1) - Transparent integration in repositories so that snapshots and production are automatically switched between oss.jfrog and Bintray.
 * [ISSUE #7](https://github.com/ysb33r/bintray/issues/7) - Support for ```maven-publish``` plugin
@@ -9,6 +9,9 @@ BINTRAY GRADLE PLUGIN RELEASE NOTES
 * [ISSUE #10](https://github.com/ysb33r/bintray/issues/10) - Correcting the signing of Maven packages and updated documentation.
 * [ISSUE #13](https://github.com/ysb33r/bintray/issues/13) - Support for Bintray version attributes for Generic Repositories.
 * [ISSUE #16](https://github.com/ysb33r/bintray/issues/16) - Version attributes are not correctly created.
+
+## Verions 1.7 - Roadmap
+* Core Bintray API now a separate artifact. Get it on [JCenter]()
 
 ## Version 1.6
 * [ISSUE #15](https://github.com/ysb33r/bintray/issues/15) - Fixed `MissingPropertyException` in BintrayGenericUpload.

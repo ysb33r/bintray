@@ -1,85 +1,90 @@
 package org.ysb33r.gradle.bintray.version
 
 import groovy.json.JsonBuilder
-import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.BetamaxSpecification
 import org.ysb33r.gradle.bintray.versions.Version
-import org.ysb33r.gradle.bintray.versions.VersionsBody
 import org.ysb33r.gradle.bintray.versions.Versions
+import software.betamax.TapeMode
+import software.betamax.junit.Betamax
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
 
-class VersionsIntegTest extends Specification {
+class VersionsIntegTest extends BetamaxSpecification {
 
-    @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
-        userName = System.getenv('BINTRAY_USERNAME')
-        apiKey = System.getenv('BINTRAY_API_KEY')
-        return it
-    }
-    @Shared
-    String testOrg = "getgsi"
-    @Shared
-    String testRepo = "genius-public"
-    @Shared
-    String testPkg = "genius-bootstrapper"
 
-    @Shared
-    Closure makeTestVersionObj = {testVersionName ->
-        Version version = new Version().with {
-            name = testVersionName
-            btConn = btConnection
-            subject = testOrg
-            repo = testRepo
-            pkg = testPkg
-            return it
-        }
-        return version
-    }
+//    @Shared
+//    BintrayConnection btConnection = new BintrayConnection().with{
+//        userName = System.getenv('BINTRAY_USERNAME')
+//        apiKey = System.getenv('BINTRAY_API_KEY')
+//        return it
+//    }
+//    @Shared
+//    String testOrg = "getgsi"
+//    @Shared
+//    String testRepo = "genius-public"
+//    @Shared
+//    String testPkg = "genius-bootstrapper"
+//
+//    @Shared
+//    Closure makeTestVersionObj = {testVersionName ->
+//        Version version = new Version().with {
+//            name = testVersionName
+//            btConn = btConnection
+//            subject = testOrg
+//            repo = testRepo
+//            pkg = testPkg
+//            return it
+//        }
+//        return version
+//    }
+//
+//    @Shared
+//    Closure makeTestVersionsObj = {
+//        Versions versions = new Versions().with {
+//            btConn = btConnection
+//            subject = testOrg
+//            repo = testRepo
+//            pkg = testPkg
+//            return it
+//        }
+//        return versions
+//    }
+//
+//    Closure makeTestBody = {versionName ->
+//        JsonBuilder testBody = new VersionsBody().with {
+//            name = versionName
+//            desc = "Bintray Library Integration Test Description"
+//            vcs_tag = "0.0.1"
+//            return toJson()
+//        }
+//        return testBody
+//    }
 
-    @Shared
-    Closure makeTestVersionsObj = {
-        Versions versions = new Versions().with {
-            btConn = btConnection
-            subject = testOrg
-            repo = testRepo
-            pkg = testPkg
-            return it
-        }
-        return versions
-    }
-
-    Closure makeTestBody = {versionName ->
-        JsonBuilder testBody = new VersionsBody().with {
-            name = versionName
-            desc = "Bintray Library Integration Test Description"
-            vcs_tag = "0.0.1"
-            return toJson()
-        }
-        return testBody
-    }
-
+//    @Betamax(tape="versions",mode=TapeMode.READ_WRITE)
+    @Betamax(tape="versions")
     def "List all versions for a package"() {
-        setup:
-        String testVersion = "testVersion-ListAllTest"
-        Version version = makeTestVersionObj(testVersion)
-        assert version.with {
-            body = makeTestBody(testVersion)
-            return it
-        }.createVersion().content.name == testVersion
-        assert version.getVersion().content.name ==  testVersion
+
+
+        given:
+        Versions versions = new Versions(
+            btConn  : btConnection,
+            subject : BINTRAY_RO_ORG,
+            repo    : BINTRAY_RO_REPO,
+            pkg     : BINTRAY_RO_PKG
+        )
 
         when:
-        Versions versions = makeTestVersionsObj()
+        def list = versions.getVersions()
 
         then:
-        versions.getVersions().contains("testVersion-ListAllTest")
-
-        cleanup:
-        assert version.deleteVersion().toString() == '{"message":"success"}'
-        assert version.getVersion().toString() == '{"message":"Not Found","code":404}'
+        list.contains('1.6.1')
+        list.contains('1.1')
+        list.contains('0.0.5')
     }
-
+    
+    @Ignore
     def "Get the latest version for a package"() {
 
         setup:
@@ -103,6 +108,7 @@ class VersionsIntegTest extends Specification {
 
     }
 
+    @Ignore
     def "Create a version"(){
         setup:
         String testVersion = "testVersion-CreateTest"
@@ -123,6 +129,7 @@ class VersionsIntegTest extends Specification {
 
     }
 
+    @Ignore
     def "Get a version"(){
         setup:
         String testVersion = "testVersion-GetTest"
@@ -142,6 +149,7 @@ class VersionsIntegTest extends Specification {
 
     }
 
+    @Ignore
     def "Update a version"(){
         setup:
         String testVersion = "testVersion-UpdateTest"
@@ -170,6 +178,7 @@ class VersionsIntegTest extends Specification {
 
     }
 
+    @Ignore
     def "Delete a version"(){
         setup:
         String testVersion = "testVersion-DeleteTest"

@@ -65,19 +65,24 @@ class EntitlementsIntegTest extends Specification {
     }
 
     def setupSpec(){
-        downloadKey = new DownloadKey().with {
-            btConn = btConnection
-            subjectType = orgs
-            subject = testOrg
-            body = new JsonBuilder([id:testDlKey])
-            return it
-        }
-        downloadKey.createDownloadKey()
-        downloadKey.id = testDlKey
-        assert downloadKey.getDownloadKey().content.containsKey("username")
+//        downloadKey = new DownloadKey().with {
+//            btConn = btConnection
+//            subjectType = orgs
+//            subject = testOrg
+//            body = new JsonBuilder([id:testDlKey])
+//            return it
+//        }
+//        downloadKey.createDownloadKey()
+//        downloadKey.id = testDlKey
+//        assert downloadKey.getDownloadKey().content.containsKey("username")
     }
 
+    def cleanupSpec(){
+//        assert downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
+//        assert downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
+    }
 
+    @Ignore
     def "List all entitlements for repo"() {
         setup:
         Entitlement entitlement = makeTestEntitlementObj()
@@ -105,6 +110,7 @@ class EntitlementsIntegTest extends Specification {
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "List all entitlements for package"() {
         setup:
         Entitlement entitlement = makeTestEntitlementObj()
@@ -166,6 +172,7 @@ class EntitlementsIntegTest extends Specification {
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Create an entitlement for a repo"() {
         when:
         String testEntitlementId = "testEntitlement-CreateAtRepoTest"
@@ -185,6 +192,7 @@ class EntitlementsIntegTest extends Specification {
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Create an entitlement for a package"() {
         when:
         String testEntitlementId = "testEntitlement-CreateAtPkgTest"
@@ -227,6 +235,7 @@ class EntitlementsIntegTest extends Specification {
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Get a specific entitlement for a repo"() {
         setup:
         String testEntitlementId = "testEntitlement-GetRepoTest"
@@ -246,6 +255,7 @@ class EntitlementsIntegTest extends Specification {
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Update a specific entitlement for a repo"() {
         setup:
         String testEntitlementId = "testEntitlement-UpdateRepoTest"
@@ -270,6 +280,7 @@ class EntitlementsIntegTest extends Specification {
         assert entitlement.getEntitlement().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Delete a specific entitlement for a repo"() {
         setup:
         String testEntitlementId = "testEntitlement-DeleteRepoTest"
@@ -290,9 +301,5 @@ class EntitlementsIntegTest extends Specification {
         entitlement.deleteEntitlement()
     }
 
-    def cleanupSpec(){
-        assert downloadKey.deleteDownloadKey().toString() == '{"message":"success"}'
-        assert downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
-    }
 
 }

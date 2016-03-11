@@ -8,4 +8,5 @@ build
 *.iml
 *.ipr
 *.iws
+littleproxy_*
 out

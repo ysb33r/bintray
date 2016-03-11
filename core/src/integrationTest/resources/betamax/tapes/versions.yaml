@@ -1,0 +1,25 @@
+!tape
+name: versions
+interactions:
+- recorded: 2016-03-11T11:56:15.839Z
+  request:
+    method: GET
+    uri: https://api.bintray.com/packages/ysb33r/grysb33r/bintray-gradle-plugin
+    headers:
+      Accept: application/json, application/javascript, text/javascript
+      Authorization: Basic S0VZX1JFTU9WRUQ=
+      Connection: Keep-Alive
+      Content-Length: '0'
+      Host: api.bintray.com
+  response:
+    status: 200
+    headers:
+      Connection: keep-alive
+      Content-Type: application/json
+      Date: Fri, 11 Mar 2016 11:56:15 GMT
+      Server: nginx
+      Transfer-Encoding: chunked
+      X-RateLimit-Limit: '1440'
+      X-RateLimit-Remaining: '245'
+    body: '{"name":"bintray-gradle-plugin","repo":"grysb33r","owner":"ysb33r","desc":"1. Allows for publication to Bintray via the Upload task type _ i.e the install (from maven) and uploadArchives t(from java) tasks. Supports both Maven & Ivy styles.\r\n \r\n2.
+      Allows Bintray repositories to be listed in project.repositories script blocks (Ivy+Maven)\r\n\r\n3. Additional task to create package metadata when performing custom uploads to Bintray.\r\n","labels":["gradle","bintray"],"attribute_names":[],"licenses":["Apache-2.0"],"custom_licenses":[],"followers_count":0,"created":"2013-05-23T14:49:26.044Z","website_url":null,"issue_tracker_url":"https://github.com/ysb33r/bintray/issues","github_repo":"ysb33r/bintray","github_release_notes_file":"gradle-plugin/RELEASE.md","public_download_numbers":false,"public_stats":true,"linked_to_repos":["jcenter","gradle-plugins"],"versions":["1.6.1","1.6","1.5","1.3.1","1.3","1.2","1.1","1.0","0.0.9","0.0.8","0.0.7","0.0.6","0.0.5"],"latest_version":"1.6","updated":"2016-01-20T21:11:11.875Z","rating_count":0,"system_ids":["org.ysb33r.gradle:bintray"],"vcs_url":"https://github.com/ysb33r/bintray.git","maturity":""}'

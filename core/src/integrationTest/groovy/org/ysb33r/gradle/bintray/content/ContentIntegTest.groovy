@@ -2,6 +2,7 @@ package org.ysb33r.gradle.bintray.content
 
 import org.ysb33r.gradle.bintray.core.BintrayConnection
 import org.ysb33r.gradle.bintray.files.Files
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -50,6 +51,7 @@ class ContentIntegTest extends Specification {
         return (sha1Hex.toString() == expectedHash)
     }
 
+    @Ignore
     def "Download (getContent) a statically named path in a repo"() {
         setup:
         Content content = makeTestContentObj()
@@ -78,6 +80,7 @@ class ContentIntegTest extends Specification {
         verifySha1Hash(result, expectedHash)
     }
 
+    @Ignore
     def "Download (getContent) a dynamically named file in a repo"() {
         setup:
         Content content = makeTestContentObj()

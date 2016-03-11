@@ -2,6 +2,8 @@ package org.ysb33r.gradle.bintray.downloadkeys
 
 import groovy.json.JsonBuilder
 import spock.lang.Specification
+import software.betamax.junit.Betamax
+import software.betamax.junit.RecorderRule
 
 class DownloadKeyBodySpec extends Specification {
 

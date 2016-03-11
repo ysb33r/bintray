@@ -23,7 +23,7 @@ import static groovyx.net.http.ContentType.BINARY
 
 // This code is WIP - I am planning to extend access
 // to the Bintray API by manner of Gradle tasks
-//@TupleConstructor
+@TupleConstructor
 class BintrayAPI {
 
     static final String API_BASE_URL = 'https://api.bintray.com'
