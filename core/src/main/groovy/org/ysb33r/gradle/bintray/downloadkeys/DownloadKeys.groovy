@@ -6,7 +6,7 @@ class DownloadKeys implements DownloadKeysRequest  {
 
     JsonBuilder getDownloadKeys(){
         assertAttributes(subject, subjectType)
-        return btConn.RESTCall("get",getPath())
+        return this.bintrayClient.RESTCall("get",getPath())
     }
 
 }

@@ -1,7 +1,7 @@
 package org.ysb33r.gradle.bintray.files
 
 import groovy.json.JsonBuilder
-import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.core.BintrayClientFactory
 import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
@@ -11,7 +11,7 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 class FilesIntegTest extends Specification {
 
     @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
+    BintrayClientFactory btConnection = new BintrayClientFactory().with{
         userName = System.getenv('BINTRAY_USERNAME')
         apiKey = System.getenv('BINTRAY_API_KEY')
         return it
@@ -31,7 +31,7 @@ class FilesIntegTest extends Specification {
     @Shared
     Closure makeTestFilesObj = {
         Files files = new Files().with {
-            btConn = btConnection
+//            Files.this.bintrayClient = btConnection
             subjectType = orgs
             subject = testOrg
             return it

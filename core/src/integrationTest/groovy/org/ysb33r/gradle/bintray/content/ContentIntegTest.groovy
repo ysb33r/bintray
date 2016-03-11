@@ -1,6 +1,6 @@
 package org.ysb33r.gradle.bintray.content
 
-import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.core.BintrayClientFactory
 import org.ysb33r.gradle.bintray.files.Files
 import spock.lang.Ignore
 import spock.lang.Shared
@@ -12,7 +12,7 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 
 class ContentIntegTest extends Specification {
     @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
+    BintrayClientFactory btConnection = new BintrayClientFactory().with{
         userName = System.getenv('BINTRAY_USERNAME')
         apiKey = System.getenv('BINTRAY_API_KEY')
         return it
@@ -36,12 +36,12 @@ class ContentIntegTest extends Specification {
 
     @Shared
     Closure makeTestContentObj = {
-        Content content = new Content().with {
-            btConn = btConnection
-            subject = testOrg
-            return it
-        }
-        return content
+//        Content content = new Content().with {
+//            Content.this.bintrayClient = btConnection
+//            subject = testOrg
+//            return it
+//        }
+//        return content
     }
     @Shared
     Closure verifySha1Hash = { content, expectedHash ->
@@ -57,7 +57,7 @@ class ContentIntegTest extends Specification {
         Content content = makeTestContentObj()
 
         def expectedHash = new Files().with {
-            btConn = btConnection
+//            Files.this.bintrayClient = btConnection
             subjectType = orgs
             subject = testOrg
             repo = testRepo
@@ -85,7 +85,7 @@ class ContentIntegTest extends Specification {
         setup:
         Content content = makeTestContentObj()
         def expectedHash = new Files().with {
-            btConn = btConnection
+//            Files.this.bintrayClient = btConnection
             subjectType = orgs
             subject = testOrg
             repo = testRepo

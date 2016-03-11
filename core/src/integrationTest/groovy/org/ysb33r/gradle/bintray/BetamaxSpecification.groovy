@@ -1,7 +1,8 @@
 package org.ysb33r.gradle.bintray
 
 import org.junit.Rule
-import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.core.BintrayClient
+import org.ysb33r.gradle.bintray.core.BintrayClientFactory
 import software.betamax.ProxyConfiguration
 import software.betamax.TapeMode
 import software.betamax.junit.RecorderRule
@@ -34,9 +35,8 @@ class BetamaxSpecification extends Specification {
 
     @Rule RecorderRule recorder = new RecorderRule(configuration)
 
-    // TODO: Fixup BintrayConnection class
     @Shared
-    BintrayConnection btConnection = new BintrayConnection(
+    BintrayClientFactory clientFactory = new BintrayClientFactory(
         userName : BINTRAY_USERNAME,
         apiKey : BINTRAY_APIKEY,
         proxyHost : '127.0.0.1',
@@ -44,4 +44,6 @@ class BetamaxSpecification extends Specification {
         ignoreSSLIssues : true
     )
 
+    @Shared BintrayClient apiClient = clientFactory.apiClient
+    @Shared BintrayClient dlClient = clientFactory.dlClient
 }

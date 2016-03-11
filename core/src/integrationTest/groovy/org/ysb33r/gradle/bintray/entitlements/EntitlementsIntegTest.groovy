@@ -1,19 +1,18 @@
 package org.ysb33r.gradle.bintray.entitlements
 
 import groovy.json.JsonBuilder
-import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.core.BintrayClientFactory
 
 import static AccessLevel.*
 import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import org.ysb33r.gradle.bintray.downloadkeys.DownloadKey
-import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 
 class EntitlementsIntegTest extends Specification {
 
     @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
+    BintrayClientFactory btConnection = new BintrayClientFactory().with{
         userName = System.getenv('BINTRAY_USERNAME')
         apiKey = System.getenv('BINTRAY_API_KEY')
         return it
@@ -38,7 +37,7 @@ class EntitlementsIntegTest extends Specification {
     Closure makeTestEntitlementObj = {String entitlementId ->
         Entitlement entitlement = new Entitlement().with {
             id = entitlementId
-            btConn = btConnection
+//            Entitlement.this.bintrayClient = btConnection
             subject = testOrg
             return it
         }
@@ -47,7 +46,7 @@ class EntitlementsIntegTest extends Specification {
     @Shared
     Closure makeTestEntitlementsObj = {
         Entitlements entitlements = new Entitlements().with {
-            btConn = btConnection
+//            Entitlements.this.bintrayClient = btConnection
             subject = testOrg
             return it
         }
@@ -66,7 +65,7 @@ class EntitlementsIntegTest extends Specification {
 
     def setupSpec(){
 //        downloadKey = new DownloadKey().with {
-//            btConn = btConnection
+//            bintrayClient = btConnection
 //            subjectType = orgs
 //            subject = testOrg
 //            body = new JsonBuilder([id:testDlKey])

@@ -13,24 +13,24 @@ class Package implements PackagesRequest {
             body.content.description = description // Supports optional argument overriding body
         }
         assertAttributes(subject, repo, body.content.name, body.content.desc)
-        def result = btConn.RESTCall("post", getPath(), body.toString())
+        def result = this.bintrayClient.RESTCall("post", getPath(), body.toString())
         this.name = result?.name ?: this.name
         return result
     }
 
     JsonBuilder getPackage() {
         assertAttributes(name, subject, repo)
-        return btConn.RESTCall("get", getPath(name))
+        return this.bintrayClient.RESTCall("get", getPath(name))
     }
 
     JsonBuilder deletePackage() {
         assertAttributes(name, subject, repo)
-        return btConn.RESTCall("delete", getPath(name))
+        return this.bintrayClient.RESTCall("delete", getPath(name))
     }
 
     JsonBuilder updatePackage() {
         assertAttributes(name, subject, repo, body.content.name, body.content.desc)
-        return btConn.RESTCall("patch", getPath(name), body.toString())
+        return this.bintrayClient.RESTCall("patch", getPath(name), body.toString())
     }
 
 }

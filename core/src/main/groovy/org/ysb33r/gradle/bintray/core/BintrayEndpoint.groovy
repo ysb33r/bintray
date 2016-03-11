@@ -7,7 +7,7 @@ enum BintrayEndpoint {
     API_BASE_URL('https://api.bintray.com'),
     API_DL_URL('https://dl.bintray.com')
 
-    final String text
+    final URI uri
 
-    BintrayEndpoint(final String t) {text = t}
+    BintrayEndpoint(final String t) {uri = t.toURI()}
 }

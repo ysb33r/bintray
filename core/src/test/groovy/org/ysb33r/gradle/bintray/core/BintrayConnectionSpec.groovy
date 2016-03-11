@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 class BintrayConnectionSpec extends Specification {
     @Shared
-    BintrayConnection btConnection = new BintrayConnection().with{
+    BintrayClientFactory btConnection = new BintrayClientFactory().with{
         userName = System.getenv('BINTRAY_USERNAME')
         apiKey = System.getenv('BINTRAY_API_KEY')
         return it

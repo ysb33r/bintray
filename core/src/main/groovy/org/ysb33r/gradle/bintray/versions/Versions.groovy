@@ -7,6 +7,6 @@ class Versions implements VersionRequest {
 
     List getVersions() {
         assertAttributes(subject, repo, pkg)
-        return btConn.RESTCall("get", getPathGetVersions()).versions
+        return this.bintrayClient.RESTCall("get", getPathGetVersions()).versions
     }
 }

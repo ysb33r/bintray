@@ -10,32 +10,32 @@ class Content implements ContentRequest {
 
     def downloadContent(Boolean dynamicMode = false,  Map queryMap = [:]) {
         assertAttributes(filePath, subject, repo)
-        return btConn.RESTCall("get", getPath(filePath, dynamicMode), null, queryMap, null, BINARY, API_DL_URL)
+        return this.bintrayClient.RESTCall("get", getPath(filePath, dynamicMode), null, queryMap, null, BINARY, API_DL_URL)
     }
 
     //TODO : Complete and Test
     def uploadContent(Boolean publish = false, Boolean override = false, Boolean explode = false) {
         assertAttributes(filePath, subject, repo)
         Map headers = getHeaders(publish, override, explode)
-        return btConn.RESTCall("post", getPath(filePath), null, null, headers, BINARY)
+        return this.bintrayClient.RESTCall("post", getPath(filePath), null, null, headers, BINARY)
     }
 
     //TODO : Complete and Test
     JsonBuilder publishContent(Integer publish_wait_for_secs) {
         body.publish_wait_for_secs = publish_wait_for_secs
         assertAttributes(filePath, subject, repo)
-        return btConn.RESTCall("post", "${getPath(filePath)}/publish", body.toString())
+        return this.bintrayClient.RESTCall("post", "${getPath(filePath)}/publish", body.toString())
     }
 
     //TODO : Complete and Test
     JsonBuilder discardContent() {
         body.discard = true
         assertAttributes(body, filePath, subject, repo)
-        return btConn.RESTCall("post", "${getPath(filePath)}/publish", body.toString())
+        return this.bintrayClient.RESTCall("post", "${getPath(filePath)}/publish", body.toString())
     }
 
     JsonBuilder deleteContent() {
         assertAttributes(filePath, subject, repo)
-        return btConn.RESTCall("delete", getPath(filePath))
+        return this.bintrayClient.RESTCall("delete", getPath(filePath))
     }
 }
