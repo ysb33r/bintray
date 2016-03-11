@@ -1,14 +1,22 @@
 package org.ysb33r.gradle.bintray.content
 
-import org.ysb33r.gradle.bintray.core.BaseIntegTest
+import org.ysb33r.gradle.bintray.core.BintrayClientFactory
 import org.ysb33r.gradle.bintray.files.Files
 import spock.lang.Ignore
 import spock.lang.Shared
+import spock.lang.Specification
+
 import java.security.MessageDigest
 
+import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 
-class ContentIntegTest extends BaseIntegTest {
-
+class ContentIntegTest extends Specification {
+    @Shared
+    BintrayClientFactory btConnection = new BintrayClientFactory().with{
+        userName = System.getenv('BINTRAY_USERNAME')
+        apiKey = System.getenv('BINTRAY_API_KEY')
+        return it
+    }
     @Shared
     String testOrg = "getgsi"
     @Shared
@@ -21,15 +29,19 @@ class ContentIntegTest extends BaseIntegTest {
     String testFile = "azure-rest-${testVersion}.jar"
     @Shared
     String testPath = "com/gsi/genius/gradle/azure-rest/${testVersion}/"
+    @Shared
+    String testFileDynamic = "azure-rest-\$latest.jar"
+    @Shared
+    String testPathDynamic = "com/gsi/genius/gradle/azure-rest/\$latest/"
 
     @Shared
     Closure makeTestContentObj = {
-        Content content = new Content().with {
-            btConn = btConnection
-            subject = testOrg
-            return it
-        }
-        return content
+//        Content content = new Content().with {
+//            Content.this.bintrayClient = btConnection
+//            subject = testOrg
+//            return it
+//        }
+//        return content
     }
     @Shared
     Closure verifySha1Hash = { content, expectedHash ->
@@ -45,7 +57,8 @@ class ContentIntegTest extends BaseIntegTest {
         Content content = makeTestContentObj()
 
         def expectedHash = new Files().with {
-            btConn = btConnection
+//            Files.this.bintrayClient = btConnection
+            subjectType = orgs
             subject = testOrg
             repo = testRepo
             pkg = testPkg
@@ -72,7 +85,8 @@ class ContentIntegTest extends BaseIntegTest {
         setup:
         Content content = makeTestContentObj()
         def expectedHash = new Files().with {
-            btConn = btConnection
+//            Files.this.bintrayClient = btConnection
+            subjectType = orgs
             subject = testOrg
             repo = testRepo
             pkg = testPkg

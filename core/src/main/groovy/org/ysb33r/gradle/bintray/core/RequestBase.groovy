@@ -5,7 +5,7 @@ import groovy.json.JsonBuilder
 trait RequestBase {
 
     JsonBuilder body
-    BintrayConnection btConn
+    BintrayClient bintrayClient
 
     static def assertAttributes(Object... attributes) {
         attributes.each {

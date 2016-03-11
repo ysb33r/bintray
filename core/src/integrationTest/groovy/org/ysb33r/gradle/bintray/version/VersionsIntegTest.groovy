@@ -4,12 +4,8 @@ import groovy.json.JsonBuilder
 import org.ysb33r.gradle.bintray.BetamaxSpecification
 import org.ysb33r.gradle.bintray.versions.Version
 import org.ysb33r.gradle.bintray.versions.Versions
-import software.betamax.TapeMode
 import software.betamax.junit.Betamax
 import spock.lang.Ignore
-import spock.lang.Shared
-import spock.lang.Specification
-
 
 class VersionsIntegTest extends BetamaxSpecification {
 
@@ -31,7 +27,7 @@ class VersionsIntegTest extends BetamaxSpecification {
 //    Closure makeTestVersionObj = {testVersionName ->
 //        Version version = new Version().with {
 //            name = testVersionName
-//            btConn = btConnection
+//            bintrayClient = btConnection
 //            subject = testOrg
 //            repo = testRepo
 //            pkg = testPkg
@@ -43,7 +39,7 @@ class VersionsIntegTest extends BetamaxSpecification {
 //    @Shared
 //    Closure makeTestVersionsObj = {
 //        Versions versions = new Versions().with {
-//            btConn = btConnection
+//            bintrayClient = btConnection
 //            subject = testOrg
 //            repo = testRepo
 //            pkg = testPkg
@@ -69,7 +65,7 @@ class VersionsIntegTest extends BetamaxSpecification {
 
         given:
         Versions versions = new Versions(
-            btConn  : btConnection,
+            bintrayClient: apiClient,
             subject : BINTRAY_RO_ORG,
             repo    : BINTRAY_RO_REPO,
             pkg     : BINTRAY_RO_PKG

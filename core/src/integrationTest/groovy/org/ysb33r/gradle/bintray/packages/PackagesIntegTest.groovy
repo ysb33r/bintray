@@ -2,12 +2,7 @@ package org.ysb33r.gradle.bintray.packages
 
 import groovy.json.JsonBuilder
 import org.ysb33r.gradle.bintray.BetamaxSpecification
-import org.ysb33r.gradle.bintray.core.BintrayConnection
-import org.ysb33r.gradle.bintray.versions.Version
-import software.betamax.TapeMode
 import software.betamax.junit.Betamax
-import spock.lang.Shared
-import spock.lang.Specification
 import spock.lang.Ignore
 
 
@@ -30,7 +25,7 @@ class PackagesIntegTest extends BetamaxSpecification {
 //    Closure makeTestPackageObj = {testPackageName ->
 //        Package pkg = new Package().with {
 //            name = testPackageName
-//            btConn = btConnection
+//            bintrayClient = btConnection
 //            subject = testOrg
 //            repo = testRepo
 //            return it
@@ -41,7 +36,7 @@ class PackagesIntegTest extends BetamaxSpecification {
 //    @Shared
 //    Closure makeTestPackagesObj = {
 //        Packages pkgs = new Packages().with {
-//            btConn = btConnection
+//            bintrayClient = btConnection
 //            subject = testOrg
 //            repo = testRepo
 //            return it
@@ -82,7 +77,7 @@ class PackagesIntegTest extends BetamaxSpecification {
 //        assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
         given:
         Packages pkgs = new Packages(
-            btConn : btConnection,
+            bintrayClient: apiClient,
             subject : BINTRAY_RO_ORG,
             repo : BINTRAY_RO_REPO
         )

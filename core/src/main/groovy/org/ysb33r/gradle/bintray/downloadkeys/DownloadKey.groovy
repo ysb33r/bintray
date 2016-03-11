@@ -11,23 +11,23 @@ class DownloadKey implements DownloadKeysRequest {
         }
         assertAttributes(subject, subjectType, body)
 
-        def result = btConn.RESTCall("post", getPath(), body.toString())
+        def result = this.bintrayClient.RESTCall("post", getPath(), body.toString())
         this.id = result?.username?.split("@")[0] ?: this.id
         return result
     }
 
     JsonBuilder getDownloadKey() {
         assertAttributes(id, subject, subjectType)
-        return btConn.RESTCall("get", getPath(id))
+        return this.bintrayClient.RESTCall("get", getPath(id))
     }
 
     JsonBuilder deleteDownloadKey() {
         assertAttributes(id, subject, subjectType)
-        return btConn.RESTCall("delete", getPath(id))
+        return this.bintrayClient.RESTCall("delete", getPath(id))
     }
 
     JsonBuilder updateDownloadKey() {
         assertAttributes(id, subject, subjectType, body.content)
-        return btConn.RESTCall("patch", getPath(id), body.toString())
+        return this.bintrayClient.RESTCall("patch", getPath(id), body.toString())
     }
 }

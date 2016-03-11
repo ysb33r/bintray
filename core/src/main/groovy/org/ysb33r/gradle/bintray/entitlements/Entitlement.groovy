@@ -1,8 +1,6 @@
 package org.ysb33r.gradle.bintray.entitlements
 
 import groovy.json.JsonBuilder
-import org.ysb33r.gradle.bintray.core.BintrayConnection
-
 
 class Entitlement implements EntitlementsRequest{
     String id
@@ -11,23 +9,23 @@ class Entitlement implements EntitlementsRequest{
             body.content.id = id // Supports optional argument overriding body
         }
         assertAttributes(subject, repo, body.content."access")
-        def result = btConn.RESTCall("post", getPath(), body.toString())
+        def result = this.bintrayClient.RESTCall("post", getPath(), body.toString())
         this.id = result?.id ?: this.id
         return result
     }
 
     JsonBuilder getEntitlement(){
         assertAttributes(id, subject)
-        return btConn.RESTCall("get", getPath(id))
+        return this.bintrayClient.RESTCall("get", getPath(id))
     }
 
     JsonBuilder deleteEntitlement() {
         assertAttributes(id, subject)
-        return btConn.RESTCall("delete", getPath(id))
+        return this.bintrayClient.RESTCall("delete", getPath(id))
     }
 
     JsonBuilder updateEntitlement() {
         assertAttributes(id, subject, body.content)
-        return btConn.RESTCall("patch", getPath(id), body.toString())
+        return this.bintrayClient.RESTCall("patch", getPath(id), body.toString())
     }
 }
