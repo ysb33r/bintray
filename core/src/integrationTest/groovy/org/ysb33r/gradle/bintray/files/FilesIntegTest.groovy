@@ -2,6 +2,7 @@ package org.ysb33r.gradle.bintray.files
 
 import groovy.json.JsonBuilder
 import org.ysb33r.gradle.bintray.core.BaseIntegTest
+import spock.lang.Ignore
 import spock.lang.Shared
 
 
@@ -28,6 +29,7 @@ class FilesIntegTest extends BaseIntegTest {
         return files
     }
 
+    @Ignore
     def "List all Files for a package"() {
         setup: Files files = makeTestFilesObj()
         when:
@@ -41,6 +43,7 @@ class FilesIntegTest extends BaseIntegTest {
         result.content
     }
 
+    @Ignore
     def "List all Files for version"() {
         setup: Files files = makeTestFilesObj()
         when:
@@ -56,6 +59,7 @@ class FilesIntegTest extends BaseIntegTest {
     }
 
     //Bintray states search currently not supported on private repos
+    @Ignore
     def "Search file by name in a repo by name, package, and version"(){
         setup: Files files = makeTestFilesObj()
         when:
@@ -68,6 +72,7 @@ class FilesIntegTest extends BaseIntegTest {
     }
 
     //Bintray states search currently not supported on private repos
+    @Ignore
     def "Search file by name in a repo by SHA1, package, and version"(){
         setup: Files files = makeTestFilesObj()
         when:

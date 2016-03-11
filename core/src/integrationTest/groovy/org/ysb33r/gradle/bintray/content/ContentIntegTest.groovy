@@ -2,6 +2,7 @@ package org.ysb33r.gradle.bintray.content
 
 import org.ysb33r.gradle.bintray.core.BaseIntegTest
 import org.ysb33r.gradle.bintray.files.Files
+import spock.lang.Ignore
 import spock.lang.Shared
 import java.security.MessageDigest
 
@@ -38,6 +39,7 @@ class ContentIntegTest extends BaseIntegTest {
         return (sha1Hex.toString() == expectedHash)
     }
 
+    @Ignore
     def "Download (getContent) a statically named path in a repo"() {
         setup:
         Content content = makeTestContentObj()
@@ -65,6 +67,7 @@ class ContentIntegTest extends BaseIntegTest {
         verifySha1Hash(result, expectedHash)
     }
 
+    @Ignore
     def "Download (getContent) a dynamically named file in a repo"() {
         setup:
         Content content = makeTestContentObj()

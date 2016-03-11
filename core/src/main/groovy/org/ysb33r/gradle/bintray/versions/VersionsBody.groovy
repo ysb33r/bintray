@@ -1,7 +1,9 @@
 package org.ysb33r.gradle.bintray.versions
 
+import groovy.transform.TupleConstructor
 import org.ysb33r.gradle.bintray.core.JsonBodyFilter
 
+@TupleConstructor
 class VersionsBody implements JsonBodyFilter {
     String name
     String desc

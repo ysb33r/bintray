@@ -3,6 +3,7 @@ package org.ysb33r.gradle.bintray.downloadkeys
 import groovy.json.JsonBuilder
 import org.ysb33r.gradle.bintray.core.BaseIntegTest
 import org.ysb33r.gradle.bintray.core.BintrayConnection
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import static org.ysb33r.gradle.bintray.core.SubjectType.*
@@ -36,6 +37,7 @@ class DownloadKeysIntegTest extends BaseIntegTest {
         return downloadKeys
     }
 
+    @Ignore
     def "List all download keys for org"() {
         when:
         JsonBuilder result = makeTestKeysObj().getDownloadKeys()
@@ -43,6 +45,7 @@ class DownloadKeysIntegTest extends BaseIntegTest {
         result.content.containsKey("download_keys")
     }
 
+    @Ignore
     def "List all download keys for user"() {
         setup: DownloadKeys downloadKeys = makeTestKeysObj()
         when:
@@ -56,6 +59,7 @@ class DownloadKeysIntegTest extends BaseIntegTest {
         result.toString() == '{"message":"Forbidden","code":403}'
     }
 
+    @Ignore
     def "Create a download key for an org"() {
         setup:
         String testDlKey = "testDlKey-CreateTest"
@@ -80,6 +84,7 @@ class DownloadKeysIntegTest extends BaseIntegTest {
         assert downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Get specific download key for an org"() {
         setup:
         String testDlKey = "testDlKey-GetTest"
@@ -104,6 +109,7 @@ class DownloadKeysIntegTest extends BaseIntegTest {
         downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Update a download key for an org"() {
         setup:
         String testDlKey = "testDlKey-UpdateTest"
@@ -139,6 +145,7 @@ class DownloadKeysIntegTest extends BaseIntegTest {
         downloadKey.getDownloadKey().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Delete a specific download key for an org"() {
         setup:
         String testDlKey = "testDlKey-DeleteTest"

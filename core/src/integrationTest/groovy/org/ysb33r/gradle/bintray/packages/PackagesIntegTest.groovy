@@ -1,10 +1,21 @@
 package org.ysb33r.gradle.bintray.packages
 
 import groovy.json.JsonBuilder
-import org.ysb33r.gradle.bintray.core.BaseIntegTest
+import org.ysb33r.gradle.bintray.core.BintrayConnection
+import org.ysb33r.gradle.bintray.versions.Version
 import spock.lang.Shared
+import spock.lang.Specification
+import spock.lang.Ignore
 
-class PackagesIntegTest extends BaseIntegTest {
+
+class PackagesIntegTest extends Specification {
+
+    @Shared
+    BintrayConnection btConnection = new BintrayConnection().with{
+        userName = System.getenv('BINTRAY_USERNAME')
+        apiKey = System.getenv('BINTRAY_API_KEY')
+        return it
+    }
     @Shared
     String testOrg = "getgsi"
     @Shared
@@ -44,6 +55,7 @@ class PackagesIntegTest extends BaseIntegTest {
         return testBody
     }
 
+    @Ignore
     def "List all pkgs for a repo"() {
         setup:
         String testPkg = "testPkg-ListAllTest"
@@ -65,6 +77,7 @@ class PackagesIntegTest extends BaseIntegTest {
         assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Create a pkg"(){
         setup:
         String testPackage = "testPackage-CreateTest"
@@ -85,6 +98,7 @@ class PackagesIntegTest extends BaseIntegTest {
 
     }
 
+    @Ignore
     def "Get a pkg"(){
         setup:
         String testPackage = "testPackage-GetTest"
@@ -103,6 +117,7 @@ class PackagesIntegTest extends BaseIntegTest {
         assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Update a pkg"(){
         setup:
         String testPackage = "testPackage-UpdateTest"
@@ -130,6 +145,7 @@ class PackagesIntegTest extends BaseIntegTest {
         assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
     }
 
+    @Ignore
     def "Delete a pkg"(){
         setup:
         String testPackage = "testPackage-DeleteTest"

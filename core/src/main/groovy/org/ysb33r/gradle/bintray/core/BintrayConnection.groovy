@@ -13,6 +13,7 @@
 package org.ysb33r.gradle.bintray.core
 
 import groovy.json.JsonBuilder
+import groovy.transform.TupleConstructor
 import groovyx.net.http.ContentType
 import static groovyx.net.http.ContentType.*
 import groovyx.net.http.HttpResponseDecorator
@@ -20,14 +21,18 @@ import groovyx.net.http.RESTClient
 import groovyx.net.http.HttpResponseException
 import static org.ysb33r.gradle.bintray.core.BintrayEndpoint.*
 
+@TupleConstructor
 class BintrayConnection {
-    private RESTClient apiClient
-    private RESTClient dlClient
 
     String userName
     String apiKey
+    String proxyHost
+    Integer proxyPort
+    boolean ignoreSSLIssues = false
+
     Closure onSuccessDefault = { resp -> resp.data }
     Closure onFailDefault = { e -> new JsonBuilder([message: e.message, code: e.statusCode]) }
+
     def logger
 
     def BintrayConnection (String userName, String apiKey){
@@ -53,10 +58,7 @@ class BintrayConnection {
         if (headers) {
             requestArgs.headers = headers
         }
-//        if (true) {
-//            apiClient().setProxy('localhost', 8888, null)
-//            apiClient().ignoreSSLIssues()
-//        }
+        // TODO: FIx printlines, should be logged instead
         println "Method is: $method"
         println "Endpoint is: $endpoint.text"
         println "Request Args are: $requestArgs"
@@ -75,6 +77,12 @@ class BintrayConnection {
         if (endpoint == API_BASE_URL){
             if (apiClient == null) {
                 apiClient = new RESTClient("${API_BASE_URL.text}/")
+                if(proxyHost && proxyPort) {
+                    apiClient.setProxy(proxyHost, proxyPort, null)
+                }
+                if(ignoreSSLIssues) {
+                    apiClient.ignoreSSLIssues()
+                }
                 apiClient.auth.basic userName, apiKey
                 apiClient.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
             }
@@ -82,6 +90,9 @@ class BintrayConnection {
         }else if (endpoint == API_DL_URL){
             if (dlClient == null) {
                 dlClient = new RESTClient("${API_DL_URL.text}/")
+                if(proxyHost && proxyPort) {
+                    dlClient.setProxy(proxyHost, proxyPort, null)
+                }
                 dlClient.auth.basic userName, apiKey
                 dlClient.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
             }
@@ -92,6 +103,10 @@ class BintrayConnection {
     private void debugmsg(String msg) {
         logger?.debug msg
     }
+
+    RESTClient apiClient
+    RESTClient dlClient
+
 }
 
 

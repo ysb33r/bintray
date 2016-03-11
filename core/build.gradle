@@ -1,10 +1,6 @@
-version 'unspecified'
 
-apply plugin: 'groovy'
-
-repositories {
-    jcenter()
-    mavenLocal()
+ext {
+    tapeDir = file('src/integrationTest/resources/betamax/tapes')
 }
 
 dependencies {
@@ -12,6 +8,7 @@ dependencies {
     compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7.1"
     testCompile "org.spockframework:spock-core:$spockVersion"
     testCompile 'com.github.rest-driver:rest-client-driver:1.1.37'
+    testCompile 'software.betamax:betamax-junit:2.0.0-alpha-1'
     testRuntime 'org.slf4j:slf4j-simple:1.7.12'
 }
 
@@ -38,3 +35,55 @@ task integrationTest(type: Test) {
 
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
+
+integrationTest {
+    systemProperties 'BETAMAX_TAPEDIR' : tapeDir.absolutePath
+    systemProperties 'BETAMAX_PROXYPORT' : 55555
+
+    if(gradle.startParameter.taskNames.contains('updateTapes') && !gradle.startParameter.isOffline()) {
+        systemProperties 'BETAMAX_MAKETAPES': '1'
+
+        systemProperties 'BINTRAY_USERNAME' : project.properties.bintrayUserName
+        systemProperties 'BINTRAY_APIKEY'   : project.properties.bintrayApiKey
+        // The following three settings are for a live repo from which to only read from
+        systemProperties 'BINTRAY_RO_ORG'  : 'ysb33r'
+        systemProperties 'BINTRAY_RO_REPO' : 'grysb33r'
+        systemProperties 'BINTRAY_RO_PKG'  : 'bintray-gradle-plugin'
+
+        // THe following gours setting are for scratch repositories
+        systemProperties 'BINTRAY_TESTORG'     : 'ysb33r'
+        systemProperties 'BINTRAY_TESTMAVEN'   : 'bintray-scratch-maven'
+        systemProperties 'BINTRAY_TESTGENERIC' : 'bintray-scratch-generic'
+        systemProperties 'BINTRAY_TESTPKG'     : 'bintray-scratchpkg'
+
+    }
+}
+
+
+task sanitizeTapes {
+    group 'Security'
+    description 'Removes credentials from Betamax tapes'
+}
+
+sanitizeTapes << {
+    logger.lifecycle "Removing credentials from tapes"
+    def tapes = fileTree (tapeDir) {
+        include '**/*.yaml'
+    }
+    tapes.files.each { File tape ->
+        String content = tape.text
+        tape.withWriter { writer ->
+            content.eachLine { line ->
+                writer.println line.replaceAll(~/(Authorization: Basic [\w=]+)/, 'Authorization: Basic S0VZX1JFTU9WRUQ=')
+            }
+        }
+    }
+}
+
+task updateTapes {
+    group 'Build'
+    description 'Allows for betamax tapes to be updated.'
+    dependsOn integrationTest
+    finalizedBy sanitizeTapes
+    enabled = !gradle.startParameter.isOffline()
+}
