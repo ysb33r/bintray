@@ -47,17 +47,16 @@ class ContentIntegSpec extends BetamaxSpecification {
 ////        }
 ////        return content
 //    }
-//    @Shared
-//    Closure verifySha1Hash = { content, expectedHash ->
-//        def digest = MessageDigest.getInstance("SHA1")
-//        content.eachByte(4096) {bytes, len -> digest.update(bytes, 0, len) }
-//        def sha1Hex = digest.digest().encodeHex()
-//        return (sha1Hex.toString() == expectedHash)
-//    }
+    boolean sha1Hash ( InputStream content ) {
+        def digest = MessageDigest.getInstance("SHA1")
+        content.eachByte(4096) {bytes, len -> digest.update(bytes, 0, len) }
+        def sha1Hex = digest.digest().encodeHex()
+        sha1Hex.toString()
+    }
 
+//    @Betamax(tape='content',mode=TapeMode.READ_WRITE)
+    @Betamax(tape='content')
     @Ignore
-    @Betamax(tape='content',mode=TapeMode.READ_WRITE)
-    //    @Betamax(tape='content')
     def "Download (getContent) a statically named path in a repo"() {
         given:
         Files files = new Files(
@@ -67,11 +66,26 @@ class ContentIntegSpec extends BetamaxSpecification {
             pkg : BINTRAY_RO_PKG,
             ver : '1.2'
         )
-        def file = files.getFiles().find { it.name = 'bintray-1.2-sources.jar.md5' }
-        String sha1 = file.sha1
-println "***** ${sha1}"
-        expect:
-        false
+        def file = files.getFiles().find { it.name = 'bintray-1.2-sources.jar.sha1' }
+        String sha1_expected = file.text.sha1
+        String sha1_downloaded
+
+        Content content = new Content(
+            bintrayClient: dlClient,
+//            subject : BINTRAY_RO_ORG,
+            repo : BINTRAY_RO_REPO,
+            pkg : BINTRAY_RO_PKG,
+            filePath : file.path
+        )
+
+        when:
+        content.withInputStream { istream ->
+            sha1_downloaded = sha1Hash(istream)
+        }
+
+        then:
+        sha1_expected == sha1_downloaded
+
 //        setup:
 //        Content content = makeTestContentObj()
 //
