@@ -1,0 +1,24 @@
+!tape
+name: content
+interactions:
+- recorded: 2016-03-11T23:45:37.120Z
+  request:
+    method: GET
+    uri: https://api.bintray.com/packages/ysb33r/grysb33r/bintray-gradle-plugin/versions/1.2/files?include_unpublished=0
+    headers:
+      Accept: application/json, application/javascript, text/javascript
+      Authorization: Basic eXNiMzNyOjNiZGM1MjdjZWUwNTBkNjBkZDNkZmRiOGExNDYwNjM4ZWFiNmZiYjIwYTEwNWU3NDhiYmI4NWFkMzE5ZGE4OTk=
+      Connection: Keep-Alive
+      Content-Length: '0'
+      Host: api.bintray.com
+  response:
+    status: 200
+    headers:
+      Connection: keep-alive
+      Content-Type: application/json
+      Date: Fri, 11 Mar 2016 23:45:37 GMT
+      Server: nginx
+      Transfer-Encoding: chunked
+      X-RateLimit-Limit: '1440'
+      X-RateLimit-Remaining: '245'
+    body: '[{"name":"bintray-1.2-javadoc.jar","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2-javadoc.jar","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:37.528Z","size":261,"sha1":"46395b6aa4c47d2cc37f9b3b726c066c9ab35913"},{"name":"bintray-1.2-javadoc.jar.md5","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2-javadoc.jar.md5","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:41.474Z","size":32,"sha1":"b1eb14aea5e284d50e84b8e286a6a6297438461f"},{"name":"bintray-1.2-sources.jar","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2-sources.jar","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:30.774Z","size":6723,"sha1":"74299952ee42e154ed4d46300867e0ecf65d9f7c"},{"name":"bintray-1.2-sources.jar.md5","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2-sources.jar.md5","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:34.390Z","size":32,"sha1":"b978b97bbe921e30425fe81a153bc814e593f358"},{"name":"bintray-1.2.jar","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2.jar","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:09.012Z","size":63444,"sha1":"7fe4c9b34a3549e734c0b823a1862486c8207004"},{"name":"bintray-1.2.jar.md5","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2.jar.md5","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:12.674Z","size":32,"sha1":"444f1853b60264043ebb8c97d5c62929a7c61e12"},{"name":"bintray-1.2.pom","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2.pom","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:16.242Z","size":1863,"sha1":"27c9fdeaf23f405eae8d0dea375075171610e350"},{"name":"bintray-1.2.pom.md5","path":"org/ysb33r/gradle/bintray/1.2/bintray-1.2.pom.md5","repo":"grysb33r","package":"bintray-gradle-plugin","version":"1.2","owner":"ysb33r","created":"2014-05-05T10:13:19.832Z","size":32,"sha1":"fe09d87ae3740fcfbf85f12d5de5559ba99079c4"}]'

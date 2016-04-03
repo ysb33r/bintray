@@ -6,7 +6,7 @@ import software.betamax.junit.Betamax
 import spock.lang.Ignore
 
 
-class PackagesIntegTest extends BetamaxSpecification {
+class PackagesIntegSpec extends BetamaxSpecification {
 
 //    @Shared
 //    BintrayConnection btConnection = new BintrayConnection().with{
@@ -57,24 +57,6 @@ class PackagesIntegTest extends BetamaxSpecification {
     @Betamax(tape='packages')
 //    @Betamax(tape='packages',mode=TapeMode.READ_WRITE)
     def "List all pkgs for a repo"() {
-//        setup:
-//        String testPkg = "testPkg-ListAllTest"
-//        Package pkg = makeTestPackageObj (testPkg)
-//        assert pkg.with {
-//            body = makeTestBody(testPkg)
-//            return it
-//        }.createPackage().content.name == testPkg
-//        assert pkg.getPackage().content.name ==  testPkg
-//
-//        when:
-//        Packages pkgs = makeTestPackagesObj()
-//
-//        then:
-//        pkgs.getPackages().find{it.name == "testPkg-ListAllTest"}
-//
-//        cleanup:
-//        assert pkg.deletePackage().toString() == '{"message":"success"}'
-//        assert pkg.getPackage().toString() == '{"message":"Not Found","code":404}'
         given:
         Packages pkgs = new Packages(
             bintrayClient: apiClient,
