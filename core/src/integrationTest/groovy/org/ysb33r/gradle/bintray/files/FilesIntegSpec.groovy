@@ -55,20 +55,9 @@ class FilesIntegSpec extends BetamaxSpecification {
 
         when:
         def list = files.getFiles()
-        println "******* ${list}"
-//        setup: Files files = makeTestFilesObj()
-//        when:
-//        JsonBuilder result = files.with{
-//            repo = testRepo
-//            pkg = testPkg
-//            return it
-//        }.getFiles()
-//
-//        then:
-//        result.content
 
         then:
-        list.
+        list.find { it.path == 'org.ysb33r.gradle/bintray/0.0.5/bintray-0.0.5-sources.jar'}
 
     }
 

@@ -9,39 +9,43 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.*
 
 class DownloadKeysIntegTest extends Specification {
 
-    @Shared
-    BintrayClientFactory btConnection = new BintrayClientFactory().with{
-        userName = System.getenv('BINTRAY_USERNAME')
-        apiKey = System.getenv('BINTRAY_API_KEY')
-        return it
-    }
-    @Shared
-    String testOrg = "getgsi"
-    @Shared
-    String testUser = "jerrywiltsegsi"
-    @Shared
-    Closure makeTestKeyObj = {String testDlKey ->
-        DownloadKey downloadKey = new DownloadKey().with {
-//            DownloadKey.this.bintrayClient = btConnection
-            subjectType = orgs
-            subject = testOrg
-            id = testDlKey
-            return it
-        }
-        println downloadKey.dump()
-        return downloadKey
-    }
+//    @Shared
+//    BintrayClientFactory btConnection = new BintrayClientFactory().with{
+//        userName = System.getenv('BINTRAY_USERNAME')
+//        apiKey = System.getenv('BINTRAY_API_KEY')
+//        return it
+//    }
+//    @Shared
+//    String testOrg = "getgsi"
+//    @Shared
+//    String testUser = "jerrywiltsegsi"
+//    @Shared
+//    Closure makeTestKeyObj = {String testDlKey ->
+//        DownloadKey downloadKey = new DownloadKey().with {
+////            DownloadKey.this.bintrayClient = btConnection
+//            subjectType = orgs
+//            subject = testOrg
+//            id = testDlKey
+//            return it
+//        }
+//        println downloadKey.dump()
+//        return downloadKey
+//    }
+//
+//    @Shared
+//    Closure makeTestKeysObj = {
+//        DownloadKeys downloadKeys = new DownloadKeys().with {
+////            DownloadKeys.this.bintrayClient = btConnection
+//            subjectType = orgs
+//            subject = testOrg
+//            return it
+//        }
+//        return downloadKeys
+//    }
 
-    @Shared
-    Closure makeTestKeysObj = {
-        DownloadKeys downloadKeys = new DownloadKeys().with {
-//            DownloadKeys.this.bintrayClient = btConnection
-            subjectType = orgs
-            subject = testOrg
-            return it
-        }
-        return downloadKeys
-    }
+
+//    @Betamax(tape='downloadkeys',mode=TapeMode.READ_WRITE)
+//    @Betamax(tape='downloadkeys')
 
     @Ignore
     def "List all download keys for org"() {

@@ -1,15 +1,22 @@
 package org.ysb33r.gradle.bintray.files
 
 import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+import groovy.transform.CompileStatic
+import groovy.transform.TupleConstructor
 
+@TupleConstructor
+@CompileStatic
 class Files implements FilesRequest {
 
-    JsonBuilder getFiles(Boolean include_unpublished){
+    JsonSlurper slurper = new JsonSlurper()
+
+    List getFiles(Boolean include_unpublished=false){
         assertAttributes(subject, repo)
-        return this.bintrayClient.RESTCall("get",getPath(), null, getPublishOption(include_unpublished))
+        bintrayClient.RESTCall("get",getPath(), null, getPublishOption(include_unpublished)) as List
     }
 
-    JsonBuilder searchFile(Map queryMap) {
+    def searchFile(Map queryMap) {
         assertAttributes(queryMap)
         return this.bintrayClient.RESTCall("get",getPathSearch(), null, queryMap)
     }

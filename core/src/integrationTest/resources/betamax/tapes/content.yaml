@@ -7,7 +7,7 @@ interactions:
     uri: https://api.bintray.com/packages/ysb33r/grysb33r/bintray-gradle-plugin/versions/1.2/files?include_unpublished=0
     headers:
       Accept: application/json, application/javascript, text/javascript
-      Authorization: Basic eXNiMzNyOjNiZGM1MjdjZWUwNTBkNjBkZDNkZmRiOGExNDYwNjM4ZWFiNmZiYjIwYTEwNWU3NDhiYmI4NWFkMzE5ZGE4OTk=
+      Authorization: Basic S0VZX1JFTU9WRUQ=
       Connection: Keep-Alive
       Content-Length: '0'
       Host: api.bintray.com

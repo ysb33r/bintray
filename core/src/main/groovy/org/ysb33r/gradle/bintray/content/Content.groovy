@@ -1,12 +1,24 @@
 package org.ysb33r.gradle.bintray.content
 
 import groovy.json.JsonBuilder
+import groovy.transform.TupleConstructor
 
 import static groovyx.net.http.ContentType.BINARY
 import static org.ysb33r.gradle.bintray.core.BintrayEndpoint.API_DL_URL
 
+@TupleConstructor
 class Content implements ContentRequest {
     String filePath
+
+    def withInputStream(Boolean dynamicMode = false,  Map queryMap = [:],Closure outputClosure) {
+        ByteArrayInputStream istream = downloadContent(dynamicMode,queryMap)
+        try {
+            outputClosure(istream)
+        } finally {
+            istream.close()
+        }
+    }
+
 
     def downloadContent(Boolean dynamicMode = false,  Map queryMap = [:]) {
         assertAttributes(filePath, subject, repo)

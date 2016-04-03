@@ -27,7 +27,7 @@ class BintrayClient extends RESTClient {
         Closure onSuccess = onSuccessDefault, Closure onFailure = onFailDefault) {
 
         Map requestArgs = [path: path]
-        
+
         if (contentType) {
             requestArgs.contentType = contentType
         }
