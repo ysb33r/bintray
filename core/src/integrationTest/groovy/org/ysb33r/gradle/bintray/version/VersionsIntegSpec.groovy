@@ -7,7 +7,7 @@ import org.ysb33r.gradle.bintray.versions.Versions
 import software.betamax.junit.Betamax
 import spock.lang.Ignore
 
-class VersionsIntegTest extends BetamaxSpecification {
+class VersionsIntegSpec extends BetamaxSpecification {
 
 
 //    @Shared
