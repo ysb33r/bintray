@@ -9,4 +9,9 @@ class Entitlements implements EntitlementsRequest {
         return this.bintrayClient.RESTCall("get",getPath())
     }
 
+    JsonBuilder searchEntitlements(String downloadKeyId){
+        assertAttributes(subject, downloadKeyId)
+        return btConn.RESTCall("get",getPathSearch(),"",getEntSearchParams(downloadKeyId))
+    }
+
 }
