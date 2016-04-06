@@ -10,7 +10,7 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.*
 class DownloadKeysIntegTest extends Specification {
 
 //    @Shared
-//    BintrayClientFactory btConnection = new BintrayClientFactory().with{
+//    BintrayClientFactory btClient = new BintrayClientFactory().with{
 //        userName = System.getenv('BINTRAY_USERNAME')
 //        apiKey = System.getenv('BINTRAY_API_KEY')
 //        return it
@@ -22,7 +22,7 @@ class DownloadKeysIntegTest extends Specification {
 //    @Shared
 //    Closure makeTestKeyObj = {String testDlKey ->
 //        DownloadKey downloadKey = new DownloadKey().with {
-////            DownloadKey.this.bintrayClient = btConnection
+////            DownloadKey.this.bintrayClient = btClient
 //            subjectType = orgs
 //            subject = testOrg
 //            id = testDlKey
@@ -35,7 +35,7 @@ class DownloadKeysIntegTest extends Specification {
 //    @Shared
 //    Closure makeTestKeysObj = {
 //        DownloadKeys downloadKeys = new DownloadKeys().with {
-////            DownloadKeys.this.bintrayClient = btConnection
+////            DownloadKeys.this.bintrayClient = btClient
 //            subjectType = orgs
 //            subject = testOrg
 //            return it

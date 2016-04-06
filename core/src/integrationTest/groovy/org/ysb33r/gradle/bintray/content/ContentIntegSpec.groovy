@@ -16,7 +16,7 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 class ContentIntegSpec extends BetamaxSpecification {
 
 //    @Shared
-//    BintrayClientFactory btConnection = new BintrayClientFactory().with{
+//    BintrayClientFactory btClient = new BintrayClientFactory().with{
 //        userName = System.getenv('BINTRAY_USERNAME')
 //        apiKey = System.getenv('BINTRAY_API_KEY')
 //        return it
@@ -41,7 +41,7 @@ class ContentIntegSpec extends BetamaxSpecification {
 //    @Shared
 //    Closure makeTestContentObj = {
 ////        Content content = new Content().with {
-////            Content.this.bintrayClient = btConnection
+////            Content.this.bintrayClient = btClient
 ////            subject = testOrg
 ////            return it
 ////        }
@@ -90,7 +90,7 @@ class ContentIntegSpec extends BetamaxSpecification {
 //        Content content = makeTestContentObj()
 //
 //        def expectedHash = new Files().with {
-////            Files.this.bintrayClient = btConnection
+////            Files.this.bintrayClient = btClient
 //            subjectType = orgs
 //            subject = testOrg
 //            repo = testRepo
@@ -118,7 +118,7 @@ class ContentIntegSpec extends BetamaxSpecification {
         setup:
         Content content = makeTestContentObj()
         def expectedHash = new Files().with {
-//            Files.this.bintrayClient = btConnection
+//            Files.this.bintrayClient = btClient
             subjectType = orgs
             subject = testOrg
             repo = testRepo
