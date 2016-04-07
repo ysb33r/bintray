@@ -24,6 +24,10 @@ trait EntitlementsRequest implements RequestBase {
         return uri.toString()
     }
 
+    String getPathSearch(){
+        return "/search/entitlements"
+    }
+
     Map getEntSearchParams(String downloadKeyId) {
         Map queryParams = [download_key: downloadKeyId]
         String scope = "$subject"
