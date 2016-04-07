@@ -16,7 +16,7 @@ dependencies {
     testCompile "org.spockframework:spock-core:$spockVersion"
     testCompile 'com.github.rest-driver:rest-client-driver:1.1.37'
     testCompile 'software.betamax:betamax-junit:2.0.0-alpha-1'
-    testRuntime 'org.slf4j:slf4j-simple:1.7.12'
+//    testRuntime 'org.slf4j:slf4j-simple:1.7.12'
 }
 
 sourceSets {
