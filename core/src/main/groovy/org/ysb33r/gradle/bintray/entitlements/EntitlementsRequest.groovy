@@ -23,4 +23,19 @@ trait EntitlementsRequest implements RequestBase, HasSubject, HasRepo, HasPackag
         uri.path += (id) ? "/${id}": ""
         return uri.toString()
     }
+
+
+    String getPathSearch(){
+        return "/search/entitlements"
+    }
+
+    Map getEntSearchParams(String downloadKeyId) {
+        Map queryParams = [download_key: downloadKeyId]
+        String scope = "$subject"
+        scope += repo ? "/$repo" : ""
+        scope += pkg ? "/$pkg" : ""
+        scope += ver ? "/$ver" : ""
+        queryParams.scope = scope
+        return queryParams
+    }
 }
