@@ -12,16 +12,8 @@
 
 package org.ysb33r.gradle.bintray.core
 
-import groovy.json.JsonBuilder
-import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import groovy.util.logging.Slf4j
-import groovyx.net.http.ContentType
-import static groovyx.net.http.ContentType.*
-import groovyx.net.http.HttpResponseDecorator
-import groovyx.net.http.RESTClient
-import groovyx.net.http.HttpResponseException
-import static org.ysb33r.gradle.bintray.core.BintrayEndpoint.*
+
 
 @TupleConstructor
 class BintrayClientFactory {
@@ -31,45 +23,6 @@ class BintrayClientFactory {
     String proxyHost
     Integer proxyPort
     boolean ignoreSSLIssues = false
-
-//    Closure onSuccessDefault = { resp -> resp.data }
-//    Closure onFailDefault = { e -> new JsonBuilder([message: e.message, code: e.statusCode]) }
-
-//    def logger
-
-//    def RESTCall(
-//            String method = "get", String path = "", String body = "", Map query = [:], Map headers = [:],
-//            ContentType contentType = JSON, RESTClient endpoint = getApiClient(),
-//            Closure onSuccess = onSuccessDefault, Closure onFailure = onFailDefault) {
-//
-//        Map requestArgs = [path: path]
-//        if (contentType) {
-//            requestArgs.contentType = contentType
-//        }
-//        if (body) {
-//            requestArgs.body = body
-//        }
-//        if (query) {
-//            requestArgs.query = query
-//        }
-//        if (headers) {
-//            requestArgs.headers = headers
-//        }
-//
-//        debugmsg "Method is: $method"
-//        debugmsg "Endpoint is: $endpoint.text"
-//        debugmsg "Request Args are: $requestArgs"
-//
-//        try {
-//            HttpResponseDecorator response = getClient(endpoint)."$method"(requestArgs)
-//            debugmsg "Response code is ${response.status}."
-//            return onSuccess(response)
-//        } catch (HttpResponseException e) {
-//            debugmsg e.message
-//            debugmsg "Response code is ${e.response.status}."
-//            return onFailure(e)
-//        }
-//    }
 
     BintrayClient getApiClient() {
         getClient(BintrayEndpoint.API_BASE_URL.uri)
@@ -85,7 +38,7 @@ class BintrayClientFactory {
     }
 
     private void debugmsg(String msg) {
-        log.debug msg
+        log?.debug msg
     }
 
     private BintrayClient configureRestClient(BintrayClient client) {
@@ -95,8 +48,10 @@ class BintrayClientFactory {
         if(ignoreSSLIssues) {
             client.ignoreSSLIssues()
         }
-        client.auth.basic userName, apiKey
-        client.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
+        if(userName && apiKey){
+            client.auth.basic userName, apiKey
+            client.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
+        }
         client
     }
 }

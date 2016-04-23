@@ -7,15 +7,15 @@ import spock.lang.Specification
 class BaseIntegTest extends Specification {
 
     @Shared
-    BintrayConnection btConnection
+    BintrayClient btClient
 
     def setupSpec(){
         String userName = System.getenv('BINTRAY_USERNAME')
         String apiKey = System.getenv('BINTRAY_API_KEY')
         assert userName
         assert apiKey
-        btConnection = new BintrayConnection(userName, apiKey)
-        assert btConnection
+        btClient = new BintrayClientFactory(userName, apiKey).getApiClient()
+        assert btClient
     }
 
 }

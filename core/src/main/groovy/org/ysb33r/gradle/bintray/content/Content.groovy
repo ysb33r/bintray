@@ -19,10 +19,9 @@ class Content implements ContentRequest {
         }
     }
 
-
     def downloadContent(Boolean dynamicMode = false,  Map queryMap = [:]) {
         assertAttributes(filePath, subject, repo)
-        return this.bintrayClient.RESTCall("get", getPath(filePath, dynamicMode), null, queryMap, null, BINARY, API_DL_URL)
+        return this.bintrayClient.RESTCall("get", getPath(filePath, dynamicMode), null, queryMap, null, BINARY)
     }
 
     //TODO : Complete and Test
