@@ -14,6 +14,10 @@ import static groovyx.net.http.ContentType.JSON
  */
 class BintrayClient extends RESTClient {
 
+    //TODO: Add default handling of API errors which are not HTTP errors
+    //Examples include "Not Authorized" and "Not Found"
+    // Or it needs a more flexible way to pass in closures for specific error codes
+
     Closure onSuccessDefault = { resp -> resp.data }
     Closure onFailDefault = { e -> new JsonBuilder([message: e.message, code: e.statusCode]) }
 
