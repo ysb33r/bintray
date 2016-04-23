@@ -14,7 +14,7 @@ import static org.ysb33r.gradle.bintray.core.SubjectType.orgs
 class FilesIntegSpec extends BetamaxSpecification {
 
 //    @Shared
-//    BintrayClientFactory btConnection = new BintrayClientFactory().with{
+//    BintrayClientFactory btClient = new BintrayClientFactory().with{
 //        userName = System.getenv('BINTRAY_USERNAME')
 //        apiKey = System.getenv('BINTRAY_API_KEY')
 //        return it
@@ -34,7 +34,7 @@ class FilesIntegSpec extends BetamaxSpecification {
 //    @Shared
 //    Closure makeTestFilesObj = {
 //        Files files = new Files().with {
-////            Files.this.bintrayClient = btConnection
+////            Files.this.bintrayClient = btClient
 //            subjectType = orgs
 //            subject = testOrg
 //            return it

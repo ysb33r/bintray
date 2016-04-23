@@ -9,7 +9,7 @@ import spock.lang.Ignore
 class PackagesIntegSpec extends BetamaxSpecification {
 
 //    @Shared
-//    BintrayConnection btConnection = new BintrayConnection().with{
+//    BintrayConnection btClient = new BintrayConnection().with{
 //        userName = System.getenv('BINTRAY_USERNAME')
 //        apiKey = System.getenv('BINTRAY_API_KEY')
 //        return it
@@ -25,7 +25,7 @@ class PackagesIntegSpec extends BetamaxSpecification {
 //    Closure makeTestPackageObj = {testPackageName ->
 //        Package pkg = new Package().with {
 //            name = testPackageName
-//            bintrayClient = btConnection
+//            bintrayClient = btClient
 //            subject = testOrg
 //            repo = testRepo
 //            return it
@@ -36,7 +36,7 @@ class PackagesIntegSpec extends BetamaxSpecification {
 //    @Shared
 //    Closure makeTestPackagesObj = {
 //        Packages pkgs = new Packages().with {
-//            bintrayClient = btConnection
+//            bintrayClient = btClient
 //            subject = testOrg
 //            repo = testRepo
 //            return it
