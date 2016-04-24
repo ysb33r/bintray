@@ -1,7 +1,6 @@
 package org.ysb33r.gradle.bintray.core
 
 import groovy.json.JsonBuilder
-import groovy.util.logging.Slf4j
 import groovyx.net.http.ContentType
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException

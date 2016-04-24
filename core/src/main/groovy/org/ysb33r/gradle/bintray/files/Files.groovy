@@ -1,6 +1,5 @@
 package org.ysb33r.gradle.bintray.files
 
-import groovy.json.JsonBuilder
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 
