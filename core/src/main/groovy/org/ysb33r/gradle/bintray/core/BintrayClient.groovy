@@ -1,7 +1,6 @@
 package org.ysb33r.gradle.bintray.core
 
 import groovy.json.JsonBuilder
-import groovy.util.logging.Slf4j
 import groovyx.net.http.ContentType
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
@@ -13,6 +12,10 @@ import static groovyx.net.http.ContentType.JSON
  * @author Schalk W. Cronjé
  */
 class BintrayClient extends RESTClient {
+
+    //TODO: Add default handling of API errors which are not HTTP errors
+    //Examples include "Not Authorized" and "Not Found"
+    // Or it needs a more flexible way to pass in closures for specific error codes
 
     Closure onSuccessDefault = { resp -> resp.data }
     Closure onFailDefault = { e -> new JsonBuilder([message: e.message, code: e.statusCode]) }

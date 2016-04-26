@@ -9,7 +9,7 @@ trait RequestBase {
 
     static def assertAttributes(Object... attributes) {
         attributes.each {
-            assert it?.toString().size()
+            assert it?.toString()?.size()
         }
     }
 

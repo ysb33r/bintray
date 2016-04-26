@@ -37,7 +37,7 @@ class EntitlementsIntegTest extends Specification {
     Closure makeTestEntitlementObj = {String entitlementId ->
         Entitlement entitlement = new Entitlement().with {
             id = entitlementId
-//            Entitlement.this.bintrayClient = btConnection
+//            Entitlement.this.bintrayClient = btClient
             subject = testOrg
             return it
         }
@@ -46,7 +46,7 @@ class EntitlementsIntegTest extends Specification {
     @Shared
     Closure makeTestEntitlementsObj = {
         Entitlements entitlements = new Entitlements().with {
-//            Entitlements.this.bintrayClient = btConnection
+//            Entitlements.this.bintrayClient = btClient
             subject = testOrg
             return it
         }
@@ -65,7 +65,7 @@ class EntitlementsIntegTest extends Specification {
 
     def setupSpec(){
 //        downloadKey = new DownloadKey().with {
-//            bintrayClient = btConnection
+//            bintrayClient = btClient
 //            subjectType = orgs
 //            subject = testOrg
 //            body = new JsonBuilder([id:testDlKey])

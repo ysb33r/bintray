@@ -11,7 +11,7 @@ class VersionsIntegSpec extends BetamaxSpecification {
 
 
 //    @Shared
-//    BintrayConnection btConnection = new BintrayConnection().with{
+//    BintrayConnection btClient = new BintrayConnection().with{
 //        userName = System.getenv('BINTRAY_USERNAME')
 //        apiKey = System.getenv('BINTRAY_API_KEY')
 //        return it
@@ -27,7 +27,7 @@ class VersionsIntegSpec extends BetamaxSpecification {
 //    Closure makeTestVersionObj = {testVersionName ->
 //        Version version = new Version().with {
 //            name = testVersionName
-//            bintrayClient = btConnection
+//            bintrayClient = btClient
 //            subject = testOrg
 //            repo = testRepo
 //            pkg = testPkg
@@ -39,7 +39,7 @@ class VersionsIntegSpec extends BetamaxSpecification {
 //    @Shared
 //    Closure makeTestVersionsObj = {
 //        Versions versions = new Versions().with {
-//            bintrayClient = btConnection
+//            bintrayClient = btClient
 //            subject = testOrg
 //            repo = testRepo
 //            pkg = testPkg
