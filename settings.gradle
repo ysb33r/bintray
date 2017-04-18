@@ -13,3 +13,5 @@
 rootProject.name = 'bintray'
 
 include 'gradle-plugin'
+include 'core'
+
