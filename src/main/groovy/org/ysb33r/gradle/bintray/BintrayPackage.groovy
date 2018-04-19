@@ -12,16 +12,14 @@
 
 package org.ysb33r.gradle.bintray
 
-import groovyx.net.http.HTTPBuilder
-import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.Method.GET
-import static groovyx.net.http.Method.POST
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
+import org.ysb33r.grolifant.api.StringUtils
 
-
+@CompileStatic
 class BintrayPackage extends DefaultTask {
     
     /** Bintray username
@@ -41,7 +39,7 @@ class BintrayPackage extends DefaultTask {
      */
     @Input
     @Optional
-    def apiBaseUrl = 'https://api.bintray.com'
+    String apiBaseUrl = 'https://api.bintray.com'
     
     /** Name of an existing repository
      * 
@@ -74,21 +72,43 @@ class BintrayPackage extends DefaultTask {
      */
     @Input
     @Optional
-    def descUrl = ''
+    String descUrl = ''
     
     /** Tags to apply to package
      * 
      */
     @Input
     @Optional
-    def tags = null
+    List<String> getTags() {
+        StringUtils.stringize(this.tags)
+    }
+
+    void setTags(Object... t) {
+        tags.clear()
+        tags.addAll(t as List)
+    }
+
+    void tags(Object... t) {
+        tags.addAll(t as List)
+    }
 
     /** Licenses to apply to package
      *
      */
     @Input
     @Optional
-    def licenses = null
+    List<String> getLicenses() {
+        StringUtils.stringize(this.licenses)
+    }
+
+    void setLicenses (Object... t) {
+        licenses.clear()
+        licenses.addAll(t as List)
+    }
+
+    void licenses (Object... t) {
+        licenses.addAll(t as List)
+    }
 
     /** Source Control URL
      *
@@ -117,31 +137,23 @@ class BintrayPackage extends DefaultTask {
     @Optional
     Map versionAttributes = [:]
 
-    def setTags (Object... t) {
-        tags = t as List    
-    }
-
-    def setLicenses (Object... t) {
-        licenses = t as List
-    }
-
-    def getSource() {
+    String getSource() {
         repoOwner ?: username
     }
     
-    def mavenUrl() {
+    String mavenUrl() {
         "${apiBaseUrl}/maven/${source}/${repoName}/${packageName}"
     }
-    
-    def mavenUrl(def moduleName) {
+
+    String mavenUrl(def moduleName) {
         "${apiBaseUrl}/maven/${source}/${repoName}/${moduleName}"
     }
-    
-    def ivyUrl(def moduleName,def moduleVersion) {
+
+    String ivyUrl(def moduleName,def moduleVersion) {
         "${apiBaseUrl}/content/${source}/${repoName}/${moduleName}/${moduleVersion}"
     }
- 
-    def ivyUrl(def moduleVersion) {
+
+    String ivyUrl(def moduleVersion) {
         "${apiBaseUrl}/content/${source}/${repoName}/${packageName}/${moduleVersion}"
     }
     
@@ -151,7 +163,7 @@ class BintrayPackage extends DefaultTask {
             'repoOwner'   : source,
             'repoName'    : repoName,
             'packageName' : packageName,
-            'version'     : project.version,
+            'version'     : project.version.toString(),
             'userName'    : username,
             'apiKey'      : apiKey,
             'logger'      : project.logger
@@ -185,6 +197,8 @@ class BintrayPackage extends DefaultTask {
         return updateResult
    }
 
+    private final List<Object> tags = []
+    private final List<Object> licenses = []
 }
 
 

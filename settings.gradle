@@ -10,6 +10,5 @@
 //
 // ============================================================================
 
-rootProject.name = 'bintray'
+rootProject.name = 'bintray-gradle-plugin'
 
-include 'gradle-plugin'

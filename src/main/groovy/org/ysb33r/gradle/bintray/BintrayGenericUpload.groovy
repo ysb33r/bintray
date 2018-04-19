@@ -11,17 +11,23 @@
 // ============================================================================
 package org.ysb33r.gradle.bintray
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
 import org.gradle.api.file.FileCollection
+import org.ysb33r.grolifant.api.StringUtils
 
 /**
  * Created by schalkc on 27/04/2014.
  */
+@CompileStatic
 class BintrayGenericUpload extends DefaultTask {
 
     @InputFiles
-    List<File> artifacts
+    Set<File> getArtifacts() {
+        project.files(this.artifacts).files
+    }
 
     @Input
     @Optional
@@ -65,20 +71,6 @@ class BintrayGenericUpload extends DefaultTask {
     @Optional
     String description = ''
 
-    /** Tags to apply to package
-     *
-     */
-    @Input
-    @Optional
-    def tags = null
-
-    /** Licenses to apply to package
-     *
-     */
-    @Input
-    @Optional
-    def licenses = null
-
     /** Source Control URL
      *
      */
@@ -115,15 +107,44 @@ class BintrayGenericUpload extends DefaultTask {
     @Optional
     String gpgPassphrase
 
-    def setTags (Object... t) {
-        tags = t as List
+    /** Tags to apply to package
+     *
+     */
+    @Input
+    @Optional
+    List<String> getTags() {
+        StringUtils.stringize(this.tags)
     }
 
-    def setLicenses (Object... t) {
-        licenses = t as List
+    void setTags (Object... t) {
+        tags.clear()
+        tags.addAll(t as List)
+    }
+
+    void tags(Object... t) {
+        tags.addAll(t as List)
+    }
+
+    /** Licenses to apply to package
+     *
+     */
+    @Input
+    @Optional
+    List<String> getLicenses() {
+        StringUtils.stringize(this.licenses)
+    }
+
+    void setLicenses (Object... t) {
+        licenses.clear()
+        licenses.addAll(t as List)
+    }
+
+    void licenses(Object... t) {
+        licenses.addAll(t as List)
     }
 
     @TaskAction
+    @CompileDynamic
     void exec() {
         BintrayAPI api=new BintrayAPI(
             'baseUrl'     : baseUrl,
@@ -188,24 +209,16 @@ class BintrayGenericUpload extends DefaultTask {
         userName=u
     }
 
-    void sources(final List inputs) {
-        inputs.each { sources(it) }
+    void sources( Object... inputs) {
+        this.artifacts.addAll(inputs as List)
     }
 
-    void sources(final FileCollection inputs) {
-        inputs.files.each { sources(it) }
+    void sources( Iterable<Object> inputs) {
+        this.artifacts.addAll(inputs)
     }
 
-
-    void sources(final String input) {
-        sources(new File(input))
-    }
-
-    void sources(final File input) {
-        if(artifacts==null) {
-            artifacts = []
-        }
-        artifacts.add(input)
-    }
+    private final List<Object> artifacts = []
+    private final List<Object> tags = []
+    private final List<Object> licenses = []
 
 }

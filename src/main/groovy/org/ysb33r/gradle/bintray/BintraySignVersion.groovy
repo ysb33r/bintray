@@ -11,6 +11,7 @@
 // ============================================================================
 package org.ysb33r.gradle.bintray
 
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Input
@@ -21,6 +22,7 @@ import org.gradle.api.tasks.TaskAction
 /**
  * Created by schalkc on 27/04/2014.
  */
+@CompileStatic
 class BintraySignVersion extends DefaultTask {
 
     @Input

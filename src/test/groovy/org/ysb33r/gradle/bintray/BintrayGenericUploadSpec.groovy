@@ -29,6 +29,6 @@ class BintrayGenericUploadSpec extends spock.lang.Specification {
             upload.sources('file1.txt')
 
         then:
-            upload.artifacts[0] == new File('file1.txt')
+            upload.artifacts[0] == project.file('file1.txt').absoluteFile
     }
 }

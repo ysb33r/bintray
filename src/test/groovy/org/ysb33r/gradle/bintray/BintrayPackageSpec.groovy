@@ -26,8 +26,8 @@ class BintrayPackageSpec extends Specification {
             bintrayPkg.packageName == null
             bintrayPkg.description == ''
             bintrayPkg.descUrl == ''
-            bintrayPkg.tags == null
-            bintrayPkg.licenses == null
+            bintrayPkg.tags == []
+            bintrayPkg.licenses == []
             bintrayPkg.vcsUrl == null
             bintrayPkg.autoCreatePackage == false
             bintrayPkg.updatePackage == false
