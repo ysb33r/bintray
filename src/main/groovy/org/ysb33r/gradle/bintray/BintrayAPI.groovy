@@ -92,7 +92,12 @@ class BintrayAPI {
             request.body = payload
 
             response.success {
-                debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: success"
+                debugmsg "${repoOwner}/${repoName}/${packageName}: success"
+            }
+
+            response.exception { Throwable e ->
+                debugmsg "${repoOwner}/${repoName}/${packageName}: failed for payload ${payload}"
+                throw e
             }
         }
     }
@@ -116,6 +121,11 @@ class BintrayAPI {
 
             response.when(404) {
                 debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: not found"
+            }
+
+            response.exception { Throwable e ->
+                debugmsg "${repoOwner}/${repoName}/${packageName}: failed for payload ${payload}"
+                throw e
             }
         }
 
@@ -145,14 +155,20 @@ class BintrayAPI {
     void createVersion(String description) {
         assertVersionAttributes()
         final String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
+        Map payload = [name: version, desc: description]
         debugmsg "About to create ${repoOwner}/${repoName}/${packageName}/${version}"
 
         client().post {
             request.uri.path = "${rest}/versions"
-            request.body = [name: version, desc: description]
+            request.body = payload
 
             response.success {
                 debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: success"
+            }
+
+            response.exception { Throwable e ->
+                debugmsg "${rest}/versions: failed for payload ${payload}"
+                throw e
             }
         }
     }
@@ -172,7 +188,6 @@ class BintrayAPI {
             response.when(404) {
                 debugmsg "Response code is 404. Assuming ${version} does not exist"
             }
-
         }
 
         deleteStatus
@@ -182,10 +197,10 @@ class BintrayAPI {
         assertVersionAttributes()
         String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
         boolean updateStatus = false
-
+        Map payload = [name: version, desc: description]
         client().patch {
             request.uri.path = "${rest}/versions/${version}"
-            request.body = [name: version, desc: description]
+            request.body = payload
 
             response.success {
                 updateStatus = true
@@ -194,7 +209,11 @@ class BintrayAPI {
             response.when(404) {
                 debugmsg "${rest}/versions/${version} not found. Will not update."
             }
-        }
+
+            response.exception { Throwable e ->
+                debugmsg "${rest}/versions/${version}: failed for payload ${payload}"
+                throw e
+            }        }
 
         updateStatus
     }
@@ -239,6 +258,7 @@ class BintrayAPI {
         assertVersionAttributes()
         assert content.exists()
 
+        debugmsg "About to upload ${content.name}"
         client().put {
 //            client().headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
             request.uri.path = "/content/${repoOwner}/${repoName}/${packageName}/${version}/${content.name}"

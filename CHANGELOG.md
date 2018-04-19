@@ -1,6 +1,9 @@
 BINTRAY GRADLE PLUGIN RELEASE NOTES
 ===================================
 
+## Version 2.0.1
+* Add aditional debug messages for when operatiosn fail.
+
 ## Version 2.0
 * Upgradle to Gradle 4.6
 * Replace HttpBuilder with HttpBuilder-NG.
