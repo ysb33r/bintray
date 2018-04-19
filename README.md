@@ -5,7 +5,9 @@ This is my collection of Bintray support libraries and plugins. Currently only a
 but the plan is to refactor the API into separate JARs that can be consumed by other projects.
 
 ## Previous versions of this document
-+ 1.5   - https://github.com/ysb33r/bintray/blob/RELEASE_1_5/README.md (Current stable)
++ 2.0   - https://github.com/ysb33r/bintray/blob/RELEASE_2_0/README.md (Current stable)
++ 1.6   - https://github.com/ysb33r/bintray/blob/RELEASE_1_6/README.md
++ 1.5   - https://github.com/ysb33r/bintray/blob/RELEASE_1_5/README.md
 + 1.4   - https://github.com/ysb33r/bintray/blob/RELEASE_1_4/README.md 
 + 1.3.1 - https://github.com/ysb33r/bintray/blob/RELEASE_1_3_1/README.md
 + 1.3   - https://github.com/ysb33r/bintray/blob/RELEASE_1_3/README.md 
@@ -32,25 +34,13 @@ Please see [RELEASE.md](https://github.com/ysb33r/bintray/blob/master/gradle-plu
 
 ### Known compatibility
 
++ 2.0 - Gradle 4.6, V1 Bintray API
 + 1.4 - Gradle 1.12, V1 Bintray API
 + 1.3.x - Gradle 1.12, V1 Bintray API
 + 1.2 - Gradle 1.12, V1 Bintray API
 + 1.1 - Gradle 1.11, V1 Bintray API
 + 1.0 - Gradle 1.11, V1 Bintray API
 + 0.0.6 - Gradle 1.6, Old Bintray API
-
-### Adding the plugin
-
-```groovy
-buildscript {
-    repositories {
-        jcenter()
-      }
-      dependencies {
-        classpath 'org.ysb33r.gradle:bintray:1.5'
-      }
-}
-```
 
 ### Publishing to Bintray Maven Repository
 
