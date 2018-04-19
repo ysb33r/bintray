@@ -31,7 +31,7 @@ plugins {
     id 'com.github.hierynomus.license' version '0.14.0'
 }
 
-version = '2.0-SNAPSHOT'
+version = '2.0'
 group = 'org.ysb33r.gradle'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -104,6 +104,8 @@ uploadArchives  {
 
         }
     }
+
+    dependsOn build
 }
 
 pluginBundle {
@@ -128,6 +130,7 @@ pluginBundle {
 
 publishPlugins {
     onlyIf { !version.endsWith("SNAPSHOT") }
+    mustRunAfter uploadArchives
 }
 
 license {
@@ -135,4 +138,9 @@ license {
     ignoreFailures = false
     ext.year = '2013-2018'
     header = rootProject.file('config/apache-header')
+}
+
+task release {
+    dependsOn build, uploadArchives, publishPlugins
+    onlyIf { !version.endsWith("SNAPSHOT") }
 }
