@@ -27,68 +27,77 @@ package org.ysb33r.gradle.bintray
 
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.TaskAction
 import org.ysb33r.grolifant.api.StringUtils
 
 @CompileStatic
 class BintrayPackage extends DefaultTask {
-    
+
     /** Bintray username
-     * 
+     *
      */
     @Input
     String username
-    
+
     /* Bintray API Key
      * 
      */
     @Input
     String apiKey
-    
-    /** 
+
+    /**
      * Bintray URL. Usually no need to set this unless testing. 
      */
     @Input
     @Optional
     String apiBaseUrl = 'https://api.bintray.com'
-    
+
     /** Name of an existing repository
-     * 
+     *
      */
     @Input
     String repoName
-    
+
     /** Name of the user that created the repository. If not specified, then
      * task will use @b username instead.
      */
     @Input
     @Optional
     String repoOwner
-    
+
     /** Package name where artifacts will be published to.
-     * 
+     *
      */
     @Input
     String packageName
-    
+
     /** Package textual description
-     * 
+     *
      */
     @Input
     @Optional
-    String description = ''
-    
+    String getDescription() {
+        StringUtils.stringize(this.pkgDescription)
+    }
+
+    void setDescription(Object o) {
+        this.pkgDescription = o
+    }
+
+    void description(Object o) {
+        this.pkgDescription = o
+    }
     /** URL to another document containing the package description
-     * 
+     *
      */
     @Input
     @Optional
     String descUrl = ''
-    
+
     /** Tags to apply to package
-     * 
+     *
      */
     @Input
     @Optional
@@ -114,12 +123,12 @@ class BintrayPackage extends DefaultTask {
         StringUtils.stringize(this.licenses)
     }
 
-    void setLicenses (Object... t) {
+    void setLicenses(Object... t) {
         licenses.clear()
         licenses.addAll(t as List)
     }
 
-    void licenses (Object... t) {
+    void licenses(Object... t) {
         licenses.addAll(t as List)
     }
 
@@ -129,7 +138,6 @@ class BintrayPackage extends DefaultTask {
     @Input
     @Optional
     String vcsUrl = null
-
 
     /** If set, a non-existing package will be created prior to creating the version
      *
@@ -148,12 +156,18 @@ class BintrayPackage extends DefaultTask {
     /** Attributes that can be set on a version */
     @Input
     @Optional
-    Map versionAttributes = [:]
+    Map<String, Object> getVersionAttributes() {
+        this.attributes
+    }
+
+    void versionAttributes(Map<String, ?> attrs) {
+        this.versionAttributes.putAll(attrs)
+    }
 
     String getSource() {
         repoOwner ?: username
     }
-    
+
     String mavenUrl() {
         "${apiBaseUrl}/maven/${source}/${repoName}/${packageName}"
     }
@@ -162,56 +176,60 @@ class BintrayPackage extends DefaultTask {
         "${apiBaseUrl}/maven/${source}/${repoName}/${moduleName}"
     }
 
-    String ivyUrl(def moduleName,def moduleVersion) {
+    String ivyUrl(def moduleName, def moduleVersion) {
         "${apiBaseUrl}/content/${source}/${repoName}/${moduleName}/${moduleVersion}"
     }
 
     String ivyUrl(def moduleVersion) {
         "${apiBaseUrl}/content/${source}/${repoName}/${packageName}/${moduleVersion}"
     }
-    
+
     @TaskAction
     def createPackage() {
         def bintray = new BintrayAPI(
-            'repoOwner'   : source,
-            'repoName'    : repoName,
-            'packageName' : packageName,
-            'version'     : project.version.toString(),
-            'userName'    : username,
-            'apiKey'      : apiKey,
-            'logger'      : project.logger
+            'repoOwner': source,
+            'repoName': repoName,
+            'packageName': packageName,
+            'version': project.version.toString(),
+            'userName': username,
+            'apiKey': apiKey,
+            'logger': project.logger
         )
 
-        boolean updated=false
-        if(autoCreatePackage && !bintray.hasPackage()) {
-            if(!bintray.createPackage(description,tags,licenses,vcsUrl)) {
+        boolean updated = false
+        if (autoCreatePackage && !bintray.hasPackage()) {
+            if (!bintray.createPackage(description, tags, licenses, vcsUrl)) {
                 return false
             }
-            updated=true
+            updated = true
         }
 
-        if(updatePackage && !updated) {
-            if(!bintray.updatePackage(description,tags,licenses,vcsUrl)) {
+        if (updatePackage && !updated) {
+            if (!bintray.updatePackage(description, tags, licenses, vcsUrl)) {
                 return false
             }
         }
 
         boolean updateResult
-        if(!bintray.hasVersion()) {
+        if (!bintray.hasVersion()) {
             updateResult = bintray.createVersion(description)
         } else {
             updateResult = bintray.updateVersion(description)
         }
 
-        if(updateResult && versionAttributes?.size()) {
-            updateResult = bintray.setVersionAttributes(versionAttributes)
+        Map<String, Object> attrs = getVersionAttributes()
+        if (updateResult && attrs?.size()) {
+            updateResult = bintray.setVersionAttributes(attrs)
         }
 
         return updateResult
-   }
+    }
 
     private final List<Object> tags = []
     private final List<Object> licenses = []
+    private final Map<String, Object> attributes = [:]
+
+    private Object pkgDescription = ''
 }
 
 

@@ -1,8 +1,12 @@
 BINTRAY GRADLE PLUGIN RELEASE NOTES
 ===================================
 
+## Version 2.0.2
+* `BintrayPackage` tasks allow lazy evaluation of tags, licenses and description.
+
+
 ## Version 2.0.1
-* Add aditional debug messages for when operatiosn fail.
+* Add additional debug messages for when operatiosn fail.
 
 ## Version 2.0
 * Upgradle to Gradle 4.6
