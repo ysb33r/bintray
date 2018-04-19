@@ -25,19 +25,22 @@
 
 package org.ysb33r.gradle.bintray
 
+import groovy.json.JsonOutput
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
-import groovyx.net.http.HttpBuilder
+import groovyx.net.http.NativeHandlers
+import groovyx.net.http.OkHttpBuilder
 import org.gradle.api.logging.Logger
 
 import static groovyx.net.http.ContentTypes.BINARY
-import static groovyx.net.http.ContentTypes.JSON
-import static groovyx.net.http.HttpBuilder.configure
+import static groovyx.net.http.OkHttpBuilder.configure
 
 @CompileStatic
 class BintrayAPI {
 
     static final String API_BASE_URL = System.getProperty('org,ysb33r.gradle.bintray.url') ?: 'https://api.bintray.com'
+    static final String JSON = 'application/json'
 
     String baseUrl = API_BASE_URL
     String repoOwner
@@ -49,7 +52,7 @@ class BintrayAPI {
     Logger logger
 
     boolean hasPackage() {
-        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        final String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
         assertVersionAttributes()
         boolean packageStatus = false
         client().get {
@@ -78,7 +81,7 @@ class BintrayAPI {
     void createPackage(
         final String description, final List labels = [], final List licenses = [], final String vcsUrl = null) {
         assertVersionAttributes()
-        final String rest = "packages/${repoOwner}/${repoName}"
+        final String rest = "/packages/${repoOwner}/${repoName}"
 
         Map payload = createPackagePayload(description, labels, licenses, vcsUrl)
         payload['name'] = packageName
@@ -87,7 +90,6 @@ class BintrayAPI {
         client().post {
             request.uri.path = rest
             request.body = payload
-            request.contentType = JSON
 
             response.success {
                 debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: success"
@@ -98,7 +100,7 @@ class BintrayAPI {
     boolean updatePackage(
         final String description, final List labels = [], final List licenses = [], final String vcsUrl = null) {
         assertVersionAttributes()
-        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        final String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
         Map payload = createPackagePayload(description, labels, licenses, vcsUrl)
         debugmsg "About to update package '${repoOwner}/${repoName}/${packageName}'"
         boolean updateStatus = false
@@ -106,7 +108,6 @@ class BintrayAPI {
         client().patch {
             request.uri.path = rest
             request.body = payload
-            request.contentType = JSON
 
             response.success {
                 debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: success"
@@ -123,7 +124,7 @@ class BintrayAPI {
 
     boolean hasVersion() {
         assertVersionAttributes()
-        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        final String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
         boolean versionStatus = false
 
         client().get {
@@ -143,13 +144,12 @@ class BintrayAPI {
 
     void createVersion(String description) {
         assertVersionAttributes()
-        final String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        final String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
         debugmsg "About to create ${repoOwner}/${repoName}/${packageName}/${version}"
 
         client().post {
             request.uri.path = "${rest}/versions"
             request.body = [name: version, desc: description]
-            request.contentType = JSON
 
             response.success {
                 debugmsg "${repoOwner}/${repoName}/${packageName}/${version}: success"
@@ -159,7 +159,7 @@ class BintrayAPI {
 
     boolean deleteVersion() {
         assertVersionAttributes()
-        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
         boolean deleteStatus = false
 
         client().delete {
@@ -180,13 +180,12 @@ class BintrayAPI {
 
     boolean updateVersion(String description) {
         assertVersionAttributes()
-        String rest = "packages/${repoOwner}/${repoName}/${packageName}"
+        String rest = "/packages/${repoOwner}/${repoName}/${packageName}"
         boolean updateStatus = false
 
         client().patch {
             request.uri.path = "${rest}/versions/${version}"
             request.body = [name: version, desc: description]
-            request.contentType = JSON
 
             response.success {
                 updateStatus = true
@@ -207,13 +206,12 @@ class BintrayAPI {
             return
         }
 
-        final String rest = "packages/${repoOwner}/${repoName}/${packageName}/versions/${version}"
+        final String rest = "/packages/${repoOwner}/${repoName}/${packageName}/versions/${version}"
         debugmsg "About to set attributes for ${repoOwner}/${repoName}/${packageName}/${version}"
 
         client().post {
             request.uri.path = "${rest}/attributes"
             request.body = convertAttributes(attrs)
-            request.contentType = JSON
 
             response.success {
                 debugmsg "Attributes successfully set for ${repoOwner}/${repoName}/${packageName}/${version}"
@@ -234,7 +232,6 @@ class BintrayAPI {
         client().post {
             request.uri.path = rest
             request.body = payload
-            request.contentType = JSON
         }
     }
 
@@ -244,21 +241,21 @@ class BintrayAPI {
 
         client().put {
 //            client().headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
-            request.uri.path = "content/${repoOwner}/${repoName}/${packageName}/${version}/${content.name}"
+            request.uri.path = "/content/${repoOwner}/${repoName}/${packageName}/${version}/${content.name}"
             request.body = content.bytes
             request.contentType = BINARY
         }
     }
 
-    private HttpBuilder client() {
+    private OkHttpBuilder client() {
         if (apiClient == null) {
-            apiClient = configure {
-                request.uri = API_BASE_URL
+            apiClient = (OkHttpBuilder) configure {
+                request.uri = baseUrl
                 request.auth.basic userName, apiKey
+                request.contentType = JSON
+                request.encoder JSON, NativeHandlers.Encoders.&json
+                response.parser JSON, NativeHandlers.Parsers.&json
             }
-//            apiClient = new RESTClient("${baseUrl}/")
-//            apiClient.auth.basic userName, apiKey
-//            apiClient.headers.Authorization = """Basic ${"${userName}:${apiKey}".toString().bytes.encodeBase64()}"""
         }
         return apiClient
     }
@@ -298,22 +295,7 @@ class BintrayAPI {
         }
         return payload
     }
-/*
-{
-  "name": "my-package",
-  "desc": "This package...",
-  "labels": ["persistence", "database"],
-  "licenses": ["Apache-2.0", "GPL-3.0"],
-  "custom_licenses": ["my-license-1", "my-license-2"],
-  "vcs_url": "https://github.com/bintray/bintray-client-java.git",
-  "website_url": "http://jfrog.com",
-  "issue_tracker_url": "https://github.com/bintray/bintray-client-java/issues",
-  "github_repo": "bintray/bintray-client-java",
-  "github_release_notes_file": "RELEASE.txt",
-  "public_download_numbers": false,
-  "public_stats": true
-}
- */
+
     /** There seems to be an issue converting to JSON when items are of type GStringImpl.
      *
      * @param attrValues
@@ -336,7 +318,7 @@ class BintrayAPI {
         logger?.debug msg
     }
 
-    private HttpBuilder apiClient
+    private OkHttpBuilder apiClient
 }
 
 

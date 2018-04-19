@@ -13,87 +13,104 @@
  */
 package org.ysb33r.gradle.bintray
 
+import com.github.restdriver.clientdriver.ClientDriverRequest
+import com.github.restdriver.clientdriver.ClientDriverResponse
+import com.github.restdriver.clientdriver.ClientDriverRule
 import groovy.json.JsonBuilder
-import spock.lang.*
-import com.github.restdriver.clientdriver.*
-import static com.github.restdriver.clientdriver.ClientDriverRequest.Method.*
+import spock.lang.Ignore
+import spock.lang.Shared
+import spock.lang.Specification
+
+import static com.github.restdriver.clientdriver.ClientDriverRequest.Method.GET
 
 class BintrayAPISpec extends Specification {
-    
-    @Shared def port = System.getenv()['MockServerPort'] ?: '65531'
-    @Shared def mockUrl = "http://localhost:${port}"
-    
+
+    @Shared
+    def port = System.getenv()['MockServerPort'] ?: '65531'
+    @Shared
+    def mockUrl = "http://localhost:${port}"
+
     BintrayAPI api = new BintrayAPI(
-            baseUrl     : mockUrl,
-            repoOwner   : 'jim',
-            repoName    : 'uss',
-            packageName : 'enterprise',
-            userName    : 'foo',
-            apiKey      : 'bar',
-            version     : '1.99'
+        baseUrl: mockUrl,
+        repoOwner: 'jim',
+        repoName: 'uss',
+        packageName: 'enterprise',
+        userName: 'foo',
+        apiKey: 'bar',
+        version: '1.99'
     )
 
-    def ClientDriverRule bintrayMock = new ClientDriverRule(port.toInteger() )
+    def ClientDriverRule bintrayMock = new ClientDriverRule(port.toInteger())
 
     @Ignore
-    def "Check if version exists" () {
+    def "Check if package exists"() {
         given:
-            get '/packages/jim/enterprise/versions/1.99', '', '', 200
+        get '/packages/jim/enterprise', '', '', 200
 
         expect:
-            api.hasVersion()
+        api.hasPackage()
     }
 
     @Ignore
-    def "Create package version if it does not exist" () {
+    def "Check if version exists"() {
+        given:
+        get '/packages/jim/enterprise/versions/1.99', '', '', 200
+
+        expect:
+        api.hasVersion()
+    }
+
+    @Ignore
+    def "Create package version if it does not exist"() {
         api.hasVersion
         expect:
-            false
+        false
     }
-    
+
     @Ignore
-    def "Update package it if does exist" () {
+    def "Update package it if does exist"() {
         expect:
-            false
+        false
 
     }
-    
+
     @Ignore
-    def "Create package information if it does not exist" () {
+    def "Create package information if it does not exist"() {
         expect:
-            false
+        false
 
     }
-    
+
     @Ignore
-    def "Update version info if asked" () {
+    def "Update version info if asked"() {
         expect:
-            false
+        false
 
     }
 
     def "Convert Attributes"() {
         given:
-            def attrs = api.convertAttributes  'gradle-plugin' : "org.ysb33r.bintray:${'bintray'}:${'1.0.0'}"
-            def builder = new JsonBuilder()
-            builder attrs
+        def attrs = api.convertAttributes 'gradle-plugin': "org.ysb33r.bintray:${'bintray'}:${'1.0.0'}"
+        def builder = new JsonBuilder()
+        builder attrs
 
         expect:
-            attrs.size() == 1
-            attrs instanceof List
-            attrs[0] == [ name:'gradle-plugin', values:['org.ysb33r.bintray:bintray:1.0.0'] ]
-            builder.toString() == '[{"name":"gradle-plugin","values":["org.ysb33r.bintray:bintray:1.0.0"]}]'
+        attrs.size() == 1
+        attrs instanceof List
+        attrs[0] == [name: 'gradle-plugin', values: ['org.ysb33r.bintray:bintray:1.0.0']]
+        builder.toString() == '[{"name":"gradle-plugin","values":["org.ysb33r.bintray:bintray:1.0.0"]}]'
 
     }
+
     void get(
-            String path,
-            String request,
-            String response,
-            int status
+        String path,
+        String request,
+        String response,
+        int status
     ) {
         bintrayMock.addExpectation(
-                new ClientDriverRequest( path ).withMethod(GET),
-                new ClientDriverResponse(response).withStatus(status)
+            new ClientDriverRequest(path).withMethod(GET),
+            new ClientDriverResponse(response).withStatus(status)
         )
 
     }

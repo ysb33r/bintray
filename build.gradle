@@ -17,8 +17,6 @@ buildscript {
     dependencies {
         classpath 'org.ysb33r.gradle:grolifant:0.5.1'
         classpath 'io.github.http-builder-ng:http-builder-ng-okhttp:1.0.3'
-//        classpath "com.gradle.publish:plugin-publish-plugin:0.9.1"
-//        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:2.2.3'
     }
 }
 
@@ -36,14 +34,31 @@ group = 'org.ysb33r.gradle'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+// ----------------------------------------------------------------------------
+// Self-reference the plugin so that it can publish itself
+// ----------------------------------------------------------------------------
+def pluginURLs = (
+    buildscript.configurations.classpath.files +
+        fileTree("${gradle.gradleHomeDir}/lib/plugins") { include '*.jar' }.files
+).collect { it.toURI().toURL() }
+
+URLClassLoader selfReferencingClassLoader = new URLClassLoader(
+    pluginURLs.toArray(new URL[pluginURLs.size()]),
+    this.class.classLoader as URLClassLoader
+)
+
 apply plugin: new GroovyScriptEngine(
-        [file('src/main/groovy').absolutePath, file('src/main/resources').absolutePath].toArray(new String[2]),
-        this.class.classLoader
+    [
+        file('src/main/groovy').absolutePath,
+        file('src/main/resources').absolutePath
+    ].toArray(new String[2]),
+    selfReferencingClassLoader
 ).loadScriptByName('org/ysb33r/gradle/bintray/BintrayPublishPlugin.groovy')
+// ----------------------------------------------------------------------------
 
 ext {
     bintrayOwner = 'ysb33r'
-    bintrayRepo  = 'grysb33r'
+    bintrayRepo = 'grysb33r'
 }
 
 repositories {
@@ -51,7 +66,7 @@ repositories {
 }
 
 configurations.all {
-    exclude module : 'groovy-all'
+    exclude module: 'groovy-all'
 }
 
 dependencies {
@@ -86,21 +101,21 @@ artifacts {
     archives javadocJar
 }
 
-uploadArchives  {
+uploadArchives {
     repositories {
         bintrayMavenDeployer {
-            username    project.properties.bintrayUserName
-            apiKey      project.properties.bintrayApiKey
-            repoOwner   bintrayOwner
-            repoName    bintrayRepo
+            username project.properties.bintrayUserName
+            apiKey project.properties.bintrayApiKey
+            repoOwner bintrayOwner
+            repoName bintrayRepo
             packageName project.name
             description 'This is a bintray publish plugin for Gradle'
-            tags        'gradle','bintray'
-            licenses          'Apache-2.0'
-            vcsUrl            'https://github.com/ysb33r/bintray.git'
+            tags 'gradle', 'bintray'
+            licenses 'Apache-2.0'
+            vcsUrl 'https://github.com/ysb33r/bintray.git'
             autoCreatePackage true
-            updatePackage     true
-            versionAttributes 'gradle-plugin' : "org.ysb33r.bintray:${project.group}:${project.name}"
+            updatePackage true
+            versionAttributes 'gradle-plugin': "org.ysb33r.bintray:${project.group}:${project.name}"
 
         }
     }
@@ -110,10 +125,10 @@ uploadArchives  {
 
 pluginBundle {
     description = 'This is a bintray publish plugin for Gradle'
-    website     = 'https://github.com/ysb33r/bintray'
-    vcsUrl      = 'https://github.com/ysb33r/bintray.git'
+    website = 'https://github.com/ysb33r/bintray'
+    vcsUrl = 'https://github.com/ysb33r/bintray.git'
 
-    tags = ['gradle','bintray']
+    tags = ['gradle', 'bintray']
 
     plugins {
         vfsPlugin {
