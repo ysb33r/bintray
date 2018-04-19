@@ -134,19 +134,5 @@ license {
     strictCheck = true
     ignoreFailures = false
     ext.year = '2013-2018'
-//    excludes([
-//        '**/*.ad',
-//        '**/*.asciidoc',
-//        '**/*.adoc',
-//        '**/*.md',
-//        '**/*.properties',
-//        '**/*.txt',
-//        '**/*.bz2',
-//        'build/**',
-//        '**/java.nio.file.spi.FileSystemProvider',
-//        '**/*.gz',
-//        '**/*.lzma',
-//        '**/*.xz',
-//        '**/test-files/file*'
-//    ])
+    header = rootProject.file('config/apache-header')
 }
