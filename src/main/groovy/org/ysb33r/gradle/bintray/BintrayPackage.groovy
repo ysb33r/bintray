@@ -58,14 +58,26 @@ class BintrayPackage extends DefaultTask {
      *
      */
     @Input
-    String repoName
+    String getRepoName() {
+        StringUtils.stringize(this.pkgRepoName)
+    }
+
+    void repoName(Object o) {
+        this.pkgRepoName = o
+    }
 
     /** Name of the user that created the repository. If not specified, then
      * task will use @b username instead.
      */
     @Input
     @Optional
-    String repoOwner
+    String getRepoOwner() {
+        this.pkgRepoOwner ? StringUtils.stringize(this.pkgRepoOwner) : null
+    }
+
+    void repoOwner(Object o) {
+        this.pkgRepoOwner = o
+    }
 
     /** Package name where artifacts will be published to.
      *
@@ -230,6 +242,8 @@ class BintrayPackage extends DefaultTask {
     private final Map<String, Object> attributes = [:]
 
     private Object pkgDescription = ''
+    private Object pkgRepoName
+    private Object pkgRepoOwner
 }
 
 

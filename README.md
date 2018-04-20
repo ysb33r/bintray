@@ -5,6 +5,7 @@ This is my collection of Bintray support libraries and plugins. Currently only a
 but the plan is to refactor the API into separate JARs that can be consumed by other projects.
 
 ## Previous versions of this document
++ 2.0.3 - https://github.com/ysb33r/bintray/blob/RELEASE_2_0_3/README.md
 + 2.0.2 - https://github.com/ysb33r/bintray/blob/RELEASE_2_0_2/README.md (Current stable)
 + 2.0.1 - https://github.com/ysb33r/bintray/blob/RELEASE_2_0_1/README.md
 + 2.0   - https://github.com/ysb33r/bintray/blob/RELEASE_2_0/README.md
