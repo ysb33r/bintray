@@ -149,7 +149,13 @@ class BintrayPackage extends DefaultTask {
      */
     @Input
     @Optional
-    String vcsUrl = null
+    String getVcsUrl() {
+        StringUtils.stringize(this.vcsUrl)
+    }
+
+    void vcsUrl( Object o) {
+        this.vcsUrl = o
+    }
 
     /** If set, a non-existing package will be created prior to creating the version
      *
@@ -210,14 +216,14 @@ class BintrayPackage extends DefaultTask {
 
         boolean updated = false
         if (autoCreatePackage && !bintray.hasPackage()) {
-            if (!bintray.createPackage(description, tags, licenses, vcsUrl)) {
+            if (!bintray.createPackage(getDescription(), getTags(), getLicenses(), getVcsUrl())) {
                 return false
             }
             updated = true
         }
 
         if (updatePackage && !updated) {
-            if (!bintray.updatePackage(description, tags, licenses, vcsUrl)) {
+            if (!bintray.updatePackage(getDescription(), getTags(), getLicenses(), getVcsUrl())) {
                 return false
             }
         }
@@ -244,6 +250,7 @@ class BintrayPackage extends DefaultTask {
     private Object pkgDescription = ''
     private Object pkgRepoName
     private Object pkgRepoOwner
+    private Object vcsUrl
 }
 
 

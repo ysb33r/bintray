@@ -1,6 +1,9 @@
 BINTRAY GRADLE PLUGIN RELEASE NOTES
 ===================================
 
+## Version 2.0.4
+* `BintrayPackage` tasks allow lazy evaluation of `vcsUrl`.
+
 ## Version 2.0.3
 * `BintrayPackage` tasks allow lazy evaluation of `repoOwner` and `repoName`.
 
