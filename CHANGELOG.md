@@ -1,6 +1,10 @@
 BINTRAY GRADLE PLUGIN RELEASE NOTES
 ===================================
 
+## Version 3.0
+* Requires JDK8 minimum.
+* Updated to use Grolifant 0.13.
+
 ## Version 2.0.4
 * `BintrayPackage` tasks allow lazy evaluation of `vcsUrl`.
 
