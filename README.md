@@ -1,3 +1,5 @@
+THIS PROJECT IS DEPRECATED AS BINTRAY WILL SUNSET ON 31 MAY 2021
+
 Bintray Support
 ===============
 
